@@ -1,0 +1,30 @@
+[
+    {
+        "model": "Simulador.tiposcuentas",
+        "pk": 1,
+        "fields": {
+            "nombre": "Ingresos"
+        }
+    },
+    {
+        "model": "Simulador.tiposcuentas",
+        "pk": 2,
+        "fields": {
+            "nombre": "Costos de adminsitración"
+        }
+    },
+    {
+        "model": "Simulador.tiposcuentas",
+        "pk": 3,
+        "fields": {
+            "nombre": "Costos de producción"
+        }
+    },
+    {
+        "model": "Simulador.tiposcuentas",
+        "pk": 4,
+        "fields": {
+            "nombre": "Costos de inversión"
+        }
+    }
+]

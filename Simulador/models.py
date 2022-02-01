@@ -11,7 +11,7 @@ class Usuarios(models.Model):
     conf_correo = models.BooleanField(default = True)
 
 class Proyectos(models.Model):
-    nombres = models.CharField(max_length = 60)
+    nombre = models.CharField(max_length = 60)
     descripcion = models.CharField(max_length = 250)
     inversion = models.DecimalField(max_digits = 12, decimal_places = 2)
     tasa_interes = models.DecimalField(max_digits = 3, decimal_places = 2)
@@ -20,7 +20,7 @@ class Proyectos(models.Model):
     usuario = models.ForeignKey(Usuarios, on_delete = models.PROTECT, related_name = "proyectos")
  
 class TiposCuentas(models.Model):
-    nombres = models.CharField(max_length = 25)
+    nombre = models.CharField(max_length = 25)
 
 class ActFinancieras(models.Model):
     nombres = models.CharField(max_length = 80)
