@@ -1,0 +1,2 @@
+Se Añadio un una nueva libreria por favor intalar y trabajar con variable .env o variables de entorno
+En el archivo .env.example solo copiar o duplicar el archivo
