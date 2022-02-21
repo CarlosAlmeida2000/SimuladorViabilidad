@@ -1,0 +1,81 @@
+:root {
+  --cl-green: #004d40;
+  --cl-green-hover: #006e5c;
+
+  --cl-red: #d70404;
+
+  --cl-excel: #217346;
+  --cl-excel-hover: #0c9449;
+
+  --cl-black: #232323;
+  --cl-black-hover: #494949;
+
+  --cl-cyan: #2a77a1;
+  --cl-cyan-hover: #1f5979;
+
+  --cl-purpure: #070033;
+  --cl-purpure-hover: #0d015c;
+
+  --white: #ffffff;
+}
+
+button[class*="active"] {
+  background-color: var(--cl-green) !important;
+  color: var(--white) !important;
+  cursor: none;
+}
+
+.bg-green {
+  background-color: var(--cl-green);
+  color: var(--white);
+}
+
+.bg-green:hover {
+  background-color: var(--cl-green-hover);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.bg-excel {
+  background-color: var(--cl-excel);
+  color: var(--white);
+}
+
+.bg-excel:hover {
+  background-color: var(--cl-excel-hover);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.bg-cyan {
+  background-color: var(--cl-cyan);
+  color: var(--white);
+}
+
+.bg-cyan:hover {
+  background-color: var(--cl-cyan-hover);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.bg-blackm {
+  background-color: var(--cl-black);
+  color: var(--white);
+}
+
+.bg-blackm:hover {
+  background-color: var(--cl-black-hover);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.bg-purpure {
+  background-color: var(--cl-purpure);
+  color: var(--white);
+}
+
+.bg-purpure:hover {
+  background-color: var(--cl-purpure-hover);
+  color: var(--white);
+  cursor: pointer;
+}
