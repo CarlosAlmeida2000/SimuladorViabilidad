@@ -1,10 +1,10 @@
 <div>
-    <div class="parameters">
+    <div class="parameters d-flex mt-3">
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
             <input type="text">
         </div>
-        <div>
+        <div class="ms-3">
             <label for="periodos">Periodos (años)</label>
             <input type="text">
         </div>
@@ -68,6 +68,7 @@
         </table>
     </div>
 </div>
+<hr class="mt-4">
 <div>
     <div class="options">
         <button class="btn bg-purpure">
@@ -83,7 +84,26 @@
             Descargar excel
         </button>
     </div>
-    <div class="result">
-
+    <div class="result mt-2">
+        <div>
+            Criterios de evaluación:
+            <span id="text-respuesta" class="text-success" style="font-weight: bolder;">
+                ¡Felicidades su proyecto es económicamente rentable!
+            </span>
+        </div>
+        <div class="d-flex mt-2">
+            <div class="me-5">
+                <strong>TIR:</strong> <span id="TIR">70%</span>
+            </div>
+            <div class="me-5">
+                <strong>B/C:</strong> <span id="BC">$1,90</span>
+            </div>
+            <div class="me-5">
+                <strong>VAN:</strong> <span dir="VAN">$1000,00</span>
+            </div>
+        </div>
+        <div class="mt-2">
+            <strong>PRI:</strong> <span id="PRI">1 años, 7 meses y 15 días</span>
+        </div>
     </div>
 </div>
