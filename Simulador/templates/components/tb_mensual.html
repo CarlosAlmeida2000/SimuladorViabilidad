@@ -20,20 +20,80 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <div id="value-ingresos">
-                        <tr>
+                    <!-- #region Valores de ingresos -->
+                    <tr id="ingresos">
+                        <th class="d-flex align-intems-center static-columns">
+                            <p class="my-auto value-contables">Ingresos</p>
+                            <button class="btn btn-sm btn-green btn-add-data ms-3" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
+                    </tr>
+
+                    <!-- Aquí debes poner los tr que vas añadiendo con jquey -->
+
+                    <tr class="table-active">
+                        <th class="static-columns">Total de ingresos</th>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                    </tr>
+                    <!-- #endregion -->
+
+                    <!-- #region Valores de egresos -->
+                    <tr>
+                        <th class="d-flex align-intems-center static-columns">
+                            <p class="my-auto value-contables">Egresos</p>
+                        </th>
+                    </tr>
+
+                    <!-- #region Valores de costos administrativos -->
+                    <tr id="costos-a">
+                        <th class="d-flex align-intems-center static-columns">
+                            <p class="my-auto campos-contables">Costos de administración</p>
+                            <button class="btn btn-sm btn-green btn-add-data ms-3" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
+                    </tr>
+                    <tr class="table-active">
+                        <th class="static-columns">Total de costos de administración</th>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                    </tr>
+                    <!-- #endregion -->
+
+                    <!-- #region Valores de costos de producción -->
+                    <div id="values-costos-p">
+                        <tr id="costos-p">
                             <th class="d-flex align-intems-center static-columns">
-                                <p class="my-auto value-contables">Ingresos</p>
-                                <button class="btn btn-sm btn-green ms-3">
+                                <p class="my-auto campos-contables">Costos de producción</p>
+                                <button class="btn btn-sm btn-green btn-add-data ms-3" type="button">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </th>
                         </tr>
-
-                        <!-- Aquí debes poner los tr que vas añadiendo con jquey -->
-
                         <tr class="table-active">
-                            <th class="static-columns">Total de ingresos</th>
+                            <th class="static-columns">Total de costos de producción</th>
                             <td class="text-center">$00,00</td>
                             <td class="text-center">$00,00</td>
                             <td class="text-center">$00,00</td>
@@ -48,103 +108,53 @@
                             <td class="text-center">$00,00</td>
                         </tr>
                     </div>
-                    <div id="value-egresos">
-                        <tr>
-                            <th class="d-flex align-intems-center static-columns" style="width: 350px;">
-                                <p class="my-auto value-contables">Egresos</p>
-                            </th>
-                        </tr>
-                        <div id="values-costos-a">
-                            <tr>
-                                <th class="d-flex align-intems-center static-columns" style="width: 350px;">
-                                    <p class="my-auto campos-contables">Costos de administración</p>
-                                    <button class="btn btn-sm btn-green ms-3">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tr class="table-active">
-                                <th class="static-columns">Total de costos de administración</th>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                            </tr>
-                        </div>
-                        <div id="values-costos-p">
-                            <tr>
-                                <th class="d-flex align-intems-center static-columns" style="width: 350px;">
-                                    <p class="my-auto campos-contables">Costos de producción</p>
-                                    <button class="btn btn-sm btn-green ms-3">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tr class="table-active">
-                                <th class="static-columns">Total de costos de producción</th>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                            </tr>
-                        </div>
-                        <div id="values-costos-i">
-                            <tr>
-                                <th class="d-flex align-intems-center static-columns" style="width: 350px;">
-                                    <p class="my-auto campos-contables">Costos de inversión</p>
-                                    <button class="btn btn-sm btn-green ms-3">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tr class="table-active">
-                                <th class="static-columns">Total de costos de inversión</th>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                                <td class="text-center">$00,00</td>
-                            </tr>
-                        </div>
-                        <tr class="table-active">
-                            <th class="static-columns">Total de egresos</th>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                            <td class="text-center">$00,00</td>
-                        </tr>
-                    </div>
+                    <!-- #endregion -->
+
+                    <!-- #region Valores de costos de inversión -->
+                    <tr id="costos-i">
+                        <th class="d-flex align-intems-center static-columns">
+                            <p class="my-auto campos-contables">Costos de inversión</p>
+                            <button class="btn btn-sm btn-green btn-add-data ms-3" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </th>
+                    </tr>
+                    <tr class="table-active">
+                        <th class="static-columns">Total de costos de inversión</th>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                    </tr>
+                    <!-- #endregion -->
+
+                    <!-- #region Totales de egresos -->
+                    <tr class="table-active">
+                        <th class="static-columns">Total de egresos</th>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                        <td class="text-center">$00,00</td>
+                    </tr>
+                    <!-- #endregion -->
+
+                    <!-- #endregion -->
                 </tbody>
             </table>
         </div>

@@ -89,4 +89,5 @@ button[class*="active"] {
   position: sticky;
   left: 0;
   background-color: white !important;
+  width: 325px;
 }
