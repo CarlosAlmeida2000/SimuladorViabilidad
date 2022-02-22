@@ -25,57 +25,68 @@ button[class*="active"] {
   cursor: none;
 }
 
-.bg-green {
+.btn-green {
   background-color: var(--cl-green);
   color: var(--white);
 }
 
-.bg-green:hover {
+.btn-green:hover {
   background-color: var(--cl-green-hover);
   color: var(--white);
   cursor: pointer;
 }
 
-.bg-excel {
+.bg-green {
+  background-color: var(--cl-green);
+  color: var(--white);
+}
+
+.btn-excel {
   background-color: var(--cl-excel);
   color: var(--white);
 }
 
-.bg-excel:hover {
+.btn-excel:hover {
   background-color: var(--cl-excel-hover);
   color: var(--white);
   cursor: pointer;
 }
 
-.bg-cyan {
+.btn-cyan {
   background-color: var(--cl-cyan);
   color: var(--white);
 }
 
-.bg-cyan:hover {
+.btn-cyan:hover {
   background-color: var(--cl-cyan-hover);
   color: var(--white);
   cursor: pointer;
 }
 
-.bg-blackm {
+.btn-blackm {
   background-color: var(--cl-black);
   color: var(--white);
 }
 
-.bg-blackm:hover {
+.btn-blackm:hover {
   background-color: var(--cl-black-hover);
   color: var(--white);
   cursor: pointer;
 }
 
-.bg-purpure {
+.btn-purpure {
   background-color: var(--cl-purpure);
   color: var(--white);
 }
 
-.bg-purpure:hover {
+.btn-purpure:hover {
   background-color: var(--cl-purpure-hover);
   color: var(--white);
   cursor: pointer;
+}
+
+.static-columns {
+  position: sticky;
+  left: 0;
+  background-color: white !important;
 }
