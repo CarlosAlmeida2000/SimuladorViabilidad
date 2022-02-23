@@ -1,0 +1,28 @@
+[
+  {
+    "model": "Simulador.proyectos",
+    "pk": 1,
+    "fields": {
+      "nombre": "Proyecto de prueba 1",
+      "descripcion": "Lorem ipsum dolor sit amet consectetur adipiscing elit, mattis malesuada magna semper dui volutpat, erat felis tellus inceptos eget magnis. Torquent vitae nulla cum sed mattis vestibulum auctor mi, hendrerit sem nascetur sollicitudin elementum nostra dis, curabitur himenaeos rhoncus fames semper gravida consequat. Bibendum habitasse erat etiam praesent justo cubilia vehicula egestas sociosqu dictumst, magna parturient rhoncus magnis quis ut ante luctus lectus. Risus metus mus sem nisl nascetur malesuada placerat pellentesque phasellus augue potenti, sapien fermentum eu suspendisse velit lobortis dictum dignissim nibh.",
+      "inversion": 0,
+      "tasa_interes": 0,
+      "tasa_retorno": 0,
+      "periodo_anio": 0,
+      "usuario": 1
+    }
+  },
+  {
+    "model": "Simulador.proyectos",
+    "pk": 2,
+    "fields": {
+      "nombre": "Proyecto de prueba 2",
+      "descripcion": "Lorem ipsum dolor sit amet consectetur adipiscing elit, mattis malesuada magna semper dui volutpat, erat felis tellus inceptos eget magnis. Torquent vitae nulla cum sed mattis vestibulum auctor mi, hendrerit sem nascetur sollicitudin elementum nostra dis, curabitur himenaeos rhoncus fames semper gravida consequat. Bibendum habitasse erat etiam praesent justo cubilia vehicula egestas sociosqu dictumst, magna parturient rhoncus magnis quis ut ante luctus lectus. Risus metus mus sem nisl nascetur malesuada placerat pellentesque phasellus augue potenti, sapien fermentum eu.",
+      "inversion": 0,
+      "tasa_interes": 0,
+      "tasa_retorno": 0,
+      "periodo_anio": 0,
+      "usuario": 1
+    }
+  }
+]

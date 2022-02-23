@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from fernet_fields import EncryptedTextField
 
@@ -12,7 +13,7 @@ class Usuarios(models.Model):
 
 class Proyectos(models.Model):
     nombre = models.CharField(max_length = 60)
-    descripcion = models.CharField(max_length = 250)
+    descripcion = models.TextField()
     inversion = models.DecimalField(max_digits = 12, decimal_places = 2)
     tasa_interes = models.DecimalField(max_digits = 3, decimal_places = 2)
     tasa_retorno = models.DecimalField(max_digits = 3, decimal_places = 2)
