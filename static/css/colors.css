@@ -41,6 +41,10 @@ button[class*="active"] {
   color: var(--white);
 }
 
+.cl-green {
+  color: var(--cl-green);
+}
+
 .btn-excel {
   background-color: var(--cl-excel);
   color: var(--white);

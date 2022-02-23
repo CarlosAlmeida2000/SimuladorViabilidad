@@ -1,0 +1,11 @@
+[
+  {
+    "model": "Simulador.usuarios",
+    "pk": 1,
+    "fields": {
+      "nombres": "Henry Pérez Muñoz",
+      "correo": "prueba@gmail.com",
+      "clave": "123456"
+    }
+  }
+]
