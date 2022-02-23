@@ -1,2 +1,9 @@
 Se Añadio un una nueva libreria por favor intalar y trabajar con variable .env o variables de entorno
 En el archivo .env.example solo copiar o duplicar el archivo
+
+Siempre cuando se trabajar con ramas, va ver dos tipos de conflitos
+-- Conflicto de codigo: En este caso solo tiene que descargar los cambios de la rama principal y unir con la rama que estas trabajando
+    y así endicando que estructura es la correcta
+-- Conflicto en de migraciones django: En este caso si se trabaja con ramas va ver dos tipo de migraciones que se puedan repetir para este caso
+    se debe unir los conflitos con django de la siguiente majera "python manage.py makemigrations --merge" y luego "python manage.py migrate"
+    y se uniran los dos conflictos en una nueva migración
