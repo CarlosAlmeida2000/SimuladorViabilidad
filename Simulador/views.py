@@ -1,12 +1,12 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import *
-from django.http import JsonResponse
 
-# Create your views here.
+#region Vistas
 def vwIndex(request):
-    return render(request, "simulador/proyecto.html")
-
+    proyectos = Usuarios.objects.get(pk=1).proyectos.all()
+    return render(request, "simulador/proyecto.html", {"proyectos":proyectos})
 
 def vwFlujo(request):
     return render(request, "simulador/flujo_efectivo.html")
@@ -46,6 +46,17 @@ def vwGuardarValor(request):
         return JsonResponse({'id_valor': flujo_efectivo.id})
     except Exception as e: 
         return JsonResponse({'id_valor': '0'})
+#endregion 
 
+#region Metodos
 # def listar_proyectos(request):
+#     proyectos = Usuarios.objects.get(pk=1).proyectos.all()
+#     data = []
+#     for proyecto in proyectos:
+#         data_proyecto = {}
+#         data_proyecto['nombres'] = proyecto.nombre
+#         data_proyecto['descripcion'] = proyecto.descripcion
+#         data.append(data_proyecto)
 
+#     return JsonResponse(data, safe=False)
+#endregion

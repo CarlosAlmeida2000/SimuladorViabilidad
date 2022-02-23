@@ -18,103 +18,25 @@
     <hr>
     <div class="mt-3">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for proyecto in proyectos %}
             <div class="col">
                 <div class="card h-100">
-                    <div class="card-body">
+                    <div class="card-body ">
                         <h5 class="card-title cl-green h4">
                             <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
+                            <span>{{ proyecto.nombre }}</span>
                         </h5>
                         <p class="card-text">
                             <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
+                            <div class="text-truncate-4">
+                                {{ proyecto.descripcion }}
+                            </div>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a short card.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title cl-green h4">
-                            <i class="fa-solid fa-lightbulb"></i>
-                            <span>Proyecto N</span>
-                        </h5>
-                        <p class="card-text">
-                            <strong>Descripción: </strong>
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
+
         </div>
         </ class="mt-3">
     </div>
