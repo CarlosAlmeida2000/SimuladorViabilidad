@@ -3,16 +3,16 @@
 
 {% block content %}
 <div class="container-lg my-4">
-    <button class="btn bg-green text-white">
+    <button class="btn bg-green text-white" type="button" data-bs-toggle="modal" data-bs-target="#registre">
         <i class="fas fa-plus"></i>
         <span>Nuevo proyecto</span>
     </button>
-    <div class="d-block d-lg-flex justify-content-between align-items-center mt-3">
+    <div class="d-block d-md-flex justify-content-between align-items-center mt-3">
         <h3 class="cl-green">Proyectos</h3>
         <form class="search d-flex">
             <input type="search" class="form-control" style="width: 265px;" aria-label="search"
                 placeholder="Ingrese el nombre del proyecto">
-            <button class="btn btn-cyan" type="submit">Buscar</button>
+            <button class="btn btn-cyan" type="button">Buscar</button>
         </form>
     </div>
     <hr>
@@ -36,8 +36,65 @@
                 </div>
             </div>
             {% endfor %}
-
         </div>
-        </ class="mt-3">
     </div>
-    {% endblock content %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="registre" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="registreLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registreLabel">Registrar un nuevo proyecto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3 needs-validation" novalidate>
+                    <div class="row-cols-1">
+                        <label for="validarNombre" class="form-label">Nombre del proyecto</label>
+                        <input type="text" class="form-control" id="validarNombre" name="pr_nombre" required>
+                        <div class="valid-feedback">
+                            Datos correctos!
+                        </div>
+                    </div>
+                    <div class="row-cols-1">
+                        <label for="validarDescripcion" class="form-label">Decripción del proyecto</label>
+                        <textarea class="form-control" name="pr_descripcion" id="validarDescripcion" rows="5"
+                            required></textarea>
+                        <div class="valid-feedback">
+                            Datos correctos!
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block js %}
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock js %}

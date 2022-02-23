@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}" type="text/css">
     {% block css %} {% endblock css %}
 
     <title>{% block title %} {% endblock title %}Sistema de simulación </title>
@@ -28,7 +29,28 @@
 
     <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/toast.js' %}"></script>
     {% block js %} {% endblock js %}
+
+    <script>
+        toastr.success("Prueba", 'Información', {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        });
+    </script>
 
 </body>
 
