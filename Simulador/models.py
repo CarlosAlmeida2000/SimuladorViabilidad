@@ -28,6 +28,6 @@ class ActFinancieras(models.Model):
 
 class FlujoEfectivos(models.Model):
     mes = models.IntegerField()
-    inversion = models.DecimalField(max_digits = 12, decimal_places = 2)
+    valor = models.DecimalField(max_digits = 12, decimal_places = 2)
     actividad = models.OneToOneField(ActFinancieras, on_delete = models.PROTECT)
     proyecto = models.OneToOneField(Proyectos, on_delete = models.PROTECT, related_name = "flujo_efectivos")
