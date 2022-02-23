@@ -29,5 +29,5 @@ class ActFinancieras(models.Model):
 class FlujoEfectivos(models.Model):
     mes = models.IntegerField()
     valor = models.DecimalField(max_digits = 12, decimal_places = 2)
-    actividad = models.OneToOneField(ActFinancieras, on_delete = models.PROTECT)
-    proyecto = models.OneToOneField(Proyectos, on_delete = models.PROTECT, related_name = "flujo_efectivos")
+    actividad = models.ForeignKey(ActFinancieras, on_delete = models.PROTECT)
+    proyecto = models.ForeignKey(Proyectos, on_delete = models.PROTECT, related_name = "flujo_efectivos")

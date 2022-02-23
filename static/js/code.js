@@ -27,8 +27,7 @@ function guardar_actividad(input){
         data: params,
         dataType: 'json',
     }).done(function (result) {
-        if(result.id_actividad != 0){
-            alert(result.id_actividad)
+        if(result.id_actividad > 0){
             $(input).attr('data-id', result.id_actividad);
             alert('guardado')
         }else{
@@ -64,12 +63,11 @@ function guardar_valor(input){
         data: params,
         dataType: 'json',
     }).done(function (result) {
-        if(result.id_valor != 0){
-            alert(result.id_valor)
+        if(result.id_valor > 0){
             $(input).attr('data-id', result.id_valor);
             alert('guardado')
         }else{
-            alert('error valor')
+            alert('error')
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
     }).always(function (data) {
