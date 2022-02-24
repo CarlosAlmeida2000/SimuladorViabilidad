@@ -1,0 +1,29 @@
+.login {
+  height: 100vh;
+}
+
+.col-login {
+  height: 100%;
+  width: 50%;
+  padding: 0;
+  margin: 0;
+}
+
+.login-img {
+  direction: rtl;
+  height: 100%;
+}
+
+@media (max-width: 1160px) {
+  .col-login {
+    width: 100%;
+    padding: 30px;
+  }
+
+  .img {
+    display: none;
+  }
+  .login-img {
+    display: none;
+  }
+}

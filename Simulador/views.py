@@ -64,6 +64,9 @@ def vwGuardarProyecto(request):
         messages.error(request, "Hubo un error al guardar los datos, intenta nuevamente más tarde")
         return redirect('index')        
 
+def vwLogin(request):
+    return render(request, "auth/login.html")
+
 #endregion 
 
 #region Metodos
