@@ -89,6 +89,11 @@ button[class*="active"] {
   cursor: pointer;
 }
 
+.bg-white {
+  background-color: var(--white);
+  border: none;
+}
+
 .static-columns {
   position: sticky;
   left: 0;
