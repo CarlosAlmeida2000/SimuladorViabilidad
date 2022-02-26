@@ -106,15 +106,24 @@ button[class*="active"] {
   cursor: pointer;
 }
 
+th>input,
+td>input {
+  width: 100%;
+}
+
 td>div,
 th>div {
-  width: 100px;
+  width: 125px;
+  min-width: 100px;
 }
 
 .static-columns {
   position: sticky;
   left: 0;
   background-color: white !important;
+}
+
+.static-columns>div {
   width: 325px;
 }
 

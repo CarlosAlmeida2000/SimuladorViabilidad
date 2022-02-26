@@ -172,7 +172,7 @@ function guardar_valor(input) {
 }
 
 $(".btnAggActividad").click(function () {
-    var superior_id = $(this).parent().parent();
+    var superior_id = $(this).parent().parent().parent();
     var seccion = superior_id.attr("id");
     var fila = '<tr id="fila-' + id_fila + '"> \n\
                 <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
