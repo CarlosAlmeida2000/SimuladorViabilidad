@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -7,6 +8,9 @@ from .models import *
 def vwIndex(request):
     proyectos = Usuarios.objects.get(pk=1).proyectos.all()
     return render(request, "simulador/proyecto.html", {"proyectos":proyectos})
+
+def vwSpinner(request):
+    return render(request, "components/spinner.html")
 
 def vwFlujo(request):
     return render(request, "simulador/flujo_efectivo.html")
@@ -40,7 +44,7 @@ def vwGuardarValor(request):
             flujo_efectivo.proyecto = proyecto
             flujo_efectivo.actividad = actividad
 
-        flujo_efectivo.valor = request.POST['valor']
+        flujo_efectivo.valor = str(request.POST['valor']).replace(',', '.')
         flujo_efectivo.mes = request.POST['mes']
         flujo_efectivo.save()
         return JsonResponse({'id_valor': flujo_efectivo.id})
