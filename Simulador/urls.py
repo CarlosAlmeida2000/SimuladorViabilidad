@@ -1,4 +1,5 @@
 import imp
+from unicodedata import name
 from django.urls import path
 
 from Simulador import views
@@ -10,7 +11,8 @@ urlpatterns = [
     path("guardar-valor/", views.vwGuardarValor, name="guardar-valor"),
     path("spinner/", views.vwSpinner, name="spinner"),
     path("guardar-proyecto/",views.vwGuardarProyecto, name="guardar-proyecto"),
+    path("eliminar-proyecto/", views.eliminar_proyecto, name="eliminar-proyecto"),
+    path("editar-proyecto/", views.editar_proyecto, name="editar-proyecto"),
     path("login", views.vwLogin, name="login"),
-
     # path("lista-proyectos", views.listar_proyectos, name="ls-proyectos"),
 ]

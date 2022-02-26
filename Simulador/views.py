@@ -84,5 +84,25 @@ def vwLogin(request):
 #         data.append(data_proyecto)
 
 #     return JsonResponse(data, safe=False)
+def eliminar_proyecto(request):
+    try:
+        proyecto = Proyectos.objects.get(pk=request.POST['project_id'])
+        proyecto.delete()
+        messages.success(request, "Su proyecto ha sido eliminado")
+        return JsonResponse({'value':"1"})
+    except Exception as e:
+        messages.error(request, "El proyecto no se pudo eliminar")
+        return JsonResponse({'value':"0"})
 
+def editar_proyecto(request):
+    try:
+        proyecto = Proyectos.objects.get(pk=request.POST['project_id'])
+        proyecto.nombre = request.POST['pr_nombre']
+        proyecto.descripcion = request.POST['pr_descripcion']
+        proyecto.save()
+        messages.success(request, "Su proyecto ha sido modificado")
+        return redirect("/")
+    except Exception as e:
+        messages.error(request, "El proyecto no se pudo modificar")
+        return redirect("/")
 #endregion

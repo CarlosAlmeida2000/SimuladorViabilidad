@@ -3,7 +3,8 @@
 
 {% block content %}
 <div class="container-lg my-4">
-    <button class="btn bg-green text-white" type="button" data-bs-toggle="modal" data-bs-target="#registre">
+    <button class="btn bg-green text-white" id="add-project" type="button" data-bs-toggle="modal"
+        data-bs-target="#registre">
         <i class="fas fa-plus"></i>
         <span>Nuevo proyecto</span>
     </button>
@@ -27,13 +28,17 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end mt-2">
                             <li>
-                                <button class="dropdown-item">
+                                <button class="dropdown-item delete-project" data-project-id="{{ proyecto.id }}"
+                                    data-project-name="{{ proyecto.nombre }}">
                                     <i class="fa-solid fa-trash-can"></i>
                                     <span>Eliminar</span>
                                 </button>
                             </li>
                             <li>
-                                <button class="dropdown-item">
+                                <button class="dropdown-item edit-project" data-project-id="{{ proyecto.id }}"
+                                    data-project-name="{{ proyecto.nombre }}"
+                                    data-project-decription="{{ proyecto.descripcion }}" data-bs-toggle="modal"
+                                    data-bs-target="#registre">
                                     <i class="fa-solid fa-pen"></i>
                                     <span>Editar</span>
                                 </button>
@@ -73,7 +78,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3 needs-validation" action="{% url 'guardar-proyecto' %}" method="post" novalidate>
+                <form id="form-project" class="row g-3 needs-validation" action="{% url 'guardar-proyecto' %}"
+                    method="post" novalidate>
                     {% csrf_token %}
                     <div class="row-cols-1">
                         <label for="validarNombre" class="form-label">Nombre del proyecto</label>
@@ -97,7 +103,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <button class="btn btn-green" type="submit">Guardar</button>
+                        <button class="btn btn-green" id="btn-guardar" type="submit">Guardar</button>
                         <button type="button" class="btn btn-cyan" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
@@ -128,4 +134,5 @@
             })
     })()
 </script>
+<script src="{% static 'js/project.js' %}"></script>
 {% endblock js %}
