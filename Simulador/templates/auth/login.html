@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,20 +6,79 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}" type="text/css">
     <title>Login</title>
 </head>
 
 <body>
-    <div class="row">
-        <div class="col bg-black">
-
+    <div class="login d-lg-flex">
+        <div class="col-login img bg-green opacity-50">
+            <div class="opacity-75 login-img">
+                <img class="h-100" src="{% static 'img/economy-1.jpg' %}" alt="">
+            </div>
         </div>
-        <div class="col">
-            <form action="">
-
-            </form>
+        <div class="col-login d-flex justify-content-center align-items-center">
+            <div style="width: 550px;">
+                <div>
+                    <h2>
+                        ¿Quieres saber cómo van tus inversiones o conocer la viabilidad de tu futuro emprendimiento?
+                    </h2>
+                    <p>
+                        Accede a nuestro sistema y te ayudará a controlar tus proyectos realizando los cálculos
+                        evaluación económica
+                    </p>
+                </div>
+                <div class="p-4 bg-white">
+                    <form action="" method="post" class="row g-3 needs-validation" novalidate>
+                        <div>
+                            <label for="validarEmail" class="form-label">Correo</label>
+                            <input type="email" class="form-control" name="email" id="validarEmail" required>
+                            <div class="invalid-feedback">
+                                Ingrese su usuario
+                            </div>
+                        </div>
+                        <div>
+                            <label for="validarPass" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="pass" id="validarPass" required>
+                            <div class="invalid-feedback">
+                                Ingrese la contraseña
+                            </div>
+                        </div>
+                        <button class="btn btn-green">Iniciar sesión</button>
+                        <div>
+                            <p>
+                                <span>Si aun no tienes una cuenta en nuestro sistema,</span>
+                                <a href="#">cliquea aquí y podras registrarte</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
 </body>
 
 </html>

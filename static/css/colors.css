@@ -16,29 +16,31 @@
   --cl-purpure: #070033;
   --cl-purpure-hover: #0d015c;
 
-  --white: #ffffff;
+  --cl-white: #ffffff;
+  --cl-white-hover: #e6e6e6;
+
 }
 
 button[class*="active"] {
   background-color: var(--cl-green) !important;
-  color: var(--white) !important;
+  color: var(--cl-white) !important;
   cursor: none;
 }
 
 .btn-green {
   background-color: var(--cl-green);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .btn-green:hover {
   background-color: var(--cl-green-hover);
-  color: var(--white);
+  color: var(--cl-white);
   cursor: pointer;
 }
 
 .bg-green {
   background-color: var(--cl-green);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .cl-green {
@@ -47,46 +49,66 @@ button[class*="active"] {
 
 .btn-excel {
   background-color: var(--cl-excel);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .btn-excel:hover {
   background-color: var(--cl-excel-hover);
-  color: var(--white);
+  color: var(--cl-white);
   cursor: pointer;
 }
 
 .btn-cyan {
   background-color: var(--cl-cyan);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .btn-cyan:hover {
   background-color: var(--cl-cyan-hover);
-  color: var(--white);
+  color: var(--cl-white);
   cursor: pointer;
 }
 
 .btn-blackm {
   background-color: var(--cl-black);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .btn-blackm:hover {
   background-color: var(--cl-black-hover);
-  color: var(--white);
+  color: var(--cl-white);
   cursor: pointer;
 }
 
 .btn-purpure {
   background-color: var(--cl-purpure);
-  color: var(--white);
+  color: var(--cl-white);
 }
 
 .btn-purpure:hover {
   background-color: var(--cl-purpure-hover);
-  color: var(--white);
+  color: var(--cl-white);
   cursor: pointer;
+}
+
+.bg-white {
+  background-color: var(--cl-white);
+  border: none;
+}
+
+.btn-white {
+  background-color: var(--cl-white);
+  cursor: none;
+}
+
+.btn-white:hover {
+  background-color: var(--cl-white-hover);
+  cursor: pointer;
+}
+
+td>div,
+th>div {
+  width: 100px;
 }
 
 .static-columns {
@@ -94,6 +116,10 @@ button[class*="active"] {
   left: 0;
   background-color: white !important;
   width: 325px;
+}
+
+.table> :not(caption)>*>* {
+  padding: .3rem .3rem;
 }
 
 .text-truncate-3 {

@@ -1,7 +1,7 @@
 from decimal import Decimal
-import json
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib import messages
 from .models import *
 
 #region Vistas
@@ -50,6 +50,27 @@ def vwGuardarValor(request):
         return JsonResponse({'id_valor': flujo_efectivo.id})
     except Exception as e: 
         return JsonResponse({'id_valor': '0'})
+
+def vwGuardarProyecto(request):
+    try:
+        proyecto = Proyectos()
+        proyecto.nombre = request.POST['pr_nombre']
+        proyecto.descripcion = request.POST['pr_descripcion']
+        proyecto.inversion = 0
+        proyecto.tasa_interes = 0
+        proyecto.tasa_retorno = 0
+        proyecto.periodo_anio = 0
+        proyecto.usuario = Usuarios.objects.get(pk=1)
+        proyecto.save()
+        messages.success(request, "Su proyecto ha sido guardado")
+        return redirect('index')        
+    except Exception as e:
+        messages.error(request, "Hubo un error al guardar los datos, intenta nuevamente más tarde")
+        return redirect('index')        
+
+def vwLogin(request):
+    return render(request, "auth/login.html")
+
 #endregion 
 
 #region Metodos
@@ -63,4 +84,5 @@ def vwGuardarValor(request):
 #         data.append(data_proyecto)
 
 #     return JsonResponse(data, safe=False)
+
 #endregion

@@ -30,10 +30,10 @@
     <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/toast.js' %}"></script>
-    {% block js %} {% endblock js %}
 
+    {% if messages %}
     <script>
-        toastr.success("Prueba", 'Información', {
+        let config_toast = {
             "closeButton": true,
             "debug": false,
             "newestOnTop": true,
@@ -43,15 +43,32 @@
             "onclick": null,
             "showDuration": "300",
             "hideDuration": "1000",
-            "timeOut": "5000",
+            "timeOut": "2500",
             "extendedTimeOut": "1000",
             "showEasing": "swing",
             "hideEasing": "linear",
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
-        });
+        }
     </script>
+    {% for message in messages %}
 
+    {% if message.tags == "success" %}
+    <script>
+        toastr.success("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% if message.tags == "error" %}
+    <script>
+        toastr.error("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% endfor %}
+    {% endif %}
+
+    {% block js %} {% endblock js %}
 </body>
 
 </html>

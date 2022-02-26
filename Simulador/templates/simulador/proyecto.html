@@ -21,6 +21,25 @@
             {% for proyecto in proyectos %}
             <div class="col">
                 <div class="card h-100">
+                    <div class="d-flex justify-content-end dropdown">
+                        <button class="btn btn-white" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end mt-2">
+                            <li>
+                                <button class="dropdown-item">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                    <span>Eliminar</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item">
+                                    <i class="fa-solid fa-pen"></i>
+                                    <span>Editar</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="card-body ">
                         <h5 class="card-title cl-green h4">
                             <i class="fa-solid fa-lightbulb"></i>
@@ -33,6 +52,10 @@
                             </div>
                         </p>
                     </div>
+                    <div class="card-footer bg-white p-0">
+                        <button class="btn btn-blackm w-100"
+                            style="border-top-left-radius: 0; border-top-right-radius: 0;">Ver proyecto</button>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -40,22 +63,26 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- #region Modal -->
 <div class="modal fade" id="registre" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="registreLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registreLabel">Registrar un nuevo proyecto</h5>
+                <h5 class="modal-title cl-green" id="registreLabel">Registrar un nuevo proyecto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="row g-3 needs-validation" novalidate>
+                <form class="row g-3 needs-validation" action="{% url 'guardar-proyecto' %}" method="post" novalidate>
+                    {% csrf_token %}
                     <div class="row-cols-1">
                         <label for="validarNombre" class="form-label">Nombre del proyecto</label>
                         <input type="text" class="form-control" id="validarNombre" name="pr_nombre" required>
                         <div class="valid-feedback">
                             Datos correctos!
+                        </div>
+                        <div class="invalid-feedback">
+                            Ingrese un nombre al proyecto
                         </div>
                     </div>
                     <div class="row-cols-1">
@@ -65,18 +92,22 @@
                         <div class="valid-feedback">
                             Datos correctos!
                         </div>
+                        <div class="invalid-feedback">
+                            Ingrese la descripción de su proyecto
+                        </div>
                     </div>
                     <div class="col-12">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button class="btn btn-primary" type="submit">Guardar</button>
+                        <button class="btn btn-green" type="submit">Guardar</button>
+                        <button type="button" class="btn btn-cyan" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-{% endblock content %}
+<!-- #endregion -->
 
+{% endblock content %}
 
 {% block js %}
 <script>
