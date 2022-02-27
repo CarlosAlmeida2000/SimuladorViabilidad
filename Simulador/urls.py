@@ -8,6 +8,7 @@ urlpatterns = [
     path("flujo-efectivo/", views.vwFlujo, name="flujo_efectivo"),
     path("guardar-actividad/", views.vwGuardarActividad, name="guardar-actividad"),
     path("guardar-valor/", views.vwGuardarValor, name="guardar-valor"),
+    path("calcular-viabilidad/", views.vwCalcularViabilidad, name="calcular-viabilidad"),
     path("spinner/", views.vwSpinner, name="spinner"),
     path("guardar-proyecto/",views.vwGuardarProyecto, name="guardar-proyecto"),
     path("login", views.vwLogin, name="login"),
