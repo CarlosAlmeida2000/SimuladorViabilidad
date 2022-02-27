@@ -20,7 +20,6 @@ class UsuarioSession:
         self.session.modified = True
 
     def delete_session(self):
-        sesion_user = self.usuario["nombres"]
-        self.session["usuario"] = {}
+        self.session.pop("usuario")
         self.session.modified = True
         self.session.flush()

@@ -10,7 +10,11 @@ from .models import *
 
 
 def vwIndex(request):
-    proyectos = Usuarios.objects.get(pk=1).proyectos.all()
+    if not "usuario" in request.session:
+        return redirect("login")
+    proyectos = Usuarios.objects.get(
+        pk=request.session["usuario"]["id"]
+    ).proyectos.all()
     return render(request, "simulador/proyecto.html", {"proyectos": proyectos})
 
 
@@ -81,6 +85,8 @@ def vwGuardarProyecto(request):
 
 
 def vwLogin(request):
+    if "usuario" in request.session:
+        return redirect("index")
     return render(request, "auth/login.html")
 
 
@@ -124,7 +130,10 @@ def editar_proyecto(request):
 
 
 def sign_out(request):
+    if "usuario" in request.session:
+        return redirect("index")
     user_session = UsuarioSession(request)
+    user_session.delete_session()
     password_level = 50
     try:
         usuario = Usuarios.objects.get(correo=request.POST["email"])

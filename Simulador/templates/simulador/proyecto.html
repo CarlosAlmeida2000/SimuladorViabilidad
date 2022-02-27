@@ -19,6 +19,8 @@
     <hr>
     <div class="mt-3">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+
+            {% if proyectos.count != 0 %}
             {% for proyecto in proyectos %}
             <div class="col">
                 <div class="card h-100">
@@ -64,6 +66,11 @@
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+            <div class="alert alert-warning w-100" role="alert">
+                Usted por el momento no cuenta con un proyecto en su cuenta, registra uno
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
