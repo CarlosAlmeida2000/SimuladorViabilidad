@@ -111,3 +111,7 @@ USE_L10N = True
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') # Producción
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
+
+MESSAGE_TAGS = {
+    50: 'password',
+}

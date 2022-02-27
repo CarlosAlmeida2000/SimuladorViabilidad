@@ -2,6 +2,8 @@ from decimal import Decimal
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
+
+from Simulador.UsuarioSession import UsuarioSession
 from .models import *
 
 #region Vistas
@@ -105,4 +107,19 @@ def editar_proyecto(request):
     except Exception as e:
         messages.error(request, "El proyecto no se pudo modificar")
         return redirect("/")
+
+def sign_out(request):
+    # user_session = UsuarioSession(request)
+    password_level = 50
+    try:
+        usuario = Usuarios.objects.get(correo=request.POST["email"])
+        if usuario.clave == request.POST["pass"]:
+            # user_session.autenticate(usuario)
+            return redirect("index")
+        else:
+            messages.add_message(request, password_level,"Contraseña incorrecta")
+            return render(request, "auth/login.html",{"user_old":request.POST["email"]})
+    except Exception as e:
+        messages.error(request, "Inicio de sesión fallido, usuario no existe")
+        return redirect("login")
 #endregion

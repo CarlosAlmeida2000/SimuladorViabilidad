@@ -28,19 +28,19 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end mt-2">
                             <li>
-                                <button class="dropdown-item delete-project" data-project-id="{{ proyecto.id }}"
-                                    data-project-name="{{ proyecto.nombre }}">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                    <span>Eliminar</span>
-                                </button>
-                            </li>
-                            <li>
                                 <button class="dropdown-item edit-project" data-project-id="{{ proyecto.id }}"
                                     data-project-name="{{ proyecto.nombre }}"
                                     data-project-decription="{{ proyecto.descripcion }}" data-bs-toggle="modal"
                                     data-bs-target="#registre">
                                     <i class="fa-solid fa-pen"></i>
                                     <span>Editar</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item delete-project" data-project-id="{{ proyecto.id }}"
+                                    data-project-name="{{ proyecto.nombre }}">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                    <span>Eliminar</span>
                                 </button>
                             </li>
                         </ul>

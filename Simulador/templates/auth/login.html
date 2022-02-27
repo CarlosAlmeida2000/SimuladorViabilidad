@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}" type="text/css">
     <title>Login</title>
 </head>
@@ -32,10 +33,12 @@
                     </p>
                 </div>
                 <div class="p-4 bg-white">
-                    <form action="" method="post" class="row g-3 needs-validation" novalidate>
+                    <form action="{% url 'sign-out' %}" method="post" class="row g-3 needs-validation" novalidate>
+                        {% csrf_token %}
                         <div>
                             <label for="validarEmail" class="form-label">Correo</label>
-                            <input type="email" class="form-control" name="email" id="validarEmail" required>
+                            <input type="email" class="form-control" name="email" id="validarEmail"
+                                value="{{ user_old }}" required>
                             <div class="invalid-feedback">
                                 Ingrese su usuario
                             </div>
@@ -46,6 +49,16 @@
                             <div class="invalid-feedback">
                                 Ingrese la contraseña
                             </div>
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.tags == "password" %}
+                            <div class="text-danger">
+                                {{ message }}
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+
                         </div>
                         <button class="btn btn-green">Iniciar sesión</button>
                         <div>
@@ -79,6 +92,44 @@
                 })
         })()
     </script>
+    <script src="{% static 'js/toast.js' %}"></script>
+
+    {% if messages %}
+    <script>
+        let config_toast = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2500",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    {% for message in messages %}
+
+    {% if message.tags == "success" %}
+    <script>
+        toastr.success("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% if message.tags == "error" %}
+    <script>
+        toastr.error("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% endfor %}
+    {% endif %}
 </body>
 
 </html>
