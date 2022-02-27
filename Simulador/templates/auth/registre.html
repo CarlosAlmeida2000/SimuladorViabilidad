@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/toast.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}" type="text/css">
+    <title>Login - Sistema de simulación</title>
+</head>
+
+<body>
+    <div class="login d-lg-flex">
+        <div class="col-login img bg-green opacity-50">
+            <div class="opacity-75 login-img">
+                <img class="h-100" src="{% static 'img/economy-1.jpg' %}" alt="">
+            </div>
+        </div>
+        <div class="col-login d-flex justify-content-center align-items-center">
+            <div style="width: 550px;">
+                <div>
+                    <h2>
+                        ¿Quieres saber cómo van tus inversiones o conocer la viabilidad de tu futuro emprendimiento?
+                    </h2>
+                    <p>
+                        Registrate a nuestro sistema y te ayudará a controlar tus proyectos realizando los cálculos
+                        evaluación económica
+                    </p>
+                </div>
+                <div class="p-4 bg-white">
+                    <form action="{% url 'regitrame' %}" method="post" class="row g-3 needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div>
+                            <label for="ValidarNombres" class="form-label">Nombres</label>
+                            <input type="name" class="form-control" name="name" id="ValidarNombres" required>
+                            <div class="invalid-feedback">
+                                Ingrese sus nombres
+                            </div>
+                        </div>
+                        <div>
+                            <label for="validarEmail" class="form-label">Correo</label>
+                            <input type="email" class="form-control" name="email" id="validarEmail" required>
+                            <div class="invalid-feedback">
+                                Ingrese su correo
+                            </div>
+                        </div>
+                        <div>
+                            <label for="validarPass" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="pass" id="validarPass" required>
+                            <div class="invalid-feedback">
+                                Ingrese la contraseña
+                            </div>
+                        </div>
+                        <div>
+                            <label for="validarConfPass" class="form-label">Repita su contraseña</label>
+                            <input type="password" class="form-control" name="conf_pass" id="validarConfPass" required>
+                            <div class="invalid-feedback">
+                                Ingrese nuevamente la contraseña
+                            </div>
+                            <div class="conf-pass">
+                                Las contraseñas no coinciden
+                            </div>
+                        </div>
+                        <button class="btn btn-green">Crear cuenta</button>
+                        <div>
+                            <p>
+                                <span>Si ya tienes una cuenta en nuestro sistema,</span>
+                                <a href="{% url 'login' %}">cliquea aquí y podras registrarte</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if ($("#validarConfPass").val() != $("#validarPass").val()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            $("#validarConfPass").addClass("invalid");
+                            $(".conf-pass").show()
+                        } else {
+                            $(".conf-pass").hide()
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                        }
+
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+    <script src="{% static 'js/toast.js' %}"></script>
+
+    {% if messages %}
+    <script>
+        let config_toast = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "2500",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    {% for message in messages %}
+
+    {% if message.tags == "success" %}
+    <script>
+        toastr.success("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% if message.tags == "error" %}
+    <script>
+        toastr.error("{{ message }}", config_toast);
+    </script>
+    {% endif %}
+
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>

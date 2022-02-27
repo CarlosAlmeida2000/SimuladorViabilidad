@@ -17,25 +17,15 @@
 </head>
 
 <body>
-    {% url 'login' as route %}
-    {% url 'sign-out' as route2 %}
-    {% if not route == request.get_full_path %}
-    {% if not route2 == request.get_full_path %}
     <header>
         {% include 'components/header.html' %}
     </header>
-    {% endif %}
-    {% endif %}
-
     <section>
         {% block content %} {% endblock content %}
     </section>
-
-    {% if not route == request.get_full_path %}
     <footer>
         {% include 'components/footer.html' %}
     </footer>
-    {% endif %}
 
     <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>

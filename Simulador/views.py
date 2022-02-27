@@ -65,6 +65,8 @@ def vwGuardarValor(request):
 
 
 def vwGuardarProyecto(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         proyecto = Proyectos()
         proyecto.nombre = request.POST["pr_nombre"]
@@ -73,7 +75,7 @@ def vwGuardarProyecto(request):
         proyecto.tasa_interes = 0
         proyecto.tasa_retorno = 0
         proyecto.periodo_anio = 0
-        proyecto.usuario = Usuarios.objects.get(pk=1)
+        proyecto.usuario = Usuarios.objects.get(pk=request.session["usuario"]["id"])
         proyecto.save()
         messages.success(request, "Su proyecto ha sido guardado")
         return redirect("index")
@@ -88,6 +90,12 @@ def vwLogin(request):
     if "usuario" in request.session:
         return redirect("index")
     return render(request, "auth/login.html")
+
+
+def vwRegistre(request):
+    if "usuario" in request.session:
+        return redirect("index")
+    return render(request, "auth/registre.html")
 
 
 # endregion
@@ -106,6 +114,8 @@ def vwLogin(request):
 
 
 def eliminar_proyecto(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
         proyecto.delete()
@@ -117,6 +127,8 @@ def eliminar_proyecto(request):
 
 
 def editar_proyecto(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
         proyecto.nombre = request.POST["pr_nombre"]
@@ -154,6 +166,25 @@ def logout(request):
     user_session = UsuarioSession(request)
     user_session.delete_session()
     return redirect("login")
+
+
+def registre(request):
+    if "usuario" in request.session:
+        return redirect("index")
+    try:
+        Usuarios.objects.create(
+            nombres=request.POST["name"],
+            correo=request.POST["email"],
+            clave=request.POST["pass"],
+        )
+        messages.success(
+            request,
+            "Tu cuenta a sido creada, inicia sesión para que puedas administrar tus proyectos",
+        )
+        return redirect("login")
+    except Exception as e:
+        messages.error(request, "Creación de cuenta fallida, intenta más tarde")
+        return redirect("registre")
 
 
 # endregion
