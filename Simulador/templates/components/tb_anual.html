@@ -1,4 +1,5 @@
 <div>
+    {% csrf_token %}
     <div class="parameters d-flex mt-3">
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
@@ -73,7 +74,7 @@
     <div class="options">
         <button class="btn btn-purpure">
             <i class="fa-solid fa-calculator"></i>
-            Calcular viabildiad
+            Calcular viabilidad
         </button>
         <button class="btn btn-cyan">
             <i class="fa-solid fa-chart-line"></i>

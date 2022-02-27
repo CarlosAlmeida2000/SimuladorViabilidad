@@ -1,4 +1,4 @@
-var id_fila = 0;
+var id_fila = -1;
 
 // Función para crear una llave de seguridad "crsftoken" y poder realizar una petición ajax
 function getCookie(name) {
@@ -40,18 +40,7 @@ function guardar_actividad(input) {
                 $(input).css('border-color', '#00710B');
                 $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
                 // si se guarda la actividad se desbloquean los demás input de valores
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-1').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-2').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-3').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-4').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-5').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-6').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-7').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-8').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-9').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-10').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-11').prop('disabled', false);
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-12').prop('disabled', false);
+                $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).prop('disabled', false);
                 // eliminar spinner
                 $("#mostrar-spinner").empty()
             } else {
@@ -109,50 +98,92 @@ function guardar_valor(input) {
                 var total_mes = 0.00
                 var total_fila = 0.00
                 var total_todas_filas = 0.00
-                var total_egresos = 0.00
+                var total_egresos_mensual = 0.00
+                var total_egresos_todos_meses = 0.00
                 var fen_mensual = 0.00
+                var total_fen_todos_meses = 0.00
+                var total_fen_acum_todos_meses = 0.00
                 var fen_acum_mensual = 0.00
+                var fen_acum_anterior = 0.00
                 // calcular el total del mes
                 $('.' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).each(function () {
                     if ($(this).val() != '') {
-                        total_mes = total_mes + parseFloat($(this).val().replace(',', '.'))
+                        total_mes += parseFloat($(this).val().replace(',', '.'))
                     }
                 });
+                $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
                 // calcular el total de la fila
                 $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).each(function () {
                     if ($(this).val() != '') {
-                        total_fila = total_fila + parseFloat($(this).val().replace(',', '.'))
+                        total_fila += parseFloat($(this).val().replace(',', '.'))
                     }
                 });
-                // actualizar valores totales de la columna y fila
-                $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
                 $('#total-' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).html("<div>$ " + total_fila.toFixed(2).replace('.', ',') + "</div>")
                 // calcular el total de todas las filas
                 $('.total-' + $(input).attr("tipo_cuenta") + '-fila').each(function () {
-                    if ($(this).text() != '$00,00') {
-                        total_todas_filas = total_todas_filas + parseFloat(($(this).text()).substring(2).replace(',', '.'))
+                    if ($(this).text() != '$ 00,00') {
+                        total_todas_filas += parseFloat(($(this).text()).substring(2).replace(',', '.'))
                     }
                 });
-                // actualizar el total de todas las filas
-                $('#total-' + $(input).attr("tipo_cuenta")).text('$' + total_todas_filas.toFixed(2).replace('.', ','))
-                // sumar todos los egresos
-                total_egresos = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes")).text().substring(2).replace(',', '.')) +
-                    parseFloat($('#total-costos-p-mes-' + $(input).attr("mes")).text().substring(2).replace(',', '.')) +
-                    parseFloat($('#total-costos-i-mes-' + $(input).attr("mes")).text().substring(2).replace(',', '.')))
-                // actualizar el total de todos los egresos
-                $('#total-egresos-mes-' + $(input).attr("mes")).text('$' + total_egresos.toFixed(2).replace('.', ','))
-                // calcular el FEN
-                fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes")).text().substring(2).replace(',', '.')) -
-                    parseFloat($('#total-egresos-mes-' + $(input).attr("mes")).text().substring(2).replace(',', '.'))
-                $('#total-fen-mes-' + $(input).attr("mes")).text('$' + fen_mensual.toFixed(2).replace('.', ','))
-                // calcular el FEN acumulado        
-                if ($(input).attr("mes") == '1') {
-                    fen_acum_mensual = fen_mensual
-                } else {
-                    fen_acum_anterior = parseFloat($('#total-fen-acum-mes-' + (($(input).attr("mes")) - 1)).text().substring(2).replace(',', '.'))
-                    fen_acum_mensual = fen_mensual + fen_acum_anterior
+                $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ '+ total_todas_filas.toFixed(2).replace('.', ',') +' </div>')
+                // sumar todos los egresos del mes actual
+                total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
+                    parseFloat($('#total-costos-p-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
+                    parseFloat($('#total-costos-i-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')))
+                $('#total-egresos-mes-' + $(input).attr("mes")).html('<div> $ '+ total_egresos_mensual.toFixed(2).replace('.', ',') +' </div>')
+                // total de todos los egresos de todos los meses
+                $('.total-egresos div').each(function () {
+                    if ($(this).text() != '$ 00,00') {
+                        total_egresos_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+                    }
+                });
+                $('#total-todos-egresos').html('<div> $ '+ total_egresos_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+                // calcular el FEN del mes actual
+                fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) -
+                    parseFloat($('#total-egresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.'))
+                $('#total-fen-mes-' + $(input).attr("mes")).html('<div> $ '+ fen_mensual.toFixed(2).replace('.', ',') +' </div>')
+                if(fen_mensual < 0){
+                    $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#D30000');
+                }else{
+                    $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#232323');
                 }
-                $('#total-fen-acum-mes-' + $(input).attr("mes")).text('$' + fen_acum_mensual.toFixed(2).replace('.', ','))
+                // calcular el FEN acumulado de todos los meses
+                $('.fen-acumulado').each(function () {
+                    if($(this).attr('mes') == '1'){
+                        fen_acum_mensual = (parseFloat($('#total-ingresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')) -
+                            parseFloat($('#total-egresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
+                    }else{
+                        fen_acum_mensual = (parseFloat($('#total-fen-acum-mes-' + (($(this).attr('mes')) - 1)+ ' div').text().substring(2).replace(',', '.')) +
+                            parseFloat($('#total-fen-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
+                    }
+                    $(this).html('<div> $ '+ fen_acum_mensual.toFixed(2).replace('.', ',') +' </div>')
+                    if(fen_acum_mensual < 0){
+                        $(this).css('color', '#D30000');
+                    }else{
+                        $(this).css('color', '#232323');
+                    }
+                    // fen acumulado 
+                    total_fen_acum_todos_meses += fen_acum_mensual
+                });
+                // actualizar el fen acumulado total de todos los meses
+                $('#total-todos-fen-acum').html('<div> $ '+ total_fen_acum_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+                if(total_fen_acum_todos_meses < 0){
+                    $('#total-todos-fen-acum').css('color', '#D30000');
+                }else{
+                    $('#total-todos-fen-acum').css('color', '#232323');
+                }
+                // total de los fen de todos los meses
+                $('.fen div').each(function () {
+                    if ($(this).text() != '$ 00,00') {
+                        total_fen_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+                    }
+                });
+                $('#total-todos-fen').html('<div> $ '+ total_fen_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+                if(total_fen_todos_meses < 0){
+                    $('#total-todos-fen').css('color', '#D30000');
+                }else{
+                    $('#total-todos-fen').css('color', '#232323');
+                }
                 // eliminar spinner
                 $("#mostrar-spinner").empty()
             } else {
@@ -171,9 +202,53 @@ function guardar_valor(input) {
         .always(function (data) {});
 }
 
+$("#btnViabilidadMensual").click(function () {
+ // mostrar spinner
+ $("#mostrar-spinner").load('/spinner/');
+ // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+ var csrftoken = getCookie("csrftoken");
+ // se definen los parámetros de la petición ajax
+
+
+
+
+
+
+
+ var params = {
+     csrfmiddlewaretoken: csrftoken
+ };
+ $.ajax({
+         type: "POST",
+         url: "/calcular-viabilidad/",
+         data: params,
+         dataType: "json",
+     })
+     .done(function (result) {
+         if (result) {
+             
+
+
+
+             // eliminar spinner
+             $("#mostrar-spinner").empty()
+         } else {
+             alert('error') 
+             // eliminar spinner
+             $("#mostrar-spinner").empty() 
+         }
+     })
+     .fail(function (jqXHR, textStatus, errorThrown) {
+        alert('error') 
+         // eliminar spinner
+         $("#mostrar-spinner").empty()
+     })
+     .always(function (data) {});
+});
+
 $(".btnAggActividad").click(function () {
     var superior_id = $(this).parent().parent().parent();
-    var seccion = superior_id.attr("id");
+    var seccion = superior_id.attr("id"); 
     var fila = '<tr id="fila-' + id_fila + '"> \n\
                 <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
                 <td> \n\
@@ -212,9 +287,9 @@ $(".btnAggActividad").click(function () {
                 <td> \n\
                   <input disabled class="text-center ' + seccion + '-mes-12 ' + seccion + '-fila-' + id_fila + '" mes="12" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
-                <td class="text-center total-' + seccion + '-fila" id="total-' + seccion + '-fila-' + id_fila + '">$00,00</td> \n\
+                <td class="text-center total-' + seccion + '-fila" id="total-' + seccion + '-fila-' + id_fila + '">$ 00,00</td> \n\
             </tr>';
-    id_fila = id_fila + 1;
+    id_fila = id_fila - 1;
     $("#" + superior_id.attr("id")).after(fila);
 });
 
