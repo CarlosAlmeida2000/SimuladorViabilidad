@@ -9,11 +9,11 @@
                 <a class="nav-link text-white dropdown-toggle p-0 d-flex align-items-center" data-bs-toggle="dropdown"
                     href="#" role="button" aria-expanded="false">
                     <i class="fa-solid fa-circle-user h1 m-0"></i>
-                    <span class="ms-3">Usuario</span>
+                    <span class="ms-3">{{ request.session.usuario.nombres }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end mt-2">
                     <li><a class="dropdown-item" href="#">Configuraciones</a></li>
-                    <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
                 </ul>
             </li>
         </ul>

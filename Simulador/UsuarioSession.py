@@ -4,11 +4,15 @@ class UsuarioSession:
         self.session = request.session
         usuario = self.session.get("usuario")
         if not usuario:
-            usuario = self.session["usuario"] = None
+            usuario = self.session["usuario"] = {}
         self.usuario = usuario
 
     def autenticate(self, usuario):
-        self.usuario = usuario
+        self.usuario = {
+            "id": usuario.id,
+            "nombres": usuario.nombres,
+            "habilitado": usuario.habilitado,
+        }
         self.save()
 
     def save(self):
@@ -16,5 +20,7 @@ class UsuarioSession:
         self.session.modified = True
 
     def delete_session(self):
-        self.session["usuario"] = None
+        sesion_user = self.usuario["nombres"]
+        self.session["usuario"] = {}
         self.session.modified = True
+        self.session.flush()
