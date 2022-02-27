@@ -151,3 +151,28 @@ th>div {
   -webkit-line-clamp: 5;
   overflow: hidden;
 }
+
+.system-color {
+  border: #8a8a8a 1px solid;
+  border-radius: 0.2rem;
+}
+
+.system-color .color-neutro,
+.system-color .color-accept,
+.system-color .color-error {
+  width: 20px;
+  height: 10px;
+  margin-right: 5px;
+}
+
+.system-color .color-neutro {
+  background-color: rgb(61, 61, 61);
+}
+
+.system-color .color-accept {
+  background-color: var(--cl-excel);
+}
+
+.system-color .color-error {
+  background-color: var(--cl-red);
+}
