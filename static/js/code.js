@@ -1,5 +1,9 @@
 var id_fila = -1;
 
+if ($('#total-todos-fen').text() != '$ 00,00') {
+    actualizar_totales();
+}
+
 // Función para crear una llave de seguridad "crsftoken" y poder realizar una petición ajax
 function getCookie(name) {
     var cookieValue = null;
@@ -95,95 +99,7 @@ function guardar_valor(input) {
                 $(input).attr("data-id", result.id_valor);
                 $(input).css('border-color', '#00710B');
                 $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
-                var total_mes = 0.00
-                var total_fila = 0.00
-                var total_todas_filas = 0.00
-                var total_egresos_mensual = 0.00
-                var total_egresos_todos_meses = 0.00
-                var fen_mensual = 0.00
-                var total_fen_todos_meses = 0.00
-                var total_fen_acum_todos_meses = 0.00
-                var fen_acum_mensual = 0.00
-                var fen_acum_anterior = 0.00
-                // calcular el total del mes
-                $('.' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).each(function () {
-                    if ($(this).val() != '') {
-                        total_mes += parseFloat($(this).val().replace(',', '.'))
-                    }
-                });
-                $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
-                // calcular el total de la fila
-                $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).each(function () {
-                    if ($(this).val() != '') {
-                        total_fila += parseFloat($(this).val().replace(',', '.'))
-                    }
-                });
-                $('#total-' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).html("<div>$ " + total_fila.toFixed(2).replace('.', ',') + "</div>")
-                // calcular el total de todas las filas
-                $('.total-' + $(input).attr("tipo_cuenta") + '-fila').each(function () {
-                    if ($(this).text() != '$ 00,00') {
-                        total_todas_filas += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                    }
-                });
-                $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ '+ total_todas_filas.toFixed(2).replace('.', ',') +' </div>')
-                // sumar todos los egresos del mes actual
-                total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
-                    parseFloat($('#total-costos-p-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
-                    parseFloat($('#total-costos-i-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')))
-                $('#total-egresos-mes-' + $(input).attr("mes")).html('<div> $ '+ total_egresos_mensual.toFixed(2).replace('.', ',') +' </div>')
-                // total de todos los egresos de todos los meses
-                $('.total-egresos div').each(function () {
-                    if ($(this).text() != '$ 00,00') {
-                        total_egresos_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                    }
-                });
-                $('#total-todos-egresos').html('<div> $ '+ total_egresos_todos_meses.toFixed(2).replace('.', ',') +' </div>')
-                // calcular el FEN del mes actual
-                fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) -
-                    parseFloat($('#total-egresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.'))
-                $('#total-fen-mes-' + $(input).attr("mes")).html('<div> $ '+ fen_mensual.toFixed(2).replace('.', ',') +' </div>')
-                if(fen_mensual < 0){
-                    $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#D30000');
-                }else{
-                    $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#232323');
-                }
-                // calcular el FEN acumulado de todos los meses
-                $('.fen-acumulado').each(function () {
-                    if($(this).attr('mes') == '1'){
-                        fen_acum_mensual = (parseFloat($('#total-ingresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')) -
-                            parseFloat($('#total-egresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
-                    }else{
-                        fen_acum_mensual = (parseFloat($('#total-fen-acum-mes-' + (($(this).attr('mes')) - 1)+ ' div').text().substring(2).replace(',', '.')) +
-                            parseFloat($('#total-fen-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
-                    }
-                    $(this).html('<div> $ '+ fen_acum_mensual.toFixed(2).replace('.', ',') +' </div>')
-                    if(fen_acum_mensual < 0){
-                        $(this).css('color', '#D30000');
-                    }else{
-                        $(this).css('color', '#232323');
-                    }
-                    // fen acumulado 
-                    total_fen_acum_todos_meses += fen_acum_mensual
-                });
-                // actualizar el fen acumulado total de todos los meses
-                $('#total-todos-fen-acum').html('<div> $ '+ total_fen_acum_todos_meses.toFixed(2).replace('.', ',') +' </div>')
-                if(total_fen_acum_todos_meses < 0){
-                    $('#total-todos-fen-acum').css('color', '#D30000');
-                }else{
-                    $('#total-todos-fen-acum').css('color', '#232323');
-                }
-                // total de los fen de todos los meses
-                $('.fen div').each(function () {
-                    if ($(this).text() != '$ 00,00') {
-                        total_fen_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                    }
-                });
-                $('#total-todos-fen').html('<div> $ '+ total_fen_todos_meses.toFixed(2).replace('.', ',') +' </div>')
-                if(total_fen_todos_meses < 0){
-                    $('#total-todos-fen').css('color', '#D30000');
-                }else{
-                    $('#total-todos-fen').css('color', '#232323');
-                }
+                actualizar_totales();
                 // eliminar spinner
                 $("#mostrar-spinner").empty()
             } else {
@@ -202,17 +118,110 @@ function guardar_valor(input) {
         .always(function (data) {});
 }
 
+function actualizar_totales(){
+    $('.sumador').each(function () {
+        var total_mes = 0.00
+        var total_fila = 0.00
+        var total_todas_filas = 0.00
+        var total_egresos_mensual = 0.00
+        var total_egresos_todos_meses = 0.00
+        var fen_mensual = 0.00
+        var total_fen_todos_meses = 0.00
+        var total_fen_acum_todos_meses = 0.00
+        var fen_acum_mensual = 0.00
+        var fen_acum_anterior = 0.00
+
+        var input = $(this)
+
+        // calcular el total del mes
+        $('.' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).each(function () {
+            if ($(this).val() != '') {
+                total_mes += parseFloat($(this).val().replace(',', '.'))
+            }
+        });
+        $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
+        // calcular el total de la fila
+        $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).each(function () {
+            if ($(this).val() != '') {
+                total_fila += parseFloat($(this).val().replace(',', '.'))
+            }
+        });
+        $('#total-' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).html("<div>$ " + total_fila.toFixed(2).replace('.', ',') + "</div>")
+        // calcular el total de todas las filas
+        $('.total-' + $(input).attr("tipo_cuenta") + '-fila').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_todas_filas += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+            }
+        });
+        $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ '+ total_todas_filas.toFixed(2).replace('.', ',') +' </div>')
+        // sumar todos los egresos del mes actual
+        total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
+            parseFloat($('#total-costos-p-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) +
+            parseFloat($('#total-costos-i-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')))
+        $('#total-egresos-mes-' + $(input).attr("mes")).html('<div> $ '+ total_egresos_mensual.toFixed(2).replace('.', ',') +' </div>')
+        // total de todos los egresos de todos los meses
+        $('.total-egresos div').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_egresos_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+            }
+        });
+        $('#total-todos-egresos').html('<div> $ '+ total_egresos_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+        // calcular el FEN del mes actual
+        fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.')) -
+            parseFloat($('#total-egresos-mes-' + $(input).attr("mes")+ ' div').text().substring(2).replace(',', '.'))
+        $('#total-fen-mes-' + $(input).attr("mes")).html('<div> $ '+ fen_mensual.toFixed(2).replace('.', ',') +' </div>')
+        if(fen_mensual < 0){
+            $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#D30000');
+        }else{
+            $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#232323');
+        }
+        // calcular el FEN acumulado de todos los meses
+        $('.fen-acumulado').each(function () {
+            if($(this).attr('mes') == '1'){
+                fen_acum_mensual = (parseFloat($('#total-ingresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')) -
+                    parseFloat($('#total-egresos-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
+            }else{
+                fen_acum_mensual = (parseFloat($('#total-fen-acum-mes-' + (($(this).attr('mes')) - 1)+ ' div').text().substring(2).replace(',', '.')) +
+                    parseFloat($('#total-fen-mes-' + (($(this).attr('mes')))+ ' div').text().substring(2).replace(',', '.')))
+            }
+            $(this).html('<div> $ '+ fen_acum_mensual.toFixed(2).replace('.', ',') +' </div>')
+            if(fen_acum_mensual < 0){
+                $(this).css('color', '#D30000');
+            }else{
+                $(this).css('color', '#232323');
+            }
+            // fen acumulado 
+            total_fen_acum_todos_meses += fen_acum_mensual
+        });
+        // actualizar el fen acumulado total de todos los meses
+        $('#total-todos-fen-acum').html('<div> $ '+ total_fen_acum_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+        if(total_fen_acum_todos_meses < 0){
+            $('#total-todos-fen-acum').css('color', '#D30000');
+        }else{
+            $('#total-todos-fen-acum').css('color', '#232323');
+        }
+        // total de los fen de todos los meses
+        $('.fen div').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_fen_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+            }
+        });
+        $('#total-todos-fen').html('<div> $ '+ total_fen_todos_meses.toFixed(2).replace('.', ',') +' </div>')
+        if(total_fen_todos_meses < 0){
+            $('#total-todos-fen').css('color', '#D30000');
+        }else{
+            $('#total-todos-fen').css('color', '#232323');
+        }
+    });
+    return true;
+}
+
 $("#btnViabilidadMensual").click(function () {
  // mostrar spinner
  $("#mostrar-spinner").load('/spinner/');
  // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
  var csrftoken = getCookie("csrftoken");
  // se definen los parámetros de la petición ajax
-
-
-
-
-
 
 
  var params = {
@@ -227,8 +236,6 @@ $("#btnViabilidadMensual").click(function () {
      .done(function (result) {
          if (result) {
              
-
-
 
              // eliminar spinner
              $("#mostrar-spinner").empty()
