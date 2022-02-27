@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/colors.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/toast.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}" type="text/css">
-    <title>Login - Sistema de simulación</title>
+    <title>Registrar - Sistema de simulación</title>
 </head>
 
 <body>
@@ -28,19 +28,25 @@
                         ¿Quieres saber cómo van tus inversiones o conocer la viabilidad de tu futuro emprendimiento?
                     </h2>
                     <p>
-                        Accede a nuestro sistema y te ayudará a controlar tus proyectos realizando los cálculos
+                        Registrate a nuestro sistema y te ayudará a controlar tus proyectos realizando los cálculos
                         evaluación económica
                     </p>
                 </div>
                 <div class="p-4 bg-white">
-                    <form action="{% url 'sign-out' %}" method="post" class="row g-3 needs-validation" novalidate>
+                    <form action="{% url 'regitrame' %}" method="post" class="row g-3 needs-validation" novalidate>
                         {% csrf_token %}
                         <div>
-                            <label for="validarEmail" class="form-label">Correo</label>
-                            <input type="email" class="form-control" name="email" id="validarEmail"
-                                value="{{ user_old }}" required>
+                            <label for="ValidarNombres" class="form-label">Nombres</label>
+                            <input type="name" class="form-control" name="name" id="ValidarNombres" required>
                             <div class="invalid-feedback">
-                                Ingrese su usuario
+                                Ingrese sus nombres
+                            </div>
+                        </div>
+                        <div>
+                            <label for="validarEmail" class="form-label">Correo</label>
+                            <input type="email" class="form-control" name="email" id="validarEmail" required>
+                            <div class="invalid-feedback">
+                                Ingrese su correo
                             </div>
                         </div>
                         <div>
@@ -49,22 +55,22 @@
                             <div class="invalid-feedback">
                                 Ingrese la contraseña
                             </div>
-                            {% if messages %}
-                            {% for message in messages %}
-                            {% if message.tags == "password" %}
-                            <div class="text-danger">
-                                {{ message }}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-
                         </div>
-                        <button class="btn btn-green">Iniciar sesión</button>
+                        <div>
+                            <label for="validarConfPass" class="form-label">Repita su contraseña</label>
+                            <input type="password" class="form-control" name="conf_pass" id="validarConfPass" required>
+                            <div class="invalid-feedback">
+                                Ingrese nuevamente la contraseña
+                            </div>
+                            <div class="conf-pass">
+                                Las contraseñas no coinciden
+                            </div>
+                        </div>
+                        <button class="btn btn-green">Crear cuenta</button>
                         <div>
                             <p>
-                                <span>Si aun no tienes una cuenta en nuestro sistema,</span>
-                                <a href="{% url 'registre' %}">cliquea aquí y podras registrarte</a>
+                                <span>Si ya tienes una cuenta en nuestro sistema,</span>
+                                <a href="{% url 'login' %}">cliquea aquí y podras registrarte</a>
                             </p>
                         </div>
                     </form>
@@ -82,10 +88,19 @@
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
                     form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
+                        if ($("#validarConfPass").val() != $("#validarPass").val()) {
                             event.preventDefault()
                             event.stopPropagation()
+                            $("#validarConfPass").addClass("invalid");
+                            $(".conf-pass").show()
+                        } else {
+                            $(".conf-pass").hide()
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
                         }
+
 
                         form.classList.add('was-validated')
                     }, false)
