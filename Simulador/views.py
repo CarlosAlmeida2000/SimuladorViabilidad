@@ -23,17 +23,15 @@ def vwSpinner(request):
     return render(request, "components/spinner.html")
 
 
-def vwFlujo(request):
-
-
-
+def vwFlujo(request, project_id):
+    # Falta validar y el la URL debes poner el proyecto
     # obtener el id del proyecto desde el objeto sesión
-    proyecto = Proyectos.objects.get(pk = 1)
-    proyecto.inversion = str(proyecto.inversion).replace('.', ',')
-    proyecto.tasa_interes = str(proyecto.tasa_interes).replace('.', ',')
-    proyecto.tasa_retorno = str(proyecto.tasa_retorno).replace('.', ',')
+    proyecto = Proyectos.objects.get(pk=project_id)
+    proyecto.inversion = str(proyecto.inversion).replace(".", ",")
+    proyecto.tasa_interes = str(proyecto.tasa_interes).replace(".", ",")
+    proyecto.tasa_retorno = str(proyecto.tasa_retorno).replace(".", ",")
     flujo_efectivo = (
-        FlujoEfectivos.objects.filter(proyecto__id=1)
+        FlujoEfectivos.objects.filter(proyecto__id=project_id)
         .select_related("proyecto")
         .select_related("actividad")
     )
@@ -49,12 +47,13 @@ def vwFlujo(request):
             "costos_a": costos_a,
             "costos_p": costos_p,
             "costos_i": costos_i,
-            'proyecto': proyecto
+            "proyecto": proyecto,
         },
     )
 
 
 def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
+    # Falta validar
     try:
         # obtener las actividades segun si tipo de cuenta, cada objeto queryset tiene todos sus valores $ de los 12 meses
         actividades = (
@@ -153,6 +152,7 @@ def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
 
 
 def vwGuardarActividad(request):
+    # Falta validar
     try:
         id_actividad = int(request.POST["id_actividad"])
         if id_actividad > 0:
@@ -170,6 +170,7 @@ def vwGuardarActividad(request):
 
 
 def vwGuardarValor(request):
+    # Falta validar
     try:
         id_valor = int(request.POST["id_valor"])
         if id_valor > 0:
@@ -178,9 +179,8 @@ def vwGuardarValor(request):
             # es negativo, se registra el nuevo valor
             flujo_efectivo = FlujoEfectivos()
 
-
             # obtener el id desde el objeto sesión
-            proyecto = Proyectos.objects.get(id=1)
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             actividad = ActFinancieras.objects.get(id=int(request.POST["id_actividad"]))
             flujo_efectivo.proyecto = proyecto
             flujo_efectivo.actividad = actividad
@@ -306,6 +306,9 @@ def eliminar_proyecto(request):
         return redirect("login")
     try:
         proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
+        print(f"Proyecto id = {proyecto.id}")
+        if proyecto.flujo_efectivos.all().count() != 0:
+            proyecto.flujo_efectivos.all().delete()
         proyecto.delete()
         messages.success(request, "Su proyecto ha sido eliminado")
         return JsonResponse({"value": "1"})
@@ -315,38 +318,42 @@ def eliminar_proyecto(request):
 
 
 def editar_proyecto(request):
-    #if not "usuario" in request.session:
+    # if not "usuario" in request.session:
     #    return redirect("login")
     try:
         # modificar un proyecto desde el template proyecto
-        if 'project_id' in request.POST and 'pr_nombre' in request.POST and 'pr_descripcion' in request.POST:
-            proyecto = Proyectos.objects.get(pk = request.POST["project_id"])
+        if (
+            "project_id" in request.POST
+            and "pr_nombre" in request.POST
+            and "pr_descripcion" in request.POST
+        ):
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             proyecto.nombre = request.POST["pr_nombre"]
             proyecto.descripcion = request.POST["pr_descripcion"]
         # modificar un proyecto desde el template flujo efectivo
-        elif 'inversion' in request.POST:
-            
+        elif "inversion" in request.POST:
+
             # aqui necesito el id del objeto session
-            proyecto = Proyectos.objects.get(pk = 1)
-            proyecto.inversion = request.POST['inversion']
-        elif 'tasa_interes' in request.POST:
-           
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
+            proyecto.inversion = request.POST["inversion"]
+        elif "tasa_interes" in request.POST:
+
             # aqui necesito el id del objeto session
-            proyecto = Proyectos.objects.get(pk = 1)
-            proyecto.tasa_interes = request.POST['tasa_interes']
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
+            proyecto.tasa_interes = request.POST["tasa_interes"]
         else:
 
             # aqui necesito el id del objeto session
-            proyecto = Proyectos.objects.get(pk = 1)
-            proyecto.tasa_retorno = request.POST['tasa_retorno']
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
+            proyecto.tasa_retorno = request.POST["tasa_retorno"]
         proyecto.save()
-        if 'desde_flujo_efectivo' in request.POST:
-            return JsonResponse({'editado': '1'})
+        if "desde_flujo_efectivo" in request.POST:
+            return JsonResponse({"editado": "1"})
         messages.success(request, "Su proyecto ha sido modificado")
         return redirect("/")
     except Exception as e:
-        if 'desde_flujo_efectivo' in request.POST:
-            return JsonResponse({'editado': '0'})
+        if "desde_flujo_efectivo" in request.POST:
+            return JsonResponse({"editado": "0"})
         messages.error(request, "El proyecto no se pudo modificar")
         return redirect("/")
 
@@ -383,9 +390,9 @@ def registre(request):
         return redirect("index")
     try:
         Usuarios.objects.create(
-            nombres = request.POST["name"],
-            correo = request.POST["email"],
-            clave = request.POST["pass"],
+            nombres=request.POST["name"],
+            correo=request.POST["email"],
+            clave=request.POST["pass"],
         )
         messages.success(
             request,

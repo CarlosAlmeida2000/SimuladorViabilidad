@@ -13,14 +13,16 @@
                 <div class="me-3">
                     <label class="d-block" for="inversión">Inversión</label>
                     <input class="d-block" id="inversion" name="inversion" type="text"
-                        onchange="return editar_inversion(this)" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" value="{{proyecto.inversion}}">
+                        onchange="return editar_inversion(this)" onkeypress="return soloNumeros(event)"
+                        onkeyup="return convertDecimal(this)" value="{{proyecto.inversion}}">
                 </div>
                 <div class="me-3">
                     <label class="d-block" for="tasa-interes">Tasa de interés</label>
-                    <input class="d-block" id="tasa_interes" name="tasa_interes" type="text" 
-                        onchange="return editar_tasa_interes(this)" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" value="{{proyecto.tasa_interes}}">
+                    <input class="d-block" id="tasa_interes" name="tasa_interes" type="text"
+                        onchange="return editar_tasa_interes(this)" onkeypress="return soloNumeros(event)"
+                        onkeyup="return convertDecimal(this)" value="{{proyecto.tasa_interes}}">
                 </div>
-                <a href="#" class="btn btn-blackm me-3">Mis proyectos</a>
+                <a href="{% url 'index' %}" class="btn btn-blackm me-3">Mis proyectos</a>
             </div>
             <div class="system-color p-2">
                 <div class="d-flex align-items-center">

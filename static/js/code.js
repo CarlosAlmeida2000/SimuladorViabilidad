@@ -29,13 +29,15 @@ function guardar_actividad(input) {
         id_actividad: $(input).attr("data-id"),
         id_tipo_cuenta: getIdTipoCuenta($(input).attr("tipo_cuenta")),
         nom_actividad: $(input).val(),
+        // Aquí es donde consulto el proyecto id, este id se obtiene de la tabla mensual
+        project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-        type: "POST",
-        url: "/guardar-actividad/",
-        data: params,
-        dataType: "json",
-    })
+            type: "POST",
+            url: "/guardar-actividad/",
+            data: params,
+            dataType: "json",
+        })
         .done(function (result) {
             if (result.id_actividad > 0) {
                 $(input).attr("data-id", result.id_actividad);
@@ -58,7 +60,7 @@ function guardar_actividad(input) {
             // eliminar spinner
             $("#mostrar-spinner").empty()
         })
-        .always(function (data) { });
+        .always(function (data) {});
 }
 
 function getIdTipoCuenta(tipo_cuenta) {
@@ -85,13 +87,15 @@ function guardar_valor(input) {
         id_actividad: $("#" + $(input).parent().parent().attr("id") + " #actividad").attr("data-id"),
         valor: parseFloat($(input).val()),
         mes: $(input).attr("mes"),
+        // Aquí es donde consulto el proyecto id, este id se obtiene de la tabla mensual
+        project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-        type: "POST",
-        url: "/guardar-valor/",
-        data: params,
-        dataType: "json",
-    })
+            type: "POST",
+            url: "/guardar-valor/",
+            data: params,
+            dataType: "json",
+        })
         .done(function (result) {
             if (result.id_valor > 0) {
                 $(input).attr("data-id", result.id_valor);
@@ -113,7 +117,7 @@ function guardar_valor(input) {
             // eliminar spinner
             $("#mostrar-spinner").empty()
         })
-        .always(function (data) { });
+        .always(function (data) {});
 }
 
 function actualizar_totales() {
@@ -239,7 +243,7 @@ function editar_inversion(input) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 function editar_tasa_interes(input) {
@@ -266,7 +270,7 @@ function editar_tasa_interes(input) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 
@@ -294,11 +298,11 @@ function editar_tasa_retorno(input) {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 $("#btnViabilidadMensual").click(function () {
-    if($('#inversion').val() != '' & $('#tasa_interes').val() != '') {
+    if ($('#inversion').val() != '' & $('#tasa_interes').val() != '') {
         // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
         var csrftoken = getCookie("csrftoken");
         // se obtienen todos los fen
@@ -339,11 +343,11 @@ $("#btnViabilidadMensual").click(function () {
                 $('#tir-mensual').text(result.tir + ' %')
                 $('#bc-mensual').text('$ ' + result.razon_bc)
                 $('#van-mensual').text('$ ' + result.van)
-                $('#pri-mensual').text(result.anios + ' años, '+ result.meses +' meses y '+ result.dias +' días')
-                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0){
+                $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
+                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
                     $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
                     $('#text-respuesta-mensual').css('color', '#D30000');
-                }else{
+                } else {
                     $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
                     $('#text-respuesta-mensual').css('color', '#0c9449');
                 }
@@ -352,7 +356,7 @@ $("#btnViabilidadMensual").click(function () {
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             alert('error')
-        }).always(function (data) { });
+        }).always(function (data) {});
     } else {
         alert('Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés.')
     }

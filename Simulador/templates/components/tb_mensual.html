@@ -1,6 +1,6 @@
 <div>
     <div class="content-table-mensual table-responsive">
-        <table class="table table-borderless" id="table-mensual">
+        <table class="table table-borderless" id="table-mensual" data-project-id="{{ proyecto.id }}">
             <thead>
                 <tr>
                     <th class="static-columns">Inicio</th>
@@ -36,8 +36,7 @@
                 <tr id="fila-{{ingreso.id}}">
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="ingresos"
                             data-id="{{ingreso.id}}" fila="{{ingreso.id}}"
-                            onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{ingreso.nombres}}" /></th>
+                            onchange="javascript:guardar_actividad(this);" size="37" value="{{ingreso.nombres}}" /></th>
                     <td>
                         <input class="text-center sumador ingresos-mes-1 ingresos-fila-{{ingreso.id}}" mes="1"
                             tipo_cuenta="ingresos" data-id="{{ingreso.id_valor_mes1}}" fila="{{ingreso.id}}"
@@ -183,9 +182,8 @@
                 {% for costo in costos_a %}
                 <tr id="fila-{{costo.id}}">
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-a"
-                            data-id="{{costo.id}}" fila="{{costo.id}}"
-                            onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{costo.nombres}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
+                            size="37" value="{{costo.nombres}}" /></th>
                     <td>
                         <input class="text-center sumador costos-a-mes-1 costos-a-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-a" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
@@ -324,8 +322,8 @@
                     <tr id="fila-{{costo.id}}">
                         <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-p"
                                 data-id="{{costo.id}}" fila="{{costo.id}}"
-                                onchange="javascript:guardar_actividad(this);" size="37"
-                                value="{{costo.nombres}}" /></th>
+                                onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombres}}" />
+                        </th>
                         <td>
                             <input class="text-center sumador costos-p-mes-1 costos-p-fila-{{costo.id}}" mes="1"
                                 tipo_cuenta="costos-p" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
@@ -463,9 +461,8 @@
                 {% for costo in costos_i %}
                 <tr id="fila-{{costo.id}}">
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-i"
-                            data-id="{{costo.id}}" fila="{{costo.id}}"
-                            onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{costo.nombres}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
+                            size="37" value="{{costo.nombres}}" /></th>
                     <td>
                         <input class="text-center sumador costos-i-mes-1 costos-i-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-i" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
