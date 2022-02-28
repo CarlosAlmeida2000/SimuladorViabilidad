@@ -3,6 +3,7 @@
         <table class="table table-borderless" id="table-mensual" data-project-id="{{ proyecto.id }}">
             <thead>
                 <tr>
+                    <th></th>
                     <th class="static-columns">Inicio</th>
                     <th class="text-center">Enero</th>
                     <th class="text-center">Febrero</th>
@@ -22,6 +23,7 @@
             <tbody>
                 <!-- #region Valores de ingresos -->
                 <tr id="ingresos">
+                    <th></th>
                     <th class="static-columns">
                         <div class="d-flex align-intems-center ">
                             <p class="my-auto value-contables">Ingresos</p>
@@ -34,6 +36,11 @@
                 <!-- Aquí debes poner los tr que vas añadiendo con jquey -->
                 {% for ingreso in ingresos %}
                 <tr id="fila-{{ingreso.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="ingresos"
                             data-id="{{ingreso.id}}" fila="{{ingreso.id}}"
                             onchange="javascript:guardar_actividad(this);" size="37" value="{{ingreso.nombres}}" /></th>
@@ -115,6 +122,7 @@
                 {% endfor %}
 
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">Total de ingresos</th>
                     <td class="text-center" id="total-ingresos-mes-1">
                         <div>$ 00,00</div>
@@ -160,6 +168,7 @@
 
                 <!-- #region Valores de Egresos -->
                 <tr>
+                    <th></th>
                     <th class="static-columns">
                         <div class="d-flex align-intems-center">
                             <p class="my-auto value-contables">Egresos</p>
@@ -169,6 +178,7 @@
 
                 <!-- #region Valores de costos administrativos -->
                 <tr id="costos-a">
+                    <th></th>
                     <th class="static-columns">
                         <div class="d-flex align-intems-center">
                             <p class="my-auto campos-contables">Costos de administración</p>
@@ -181,6 +191,11 @@
 
                 {% for costo in costos_a %}
                 <tr id="fila-{{costo.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-a"
                             data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
                             size="37" value="{{costo.nombres}}" /></th>
@@ -262,6 +277,7 @@
                 {% endfor %}
 
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">Total de costos de administración</th>
                     <td class="text-center" id="total-costos-a-mes-1">
                         <div>$ 00,00</div>
@@ -307,7 +323,9 @@
 
                 <!-- #region Valores de costos de producción -->
                 <div id="values-costos-p">
+                    <th></th>
                     <tr id="costos-p">
+                        <th></th>
                         <th class="static-columns">
                             <div class="d-flex align-intems-center">
                                 <p class="my-auto campos-contables">Costos de producción</p>
@@ -320,6 +338,11 @@
 
                     {% for costo in costos_p %}
                     <tr id="fila-{{costo.id}}">
+                        <th>
+                            <button class="btn btn-sm btn-danger delete-activity" type="button">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </th>
                         <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-p"
                                 data-id="{{costo.id}}" fila="{{costo.id}}"
                                 onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombres}}" />
@@ -402,6 +425,7 @@
                     {% endfor %}
 
                     <tr class="table-active">
+                        <th></th>
                         <th class="static-columns">Total de costos de producción</th>
                         <td class="text-center" id="total-costos-p-mes-1">
                             <div>$ 00,00</div>
@@ -448,6 +472,7 @@
 
                 <!-- #region Valores de costos de inversión -->
                 <tr id="costos-i">
+                    <th></th>
                     <th class="static-columns">
                         <div class="d-flex align-intems-center">
                             <p class="my-auto campos-contables">Costos de inversión</p>
@@ -460,6 +485,11 @@
 
                 {% for costo in costos_i %}
                 <tr id="fila-{{costo.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-i"
                             data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
                             size="37" value="{{costo.nombres}}" /></th>
@@ -541,6 +571,7 @@
                 {% endfor %}
 
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">Total de costos de inversión</th>
                     <td class="text-center" id="total-costos-i-mes-1">
                         <div>$ 00,00</div>
@@ -586,6 +617,7 @@
 
                 <!-- #region Totales de egresos -->
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">Total de egresos</th>
                     <td class="text-center" id="total-egresos-mes-1">
                         <div>$ 00,00</div>
@@ -631,6 +663,7 @@
 
                 <!-- #region FEN (Ingresos - Egresos) -->
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">FEN</th>
                     <td class="text-center fen" id="total-fen-mes-1">
                         <div>$ 00,00</div>
@@ -676,6 +709,7 @@
 
                 <!-- #region FEN acumulado -->
                 <tr class="table-active">
+                    <th></th>
                     <th class="static-columns">FEN Acumulado</th>
                     <td class="text-center fen-acumulado" mes="1" id="total-fen-acum-mes-1">
                         <div>$ 00,00</div>
