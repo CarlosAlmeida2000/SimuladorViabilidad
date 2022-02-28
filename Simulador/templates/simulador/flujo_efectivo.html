@@ -3,6 +3,12 @@
 
 {% block title %}Flujo de efectivo - {% endblock title %}
 
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/spinner.css' %}" type="text/css">
+{% endblock css %}
+
+
 {% block content %}
 <div class="mt-3">
     {% csrf_token %}
@@ -64,7 +70,8 @@
         </div>
     </div>
 </div>
-<div id="mostrar-spinner">
+<div id="spinner">
+    {% include 'components/spinner.html' %}
 </div>
 {% endblock content %}
 
