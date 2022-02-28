@@ -2,11 +2,11 @@
     <div class="parameters d-flex mt-3">
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
-            <input type="text">
+            <input type="text" id="tasa_retorno" onchange="return editar_tasa_retorno(this)" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" value="{{proyecto.tasa_retorno}}">
         </div>
         <div class="ms-3">
             <label for="periodos">Periodos (años)</label>
-            <input type="text">
+            <input type="number" min="1" max="10" value="1" onkeypress="return soloEnteros(this)">
         </div>
     </div>
     <div>

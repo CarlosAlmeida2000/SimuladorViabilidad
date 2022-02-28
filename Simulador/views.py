@@ -24,7 +24,14 @@ def vwSpinner(request):
 
 
 def vwFlujo(request):
+
+
+
     # obtener el id del proyecto desde el objeto sesión
+    proyecto = Proyectos.objects.get(pk = 1)
+    proyecto.inversion = str(proyecto.inversion).replace('.', ',')
+    proyecto.tasa_interes = str(proyecto.tasa_interes).replace('.', ',')
+    proyecto.tasa_retorno = str(proyecto.tasa_retorno).replace('.', ',')
     flujo_efectivo = (
         FlujoEfectivos.objects.filter(proyecto__id=1)
         .select_related("proyecto")
@@ -42,6 +49,7 @@ def vwFlujo(request):
             "costos_a": costos_a,
             "costos_p": costos_p,
             "costos_i": costos_i,
+            'proyecto': proyecto
         },
     )
 
@@ -169,12 +177,14 @@ def vwGuardarValor(request):
         else:
             # es negativo, se registra el nuevo valor
             flujo_efectivo = FlujoEfectivos()
+
+
             # obtener el id desde el objeto sesión
             proyecto = Proyectos.objects.get(id=1)
             actividad = ActFinancieras.objects.get(id=int(request.POST["id_actividad"]))
             flujo_efectivo.proyecto = proyecto
             flujo_efectivo.actividad = actividad
-        flujo_efectivo.valor = str(request.POST["valor"]).replace(",", ".")
+        flujo_efectivo.valor = request.POST["valor"]
         flujo_efectivo.mes = request.POST["mes"]
         flujo_efectivo.save()
         return JsonResponse({"id_valor": flujo_efectivo.id})
@@ -190,9 +200,9 @@ def vwCalcularViabilidad(request):
         flujos_neto = []
         flujos_neto2 = []
         flujo_acumulado = []
-        inversion = float(str(request.POST["inversion"]).replace(",", "."))
+        inversion = float(request.POST["inversion"])
         flujos_neto2.append((inversion * -1))
-        tasa_interes = float(str(request.POST["tasa_interes"]).replace(",", "."))
+        tasa_interes = float(request.POST["tasa_interes"])
         # se obtiene el json del flujo neto
         flujo_neto = json.loads(r"" + json.loads(json.dumps(request.POST["fen_neto"])))
         for i in range(len(flujo_neto["fen_neto"])):
@@ -305,16 +315,38 @@ def eliminar_proyecto(request):
 
 
 def editar_proyecto(request):
-    if not "usuario" in request.session:
-        return redirect("login")
+    #if not "usuario" in request.session:
+    #    return redirect("login")
     try:
-        proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
-        proyecto.nombre = request.POST["pr_nombre"]
-        proyecto.descripcion = request.POST["pr_descripcion"]
+        # modificar un proyecto desde el template proyecto
+        if 'project_id' in request.POST and 'pr_nombre' in request.POST and 'pr_descripcion' in request.POST:
+            proyecto = Proyectos.objects.get(pk = request.POST["project_id"])
+            proyecto.nombre = request.POST["pr_nombre"]
+            proyecto.descripcion = request.POST["pr_descripcion"]
+        # modificar un proyecto desde el template flujo efectivo
+        elif 'inversion' in request.POST:
+            
+            # aqui necesito el id del objeto session
+            proyecto = Proyectos.objects.get(pk = 1)
+            proyecto.inversion = request.POST['inversion']
+        elif 'tasa_interes' in request.POST:
+           
+            # aqui necesito el id del objeto session
+            proyecto = Proyectos.objects.get(pk = 1)
+            proyecto.tasa_interes = request.POST['tasa_interes']
+        else:
+
+            # aqui necesito el id del objeto session
+            proyecto = Proyectos.objects.get(pk = 1)
+            proyecto.tasa_retorno = request.POST['tasa_retorno']
         proyecto.save()
+        if 'desde_flujo_efectivo' in request.POST:
+            return JsonResponse({'editado': '1'})
         messages.success(request, "Su proyecto ha sido modificado")
         return redirect("/")
     except Exception as e:
+        if 'desde_flujo_efectivo' in request.POST:
+            return JsonResponse({'editado': '0'})
         messages.error(request, "El proyecto no se pudo modificar")
         return redirect("/")
 
@@ -351,9 +383,9 @@ def registre(request):
         return redirect("index")
     try:
         Usuarios.objects.create(
-            nombres=request.POST["name"],
-            correo=request.POST["email"],
-            clave=request.POST["pass"],
+            nombres = request.POST["name"],
+            correo = request.POST["email"],
+            clave = request.POST["pass"],
         )
         messages.success(
             request,

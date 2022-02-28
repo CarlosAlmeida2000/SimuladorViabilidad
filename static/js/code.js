@@ -83,7 +83,7 @@ function guardar_valor(input) {
         csrfmiddlewaretoken: csrftoken,
         id_valor: $(input).attr("data-id"),
         id_actividad: $("#" + $(input).parent().parent().attr("id") + " #actividad").attr("data-id"),
-        valor: $(input).val(),
+        valor: parseFloat($(input).val()),
         mes: $(input).attr("mes"),
     };
     $.ajax({
@@ -215,6 +215,88 @@ function actualizar_totales() {
     return true;
 }
 
+function editar_inversion(input) {
+    // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+    var csrftoken = getCookie("csrftoken");
+    var params = {
+        csrfmiddlewaretoken: csrftoken,
+        'inversion': parseFloat($(input).val().replace(',', '.')),
+        'desde_flujo_efectivo': true
+    };
+    $.ajax({
+        type: "POST",
+        url: "/editar-proyecto/",
+        data: params,
+        dataType: "json",
+    }).done(function (result) {
+        if (result.editado == '1') {
+            $(input).css('border-color', '#00710B');
+            $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+        } else {
+            $(input).css('border-color', '#D30000');
+            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        $(input).css('border-color', '#D30000');
+        $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+    }).always(function (data) { });
+}
+
+function editar_tasa_interes(input) {
+    // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+    var csrftoken = getCookie("csrftoken");
+    var params = {
+        csrfmiddlewaretoken: csrftoken,
+        'tasa_interes': parseFloat($(input).val().replace(',', '.')),
+        'desde_flujo_efectivo': true
+    };
+    $.ajax({
+        type: "POST",
+        url: "/editar-proyecto/",
+        data: params,
+        dataType: "json",
+    }).done(function (result) {
+        if (result.editado == '1') {
+            $(input).css('border-color', '#00710B');
+            $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+        } else {
+            $(input).css('border-color', '#D30000');
+            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        $(input).css('border-color', '#D30000');
+        $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+    }).always(function (data) { });
+}
+
+
+function editar_tasa_retorno(input) {
+    // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+    var csrftoken = getCookie("csrftoken");
+    var params = {
+        csrfmiddlewaretoken: csrftoken,
+        'tasa_retorno': parseFloat($(input).val().replace(',', '.')),
+        'desde_flujo_efectivo': true
+    };
+    $.ajax({
+        type: "POST",
+        url: "/editar-proyecto/",
+        data: params,
+        dataType: "json",
+    }).done(function (result) {
+        if (result.editado == '1') {
+            $(input).css('border-color', '#00710B');
+            $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+        } else {
+            $(input).css('border-color', '#D30000');
+            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        $(input).css('border-color', '#D30000');
+        $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
+    }).always(function (data) { });
+}
+
 $("#btnViabilidadMensual").click(function () {
     if($('#inversion').val() != '' & $('#tasa_interes').val() != '') {
         // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
@@ -242,8 +324,8 @@ $("#btnViabilidadMensual").click(function () {
         // se definen los parámetros de la petición ajax
         var params = {
             csrfmiddlewaretoken: csrftoken,
-            'inversion': $('#inversion').val(),
-            'tasa_interes': $('#tasa_interes').val(),
+            'inversion': parseFloat($('#inversion').val()),
+            'tasa_interes': parseFloat($('#tasa_interes').val()),
             'fen_neto': fen_neto,
             'fen_acum': fen_acum
         };
@@ -325,6 +407,15 @@ $(".btnAggActividad").click(function () {
 
 function soloNumeros(event, input) {
     var regex = new RegExp("^[0-9,. ]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+        event.preventDefault();
+        return false;
+    }
+}
+
+function soloEnteros(event, input) {
+    var regex = new RegExp("^[0-9 ]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
         event.preventDefault();
