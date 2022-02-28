@@ -30,27 +30,8 @@
     <script src="{% static 'js/jquery/jquery-3.4.1.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/toast.js' %}"></script>
+    <script src="{% static 'js/global.js' %}"></script>
 
-    {% if messages %}
-    <script>
-        let config_toast = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": false,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": true,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "2500",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-    </script>
     {% for message in messages %}
 
     {% if message.tags == "success" %}
@@ -66,7 +47,6 @@
     {% endif %}
 
     {% endfor %}
-    {% endif %}
 
     {% block js %} {% endblock js %}
 </body>

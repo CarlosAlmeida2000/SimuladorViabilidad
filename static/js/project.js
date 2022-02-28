@@ -1,18 +1,3 @@
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != "") {
-        var cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) == name + "=") {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 $(".delete-project").click(function () {
     project_id = $(this).attr("data-project-id");
     project_name = $(this).attr("data-project-name");
@@ -28,20 +13,27 @@ $(".delete-project").click(function () {
             url: "/eliminar-proyecto/",
             data: data,
             dataType: "json",
-            success: function (response) {
-                window.location.href = "/"
+        }).done(function (result) {
+            if (result.eliminado == '1') {
+                toastr.success("Proyecto eliminado correctamente", config_toast);
+                setInterval(refrescar_pag, 1200)
+            } else {
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             }
-        });
-    } else {
-        alert("Se cancelo");
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+        }).always(function (data) { });
     }
 });
+
+function refrescar_pag(){
+    window.location.reload()
+}
 
 $(".edit-project").click(function () {
     project_id = $(this).attr("data-project-id");
     project_name = $(this).attr("data-project-name");
     project_decription = $(this).attr("data-project-decription");
-    console.log();
     $("#form-project").attr("action", "/editar-proyecto/");
     $("#validarNombre").val(project_name);
     $("#validarDescripcion").val(project_decription);

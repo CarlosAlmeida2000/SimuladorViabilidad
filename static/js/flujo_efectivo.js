@@ -2,22 +2,6 @@ var id_fila = -1;
 
 actualizar_totales();
 
-// Función para crear una llave de seguridad "crsftoken" y poder realizar una petición ajax
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != "") {
-        var cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) == name + "=") {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 function guardar_actividad(input) {
     // mostrar spinner
     $("#mostrar-spinner").load('/spinner/');
@@ -26,6 +10,7 @@ function guardar_actividad(input) {
     // se definen los parámetros de la petición ajax
     var params = {
         csrfmiddlewaretoken: csrftoken,
+        project_id: $('#project_id').text(),
         id_actividad: $(input).attr("data-id"),
         id_tipo_cuenta: getIdTipoCuenta($(input).attr("tipo_cuenta")),
         nom_actividad: $(input).val(),
@@ -33,34 +18,76 @@ function guardar_actividad(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-            type: "POST",
-            url: "/guardar-actividad/",
-            data: params,
-            dataType: "json",
-        })
+        type: "POST",
+        url: "/guardar-actividad/",
+        data: params,
+        dataType: "json",
+    })
         .done(function (result) {
+            // eliminar spinner
+            $("#mostrar-spinner").empty()
             if (result.id_actividad > 0) {
                 $(input).attr("data-id", result.id_actividad);
-                $(input).css('border-color', '#00710B');
-                $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+                // actualizar el id en los atributos de la fila y botón eliminar
+                $(input).parent().prev().children().attr("onclick", 'eliminar_actividad(' + result.id_actividad + ')')
+                $(input).parent().parent().attr("id", 'fila-' + result.id_actividad)
                 // si se guarda la actividad se desbloquean los demás input de valores
                 $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).prop('disabled', false);
-                // eliminar spinner
-                $("#mostrar-spinner").empty()
+                toastr.success("Actividad guardada correctamente", config_toast);
+                $(input).css('border-color', '#00710B');
+                $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
             } else {
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 $(input).css('border-color', '#D30000');
                 $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-                // eliminar spinner
-                $("#mostrar-spinner").empty()
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            $(input).css('border-color', '#D30000');
-            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
             // eliminar spinner
             $("#mostrar-spinner").empty()
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            $(input).css('border-color', '#D30000');
+            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) {});
+        .always(function (data) { });
+}
+
+function eliminar_actividad(id_actividad) {
+    if (id_actividad < 0) {
+        $('#fila-' + id_actividad).remove()
+        toastr.success("La actividad fue eliminada correctamente", config_toast);
+    } else {
+        // mostrar spinner
+        $("#mostrar-spinner").load('/spinner/');
+        result_delete = confirm('¿Está seguro(a) de eliminar la actividad?');
+        if (result_delete) {
+            // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+            var csrftoken = getCookie("csrftoken");
+            var params = {
+                csrfmiddlewaretoken: csrftoken,
+                'id_actividad': id_actividad,
+            };
+            $.ajax({
+                type: "POST",
+                url: "/eliminar-actividad/",
+                data: params,
+                dataType: "json",
+            }).done(function (result) {
+                // eliminar spinner
+                $("#mostrar-spinner").empty()
+                if (result.eliminada == '1') {
+                    toastr.success("La actividad fue eliminada correctamente", config_toast);
+                    $('#fila-' + id_actividad).remove()
+                } else {
+                    toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                // eliminar spinner
+                $("#mostrar-spinner").empty()
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            }).always(function (data) { });
+        } 
+    }
 }
 
 function getIdTipoCuenta(tipo_cuenta) {
@@ -83,6 +110,7 @@ function guardar_valor(input) {
     // se definen los parámetros de la petición ajax
     var params = {
         csrfmiddlewaretoken: csrftoken,
+        project_id: $('#project_id').text(),
         id_valor: $(input).attr("data-id"),
         id_actividad: $("#" + $(input).parent().parent().attr("id") + " #actividad").attr("data-id"),
         valor: parseFloat($(input).val()),
@@ -91,33 +119,34 @@ function guardar_valor(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-            type: "POST",
-            url: "/guardar-valor/",
-            data: params,
-            dataType: "json",
-        })
+        type: "POST",
+        url: "/guardar-valor/",
+        data: params,
+        dataType: "json",
+    })
         .done(function (result) {
+            // eliminar spinner
+            $("#mostrar-spinner").empty()
             if (result.id_valor > 0) {
                 $(input).attr("data-id", result.id_valor);
+                actualizar_totales();
+                toastr.success("Valor guardado correctamente", config_toast);
                 $(input).css('border-color', '#00710B');
                 $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
-                actualizar_totales();
-                // eliminar spinner
-                $("#mostrar-spinner").empty()
             } else {
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 $(input).css('border-color', '#D30000');
                 $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-                // eliminar spinner
-                $("#mostrar-spinner").empty()
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            $(input).css('border-color', '#D30000');
-            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
             // eliminar spinner
             $("#mostrar-spinner").empty()
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            $(input).css('border-color', '#D30000');
+            $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) {});
+        .always(function (data) { });
 }
 
 function actualizar_totales() {
@@ -220,10 +249,13 @@ function actualizar_totales() {
 }
 
 function editar_inversion(input) {
+    // mostrar spinner
+    $("#mostrar-spinner").load('/spinner/');
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
         csrfmiddlewaretoken: csrftoken,
+        project_id: $('#project_id').text(),
         'inversion': parseFloat($(input).val().replace(',', '.')),
         'desde_flujo_efectivo': true
     };
@@ -233,24 +265,34 @@ function editar_inversion(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
         if (result.editado == '1') {
+            toastr.success("Inversión guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
         } else {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
+        toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 function editar_tasa_interes(input) {
+    // mostrar spinner
+    $("#mostrar-spinner").load('/spinner/');
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
         csrfmiddlewaretoken: csrftoken,
+        project_id: $('#project_id').text(),
         'tasa_interes': parseFloat($(input).val().replace(',', '.')),
         'desde_flujo_efectivo': true
     };
@@ -260,25 +302,35 @@ function editar_tasa_interes(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
         if (result.editado == '1') {
+            toastr.success("Tasa de interés guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
         } else {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
+        toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 
 function editar_tasa_retorno(input) {
+    // mostrar spinner
+    $("#mostrar-spinner").load('/spinner/');
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
         csrfmiddlewaretoken: csrftoken,
+        project_id: $('#project_id').text(),
         'tasa_retorno': parseFloat($(input).val().replace(',', '.')),
         'desde_flujo_efectivo': true
     };
@@ -288,77 +340,95 @@ function editar_tasa_retorno(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
         if (result.editado == '1') {
+            toastr.success("Tasa de retorno guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
         } else {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
+        // eliminar spinner
+        $("#mostrar-spinner").empty()
+        toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 $("#btnViabilidadMensual").click(function () {
-    if ($('#inversion').val() != '' & $('#tasa_interes').val() != '') {
-        // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
-        var csrftoken = getCookie("csrftoken");
-        // se obtienen todos los fen
-        var fen_neto = [];
-        var json_array = {};
-        $('.fen div').each(function () {
-            fen_neto.push({
-                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+    if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
+        // se verifica que el FEN acumulado del primer mes sea mayor a cero
+        if (parseFloat(($('#total-fen-acum-mes-1').text()).substring(2).replace(',', '.')) != 0) {
+            // mostrar spinner
+            $("#mostrar-spinner").load('/spinner/');
+            // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+            var csrftoken = getCookie("csrftoken");
+            // se obtienen todos los fen
+            var fen_neto = [];
+            var json_array = {};
+            $('.fen div').each(function () {
+                fen_neto.push({
+                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+                });
             });
-        });
-        json_array.fen_neto = fen_neto;
-        fen_neto = JSON.stringify(json_array);
-        // se obtienen todos los fen acumulados
-        var fen_acum = [];
-        var json_array = {};
-        $('.fen-acumulado div').each(function () {
-            fen_acum.push({
-                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+            json_array.fen_neto = fen_neto;
+            fen_neto = JSON.stringify(json_array);
+            // se obtienen todos los fen acumulados
+            var fen_acum = [];
+            var json_array = {};
+            $('.fen-acumulado div').each(function () {
+                fen_acum.push({
+                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+                });
             });
-        });
-        json_array.fen_acum = fen_acum;
-        fen_acum = JSON.stringify(json_array);
-        // se definen los parámetros de la petición ajax
-        var params = {
-            csrfmiddlewaretoken: csrftoken,
-            'inversion': parseFloat($('#inversion').val()),
-            'tasa_interes': parseFloat($('#tasa_interes').val()),
-            'fen_neto': fen_neto,
-            'fen_acum': fen_acum
-        };
-        $.ajax({
-            type: "POST",
-            url: "/calcular-viabilidad/",
-            data: params,
-            dataType: "json",
-        }).done(function (result) {
-            if (result.viabilidad == '1') {
-                $('#tir-mensual').text(result.tir + ' %')
-                $('#bc-mensual').text('$ ' + result.razon_bc)
-                $('#van-mensual').text('$ ' + result.van)
-                $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
-                    $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
-                    $('#text-respuesta-mensual').css('color', '#D30000');
+            json_array.fen_acum = fen_acum;
+            fen_acum = JSON.stringify(json_array);
+            // se definen los parámetros de la petición ajax
+            var params = {
+                csrfmiddlewaretoken: csrftoken,
+                'inversion': parseFloat($('#inversion').val()),
+                'tasa_interes': parseFloat($('#tasa_interes').val()),
+                'fen_neto': fen_neto,
+                'fen_acum': fen_acum
+            };
+            $.ajax({
+                type: "POST",
+                url: "/calcular-viabilidad/",
+                data: params,
+                dataType: "json",
+            }).done(function (result) {
+                // eliminar spinner
+                $("#mostrar-spinner").empty()
+                if (result.viabilidad == '1') {
+                    $('#tir-mensual').text(result.tir + ' %')
+                    $('#bc-mensual').text('$ ' + result.razon_bc)
+                    $('#van-mensual').text('$ ' + result.van)
+                    $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
+                    if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
+                        $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
+                        $('#text-respuesta-mensual').css('color', '#D30000');
+                    } else {
+                        $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
+                        $('#text-respuesta-mensual').css('color', '#0c9449');
+                    }
                 } else {
-                    $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
-                    $('#text-respuesta-mensual').css('color', '#0c9449');
+                    toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 }
-            } else {
-                alert('error')
-            }
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            alert('error')
-        }).always(function (data) {});
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                // eliminar spinner
+                $("#mostrar-spinner").empty()
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            }).always(function (data) { });
+        } else {
+            toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
+        }
     } else {
-        alert('Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés.')
+        toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
     }
 });
 
@@ -366,7 +436,7 @@ $(".btnAggActividad").click(function () {
     var superior_id = $(this).parent().parent().parent();
     var seccion = superior_id.attr("id");
     var fila = '<tr id="fila-' + id_fila + '"> \n\
-                <th><button class="btn btn-sm btn-danger delete-activity" type="button"><i class="fa-solid fa-trash-can"></i></button></th>\n\
+		        <th><button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad('+ id_fila + ')" type="button"><i class="fa-solid fa-trash-can"></i></button></th>\n\
                 <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
                 <td> \n\
                   <input disabled class="text-center sumador ' + seccion + '-mes-1 ' + seccion + '-fila-' + id_fila + '" mes="1" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
@@ -409,25 +479,3 @@ $(".btnAggActividad").click(function () {
     id_fila = id_fila - 1;
     $("#" + superior_id.attr("id")).after(fila);
 });
-
-function soloNumeros(event, input) {
-    var regex = new RegExp("^[0-9,. ]+$");
-    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    if (!regex.test(key)) {
-        event.preventDefault();
-        return false;
-    }
-}
-
-function soloEnteros(event, input) {
-    var regex = new RegExp("^[0-9 ]+$");
-    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    if (!regex.test(key)) {
-        event.preventDefault();
-        return false;
-    }
-}
-
-function convertDecimal(input) {
-    $(input).val($(input).val().replace('.', ','));
-}

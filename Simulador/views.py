@@ -1,44 +1,30 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.db.models import F
+from django.db.models import F, Q
 import numpy_financial as npf
 import math, json
 from Simulador.UsuarioSession import UsuarioSession
 from .models import *
 
-# region Vistas
-
-
-def vwIndex(request):
-    if not "usuario" in request.session:
-        return redirect("login")
-    proyectos = Usuarios.objects.get(
-        pk=request.session["usuario"]["id"]
-    ).proyectos.all()
-    return render(request, "simulador/proyecto.html", {"proyectos": proyectos})
-
+#region Flujo de efectivo
 
 def vwSpinner(request):
     return render(request, "components/spinner.html")
 
 
 def vwFlujo(request, project_id):
-    # Falta validar y el la URL debes poner el proyecto
-    # obtener el id del proyecto desde el objeto sesión
+    if not "usuario" in request.session:
+        return redirect("login")
     proyecto = Proyectos.objects.get(pk=project_id)
     proyecto.inversion = str(proyecto.inversion).replace(".", ",")
     proyecto.tasa_interes = str(proyecto.tasa_interes).replace(".", ",")
     proyecto.tasa_retorno = str(proyecto.tasa_retorno).replace(".", ",")
-    flujo_efectivo = (
-        FlujoEfectivos.objects.filter(proyecto__id=project_id)
-        .select_related("proyecto")
-        .select_related("actividad")
-    )
-    ingresos = obtenerActividades(flujo_efectivo, 1)
-    costos_a = obtenerActividades(flujo_efectivo, 2)
-    costos_p = obtenerActividades(flujo_efectivo, 3)
-    costos_i = obtenerActividades(flujo_efectivo, 4)
+    
+    ingresos = obtenerActividades(project_id, 1)
+    costos_a = obtenerActividades(project_id, 2)
+    costos_p = obtenerActividades(project_id, 3)
+    costos_i = obtenerActividades(project_id, 4)
     return render(
         request,
         "simulador/flujo_efectivo.html",
@@ -52,24 +38,29 @@ def vwFlujo(request, project_id):
     )
 
 
-def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
-    # Falta validar
+def obtenerActividades(project_id, id_tipo_cuenta):
     try:
+
+        flujo_efectivo = (
+            FlujoEfectivos.objects.filter(Q(proyecto__id=project_id) & Q(actividad__tipo_cuenta__id = id_tipo_cuenta))
+            .select_related("proyecto")
+            .select_related("actividad")
+        )
         # obtener las actividades segun si tipo de cuenta, cada objeto queryset tiene todos sus valores $ de los 12 meses
         actividades = (
-            ActFinancieras.objects.filter(tipo_cuenta__id=id_tipo_cuenta)
-            .annotate(valor_mes1=F("nombres"))
-            .annotate(valor_mes2=F("nombres"))
-            .annotate(valor_mes3=F("nombres"))
-            .annotate(valor_mes4=F("nombres"))
-            .annotate(valor_mes5=F("nombres"))
-            .annotate(valor_mes6=F("nombres"))
-            .annotate(valor_mes7=F("nombres"))
-            .annotate(valor_mes8=F("nombres"))
-            .annotate(valor_mes9=F("nombres"))
-            .annotate(valor_mes10=F("nombres"))
-            .annotate(valor_mes11=F("nombres"))
-            .annotate(valor_mes12=F("nombres"))
+            ActFinancieras.objects.filter(Q(proyecto__id=project_id) & Q(tipo_cuenta__id=id_tipo_cuenta))
+            .annotate(valor_mes1=F("nombre"))
+            .annotate(valor_mes2=F("nombre"))
+            .annotate(valor_mes3=F("nombre"))
+            .annotate(valor_mes4=F("nombre"))
+            .annotate(valor_mes5=F("nombre"))
+            .annotate(valor_mes6=F("nombre"))
+            .annotate(valor_mes7=F("nombre"))
+            .annotate(valor_mes8=F("nombre"))
+            .annotate(valor_mes9=F("nombre"))
+            .annotate(valor_mes10=F("nombre"))
+            .annotate(valor_mes11=F("nombre"))
+            .annotate(valor_mes12=F("nombre"))
             .annotate(id_valor_mes1=F("id"))
             .annotate(id_valor_mes2=F("id"))
             .annotate(id_valor_mes3=F("id"))
@@ -84,7 +75,7 @@ def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
             .annotate(id_valor_mes12=F("id"))
             .values(
                 "id",
-                "nombres",
+                "nombre",
                 "valor_mes1",
                 "valor_mes2",
                 "valor_mes3",
@@ -126,23 +117,23 @@ def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
             "valor_mes12",
         ]
         numero_mes = 1
-        for efectivo in actividades:
+        for act in actividades:
             # se obtienen todas las actividades según el id de tipo de cuenta enviado por parámetro
-            actividad = flujo_efectivo.filter(actividad__id=efectivo["id"])
+            efectivos = flujo_efectivo.filter(actividad__id=act["id"])
             # es necesario recorrer cada mes para obtener su valor
             for campo_mes in lstcampos_meses:
                 # verifica si existe una valor guardado con ese mes
-                if actividad.filter(mes=numero_mes):
+                if efectivos.filter(mes=numero_mes):
                     # se obtiene el valor de ese mes
-                    activi = actividad.get(mes=numero_mes)
+                    activi = efectivos.get(mes=numero_mes)
                     # se asigna el valor
-                    efectivo[campo_mes] = str(activi.valor).replace(".", ",")
+                    act[campo_mes] = str(activi.valor).replace(".", ",")
                     # se asigna el id del valor
-                    efectivo["id_" + campo_mes] = activi.id
+                    act["id_" + campo_mes] = activi.id
                 else:
                     # no existe un valor para ese mes
-                    efectivo[campo_mes] = ""
-                    efectivo["id_" + campo_mes] = -1
+                    act[campo_mes] = ""
+                    act["id_" + campo_mes] = -1
                 numero_mes += 1
             if numero_mes == 13:
                 numero_mes = 1
@@ -151,8 +142,9 @@ def obtenerActividades(flujo_efectivo, id_tipo_cuenta):
         return None
 
 
-def vwGuardarActividad(request):
-    # Falta validar
+def guardarActividad(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         id_actividad = int(request.POST["id_actividad"])
         if id_actividad > 0:
@@ -160,17 +152,33 @@ def vwGuardarActividad(request):
         else:
             # es negativo, se registra la nueva actividad
             actividad = ActFinancieras()
+            proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             tipo_cuenta = TiposCuentas.objects.get(id=request.POST["id_tipo_cuenta"])
             actividad.tipo_cuenta = tipo_cuenta
-        actividad.nombres = request.POST["nom_actividad"]
+            actividad.proyecto = proyecto
+        actividad.nombre = request.POST["nom_actividad"]
         actividad.save()
         return JsonResponse({"id_actividad": actividad.id})
     except Exception as e:
         return JsonResponse({"id_actividad": "0"})
 
 
-def vwGuardarValor(request):
-    # Falta validar
+def eliminarActividad(request):
+    if not "usuario" in request.session:
+        return redirect("login")
+    try:
+        actividades_flujo = FlujoEfectivos.objects.filter(actividad__id = request.POST["id_actividad"])
+        actividades_flujo.delete()
+        actividad = ActFinancieras.objects.filter(pk = request.POST["id_actividad"])
+        actividad.delete()
+        return JsonResponse({'eliminada': '1'})
+    except Exception as e:
+        return JsonResponse({'eliminada': '0'})
+
+
+def guardarValor(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         id_valor = int(request.POST["id_valor"])
         if id_valor > 0:
@@ -178,8 +186,6 @@ def vwGuardarValor(request):
         else:
             # es negativo, se registra el nuevo valor
             flujo_efectivo = FlujoEfectivos()
-
-            # obtener el id desde el objeto sesión
             proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             actividad = ActFinancieras.objects.get(id=int(request.POST["id_actividad"]))
             flujo_efectivo.proyecto = proyecto
@@ -192,7 +198,9 @@ def vwGuardarValor(request):
         return JsonResponse({"id_valor": "0"})
 
 
-def vwCalcularViabilidad(request):
+def calcularViabilidad(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         tir, van, razon_bc, pri = 0, 0, 0, 0
         a, b, c, d = 0, 0, 0, 0
@@ -251,8 +259,32 @@ def vwCalcularViabilidad(request):
     except Exception as e:
         return JsonResponse({"viabilidad": "0"})
 
+#endregion
 
-def vwGuardarProyecto(request):
+#region CRUD proyecto
+
+def vwIndex(request):
+    if not "usuario" in request.session:
+        return redirect("login")
+    proyectos = Usuarios.objects.get(
+        pk=request.session["usuario"]["id"]
+    ).proyectos.all()
+    return render(request, "simulador/proyecto.html", {"proyectos": proyectos})
+
+
+def buscarProyectos(request):
+    proyectos = Usuarios.objects.get(pk=1).proyectos.all()
+    data = []
+    for proyecto in proyectos:
+        data_proyecto = {}
+        data_proyecto['nombres'] = proyecto.nombre
+        data_proyecto['descripcion'] = proyecto.descripcion
+        data.append(data_proyecto)
+
+    return JsonResponse(data, safe=False)
+
+
+def guardarProyecto(request):
     if not "usuario" in request.session:
         return redirect("login")
     try:
@@ -274,52 +306,22 @@ def vwGuardarProyecto(request):
         return redirect("index")
 
 
-def vwLogin(request):
-    if "usuario" in request.session:
-        return redirect("index")
-    return render(request, "auth/login.html")
-
-
-def vwRegistre(request):
-    if "usuario" in request.session:
-        return redirect("index")
-    return render(request, "auth/registre.html")
-
-
-# endregion
-
-# region Metodos
-# def listar_proyectos(request):
-#     proyectos = Usuarios.objects.get(pk=1).proyectos.all()
-#     data = []
-#     for proyecto in proyectos:
-#         data_proyecto = {}
-#         data_proyecto['nombres'] = proyecto.nombre
-#         data_proyecto['descripcion'] = proyecto.descripcion
-#         data.append(data_proyecto)
-
-#     return JsonResponse(data, safe=False)
-
-
 def eliminar_proyecto(request):
     if not "usuario" in request.session:
         return redirect("login")
     try:
         proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
-        print(f"Proyecto id = {proyecto.id}")
-        if proyecto.flujo_efectivos.all().count() != 0:
-            proyecto.flujo_efectivos.all().delete()
+        FlujoEfectivos.objects.filter(proyecto = proyecto).delete()
+        ActFinancieras.objects.filter(proyecto = proyecto).delete()
         proyecto.delete()
-        messages.success(request, "Su proyecto ha sido eliminado")
-        return JsonResponse({"value": "1"})
+        return JsonResponse({"eliminado": "1"})
     except Exception as e:
-        messages.error(request, "El proyecto no se pudo eliminar")
-        return JsonResponse({"value": "0"})
+        return JsonResponse({"eliminado": "0"})
 
 
-def editar_proyecto(request):
-    # if not "usuario" in request.session:
-    #    return redirect("login")
+def editarProyecto(request):
+    if not "usuario" in request.session:
+        return redirect("login")
     try:
         # modificar un proyecto desde el template proyecto
         if (
@@ -332,18 +334,12 @@ def editar_proyecto(request):
             proyecto.descripcion = request.POST["pr_descripcion"]
         # modificar un proyecto desde el template flujo efectivo
         elif "inversion" in request.POST:
-
-            # aqui necesito el id del objeto session
             proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             proyecto.inversion = request.POST["inversion"]
         elif "tasa_interes" in request.POST:
-
-            # aqui necesito el id del objeto session
             proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             proyecto.tasa_interes = request.POST["tasa_interes"]
         else:
-
-            # aqui necesito el id del objeto session
             proyecto = Proyectos.objects.get(pk=request.POST["project_id"])
             proyecto.tasa_retorno = request.POST["tasa_retorno"]
         proyecto.save()
@@ -356,6 +352,40 @@ def editar_proyecto(request):
             return JsonResponse({"editado": "0"})
         messages.error(request, "El proyecto no se pudo modificar")
         return redirect("/")
+
+#endregion
+
+#region Control de usuario
+
+def vwLogin(request):
+    if "usuario" in request.session:
+        return redirect("index")
+    return render(request, "auth/login.html")
+
+
+def vwRegistre(request):
+    if "usuario" in request.session:
+        return redirect("index")
+    return render(request, "auth/registre.html")
+
+
+def registre(request):
+    if "usuario" in request.session:
+        return redirect("index")
+    try:
+        Usuarios.objects.create(
+            nombres=request.POST["name"],
+            correo=request.POST["email"],
+            clave=request.POST["pass"],
+        )
+        messages.success(
+            request,
+            "Tu cuenta a sido creada, inicia sesión para que puedas administrar tus proyectos",
+        )
+        return redirect("login")
+    except Exception as e:
+        messages.error(request, "Creación de cuenta fallida, intenta más tarde")
+        return redirect("registre")
 
 
 def sign_out(request):
@@ -384,24 +414,4 @@ def logout(request):
     user_session.delete_session()
     return redirect("login")
 
-
-def registre(request):
-    if "usuario" in request.session:
-        return redirect("index")
-    try:
-        Usuarios.objects.create(
-            nombres=request.POST["name"],
-            correo=request.POST["email"],
-            clave=request.POST["pass"],
-        )
-        messages.success(
-            request,
-            "Tu cuenta a sido creada, inicia sesión para que puedas administrar tus proyectos",
-        )
-        return redirect("login")
-    except Exception as e:
-        messages.error(request, "Creación de cuenta fallida, intenta más tarde")
-        return redirect("registre")
-
-
-# endregion
+#endregion

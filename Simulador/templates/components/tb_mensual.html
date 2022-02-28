@@ -37,13 +37,14 @@
                 {% for ingreso in ingresos %}
                 <tr id="fila-{{ingreso.id}}">
                     <th>
-                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                        <button class="btn btn-sm btn-danger delete-activity"
+                            onclick="eliminar_actividad('{{ingreso.id}}')" type="button">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="ingresos"
-                            data-id="{{ingreso.id}}" fila="{{ingreso.id}}"
-                            onchange="javascript:guardar_actividad(this);" size="37" value="{{ingreso.nombres}}" /></th>
+                            data-id="{{ingreso.id}}" fila="{{ingreso.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                            value="{{ingreso.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador ingresos-mes-1 ingresos-fila-{{ingreso.id}}" mes="1"
                             tipo_cuenta="ingresos" data-id="{{ingreso.id_valor_mes1}}" fila="{{ingreso.id}}"
@@ -192,13 +193,14 @@
                 {% for costo in costos_a %}
                 <tr id="fila-{{costo.id}}">
                     <th>
-                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                        <button class="btn btn-sm btn-danger delete-activity"
+                            onclick="eliminar_actividad('{{costo.id}}')" type="button">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-a"
-                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
-                            size="37" value="{{costo.nombres}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                            value="{{costo.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador costos-a-mes-1 costos-a-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-a" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
@@ -339,13 +341,14 @@
                     {% for costo in costos_p %}
                     <tr id="fila-{{costo.id}}">
                         <th>
-                            <button class="btn btn-sm btn-danger delete-activity" type="button">
+                            <button class="btn btn-sm btn-danger delete-activity"
+                                onclick="eliminar_actividad('{{costo.id}}')" type="button">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </th>
                         <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-p"
-                                data-id="{{costo.id}}" fila="{{costo.id}}"
-                                onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombres}}" />
+                                data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                                value="{{costo.nombre}}" />
                         </th>
                         <td>
                             <input class="text-center sumador costos-p-mes-1 costos-p-fila-{{costo.id}}" mes="1"
@@ -486,13 +489,14 @@
                 {% for costo in costos_i %}
                 <tr id="fila-{{costo.id}}">
                     <th>
-                        <button class="btn btn-sm btn-danger delete-activity" type="button">
+                        <button class="btn btn-sm btn-danger delete-activity"
+                            onclick="eliminar_actividad('{{costo.id}}')" type="button">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-i"
-                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
-                            size="37" value="{{costo.nombres}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                            value="{{costo.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador costos-i-mes-1 costos-i-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-i" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"

@@ -24,8 +24,9 @@ class TiposCuentas(models.Model):
     nombre = models.CharField(max_length = 25)
 
 class ActFinancieras(models.Model):
-    nombres = models.CharField(max_length = 80)
+    nombre = models.CharField(max_length = 80)
     tipo_cuenta = models.ForeignKey(TiposCuentas, on_delete = models.PROTECT)
+    proyecto = models.ForeignKey(Proyectos, on_delete = models.PROTECT)
 
 class FlujoEfectivos(models.Model):
     mes = models.IntegerField()
