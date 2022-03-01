@@ -43,6 +43,11 @@ button[class*="active"] {
   color: var(--cl-white);
 }
 
+.bg-green>th {
+  background-color: var(--cl-green) !important;
+  color: var(--cl-white);
+}
+
 .cl-green {
   color: var(--cl-green);
 }

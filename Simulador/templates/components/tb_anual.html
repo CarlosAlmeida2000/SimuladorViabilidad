@@ -2,7 +2,7 @@
     <div class="parameters d-flex mt-3">
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
-            <input type="text" id="tasa_retorno" onchange="return editar_tasa_retorno(this)" 
+            <input type="text" id="tasa_retorno" onchange="return editar_tasa_retorno(this)"
                 onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)"
                 value="{{proyecto.tasa_retorno}}">
         </div>
@@ -11,29 +11,38 @@
             <input type="number" id="periodos" min="1" max="10" value="1" onkeypress="return soloEnteros(event, this)">
         </div>
     </div>
-    <div>
+    <div class="content-table-anual table-responsive">
         <table class="table table-borderless">
             <thead>
                 <tr id="encabezado-periodos">
-                    <th>Inicio</th>
+                    <th class="static-columns">
+                        <div>Inicio</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <th class="text-center" id="encabezado-periodo-1">Año 1</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- #region Valores de Ingresos -->
-                <tr class="table-active">
-                    <th colspan="2">Ingresos del proyecto</th>
+                <tr class="table-active padre">
+                    <th class="static-columns">
+                        <div>Ingresos del proyecto</div>
+                    </th>
+                    <td colspan="1"></td>
                 </tr>
                 <tr id="ingresos-anuales">
-                    <th>Ingresos</th>
+                    <th class="static-columns">
+                        <div>Ingresos</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="ingreso-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
                 <tr class="bg-green" id="total-ingresos-anuales">
-                    <th>Total de ingresos</th>
+                    <th class="static-columns">
+                        <div>Total de ingresos</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="total-ingresos-periodo-1">
                         <div>$ 00,00</div>
@@ -41,32 +50,43 @@
                 </tr>
                 <!-- #endregion -->
                 <!-- #region Valores de Egresos -->
-                <tr class="table-active">
-                    <th colspan="2">Egresos del proyecto</th>
+                <tr class="table-active padre">
+                    <th class="static-columns">
+                        <div>Egresos del proyecto</div>
+                    </th>
+                    <td colspan="1"></td>
                 </tr>
                 <tr id="costos-a-anuales">
-                    <th>Costo de administración</th>
+                    <th class="static-columns">
+                        <div>Costo de administración</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="costo-a-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
                 <tr id="costos-p-anuales">
-                    <th>Costo de producción</th>
+                    <th class="static-columns">
+                        <div>Costo de producción</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="costo-p-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
                 <tr id="costos-i-anuales">
-                    <th>Costo de inversión</th>
+                    <th class="static-columns">
+                        <div>Costo de inversión</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="costo-i-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
                 <tr class="bg-green" id="total-egresos-anuales">
-                    <th>Total de egresos</th>
+                    <th class="static-columns">
+                        <div>Total de egresos</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="total-egresos-periodo-1">
                         <div>$ 00,00</div>
@@ -75,14 +95,18 @@
                 <!-- #endregion -->
                 <!-- #region Calculos -->
                 <tr>
-                    <th style="padding-top:20px;">FEN</th>
+                    <th class="static-columns" style="padding-top:20px;">
+                        <div>FEN</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" style="padding-top:20px;" id="fen-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
                 <tr>
-                    <th>FEN acumulado</th>
+                    <th class="static-columns">
+                        <div>FEN acumulado</div>
+                    </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="text-center" id="fen-acum-periodo-1">
                         <div>$ 00,00</div>

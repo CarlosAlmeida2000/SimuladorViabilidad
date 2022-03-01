@@ -31,11 +31,11 @@ function guardar_actividad(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-        type: "POST",
-        url: "/guardar-actividad/",
-        data: params,
-        dataType: "json",
-    })
+            type: "POST",
+            url: "/guardar-actividad/",
+            data: params,
+            dataType: "json",
+        })
         .done(function (result) {
             hide_spinner();
             if (result.id_actividad > 0) {
@@ -60,7 +60,7 @@ function guardar_actividad(input) {
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) { });
+        .always(function (data) {});
 }
 
 function eliminar_actividad(id_actividad) {
@@ -96,7 +96,7 @@ function eliminar_actividad(id_actividad) {
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 hide_spinner();
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) { });
+            }).always(function (data) {});
         } else {
             hide_spinner();
         }
@@ -131,11 +131,11 @@ function guardar_valor(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-        type: "POST",
-        url: "/guardar-valor/",
-        data: params,
-        dataType: "json",
-    })
+            type: "POST",
+            url: "/guardar-valor/",
+            data: params,
+            dataType: "json",
+        })
         .done(function (result) {
             hide_spinner();
             if (result.id_valor > 0) {
@@ -156,7 +156,7 @@ function guardar_valor(input) {
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) { });
+        .always(function (data) {});
 }
 
 function actualizar_totales() {
@@ -299,7 +299,7 @@ function editar_inversion(input) {
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 function editar_tasa_interes(input) {
@@ -333,7 +333,7 @@ function editar_tasa_interes(input) {
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 
@@ -369,7 +369,7 @@ function editar_tasa_retorno(input) {
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) { });
+    }).always(function (data) {});
 }
 
 $("#btnViabilidadMensual").click(function () {
@@ -432,7 +432,7 @@ $("#btnViabilidadMensual").click(function () {
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 hide_spinner();
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) { });
+            }).always(function (data) {});
         } else {
             hide_spinner();
             toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
@@ -500,7 +500,7 @@ $(".btnAggActividad").click(function () {
 
 
 
-$("#nav-anual-tab").click(function(){
+$("#nav-anual-tab").click(function () {
     ingreso_anual = parseFloat($('#ingreso-periodo-1 div').text().substring(2).replace(',', '.'))
     costo_a_anual = parseFloat($('#costo-a-periodo-1 div').text().substring(2).replace(',', '.'))
     costo_p_anual = parseFloat($('#costo-p-periodo-1 div').text().substring(2).replace(',', '.'))
@@ -513,11 +513,12 @@ $("#nav-anual-tab").click(function(){
 });
 
 $("#periodos").change(function () {
+    $(".padre").children(':nth-child(2)').attr("colspan", (parseInt($(this).val()) + 1));
     calcular_periodos(this);
 });
 
 // función para calcular el flujo en varios periodos, también se va a llamar al momento de modificar la tasa de retorno para que vuelva a calcular
-function calcular_periodos(number){
+function calcular_periodos(number) {
     tasa_retorno = parseFloat($('#tasa_retorno').val().replace(',', '.'))
     if (tasa_retorno > 0) {
         $('.periodo').each(function () {
