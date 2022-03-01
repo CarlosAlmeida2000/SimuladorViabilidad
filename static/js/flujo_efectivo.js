@@ -2,11 +2,22 @@ var id_fila = -1;
 
 actualizar_totales();
 
-function guardar_actividad(input) {
-    // mostrar spinner
+// mostrar spinner
+function show_spinner() {
     $("#spinner").show();
     $("#spinner").addClass("mostrar-spinner");
     $("body").css("overflow", "hidden");
+}
+
+// eliminar spinner
+function hide_spinner() {
+    $("#spinner").hide();
+    $("#spinner").removeAttr("class");
+    $("body").css("overflow", "auto");
+}
+
+function guardar_actividad(input) {
+    show_spinner();
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     // se definen los parámetros de la petición ajax
@@ -20,16 +31,13 @@ function guardar_actividad(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-            type: "POST",
-            url: "/guardar-actividad/",
-            data: params,
-            dataType: "json",
-        })
+        type: "POST",
+        url: "/guardar-actividad/",
+        data: params,
+        dataType: "json",
+    })
         .done(function (result) {
-            // eliminar spinner
-            $("#spinner").hide();
-            $("#spinner").removeAttr("class");
-            $("body").css("overflow", "auto");
+            hide_spinner();
             if (result.id_actividad > 0) {
                 $(input).attr("data-id", result.id_actividad);
                 // actualizar el id en los atributos de la fila y botón eliminar
@@ -47,26 +55,22 @@ function guardar_actividad(input) {
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            // eliminar spinner
-            $("#spinner").hide();
-            $("#spinner").removeAttr("class");
-            $("body").css("overflow", "auto");
+            hide_spinner();
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) {});
+        .always(function (data) { });
 }
 
 function eliminar_actividad(id_actividad) {
+    show_spinner();
     if (id_actividad < 0) {
         $('#fila-' + id_actividad).remove()
+        hide_spinner();
         toastr.success("La actividad fue eliminada correctamente", config_toast);
+        actualizar_totales();
     } else {
-        // mostrar spinner
-        $("#spinner").show();
-        $("#spinner").addClass("mostrar-spinner");
-        $("body").css("overflow", "hidden");
         result_delete = confirm('¿Está seguro(a) de eliminar la actividad?');
         if (result_delete) {
             // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
@@ -81,23 +85,20 @@ function eliminar_actividad(id_actividad) {
                 data: params,
                 dataType: "json",
             }).done(function (result) {
-                // eliminar spinner
-                $("#spinner").hide();
-                $("#spinner").removeAttr("class");
-                $("body").css("overflow", "auto");
+                hide_spinner();
                 if (result.eliminada == '1') {
-                    toastr.success("La actividad fue eliminada correctamente", config_toast);
                     $('#fila-' + id_actividad).remove()
+                    toastr.success("La actividad fue eliminada correctamente", config_toast);
+                    actualizar_totales();
                 } else {
                     toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                // eliminar spinner
-                $("#spinner").hide();
-                $("#spinner").removeAttr("class");
-                $("body").css("overflow", "auto");
+                hide_spinner();
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) {});
+            }).always(function (data) { });
+        } else {
+            hide_spinner();
         }
     }
 }
@@ -115,10 +116,7 @@ function getIdTipoCuenta(tipo_cuenta) {
 }
 
 function guardar_valor(input) {
-    // mostrar spinner
-    $("#spinner").show();
-    $("#spinner").addClass("mostrar-spinner");
-    $("body").css("overflow", "hidden");
+    show_spinner();
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     // se definen los parámetros de la petición ajax
@@ -133,16 +131,13 @@ function guardar_valor(input) {
         project_id: $("#table-mensual").attr("data-project-id"),
     };
     $.ajax({
-            type: "POST",
-            url: "/guardar-valor/",
-            data: params,
-            dataType: "json",
-        })
+        type: "POST",
+        url: "/guardar-valor/",
+        data: params,
+        dataType: "json",
+    })
         .done(function (result) {
-            // eliminar spinner
-            $("#spinner").hide();
-            $("#spinner").removeAttr("class");
-            $("body").css("overflow", "auto");
+            hide_spinner();
             if (result.id_valor > 0) {
                 $(input).attr("data-id", result.id_valor);
                 actualizar_totales();
@@ -156,15 +151,12 @@ function guardar_valor(input) {
             }
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
-            // eliminar spinner
-            $("#spinner").hide();
-            $("#spinner").removeAttr("class");
-            $("body").css("overflow", "auto");
+            hide_spinner();
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         })
-        .always(function (data) {});
+        .always(function (data) { });
 }
 
 function actualizar_totales() {
@@ -267,10 +259,7 @@ function actualizar_totales() {
 }
 
 function editar_inversion(input) {
-    // mostrar spinner
-    $("#spinner").show();
-    $("#spinner").addClass("mostrar-spinner");
-    $("body").css("overflow", "hidden");
+    show_spinner();
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
@@ -285,10 +274,7 @@ function editar_inversion(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         if (result.editado == '1') {
             toastr.success("Inversión guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
@@ -299,21 +285,15 @@ function editar_inversion(input) {
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 function editar_tasa_interes(input) {
-    // mostrar spinner
-    $("#spinner").show();
-    $("#spinner").addClass("mostrar-spinner");
-    $("body").css("overflow", "hidden");
+    show_spinner();
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
@@ -328,10 +308,7 @@ function editar_tasa_interes(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         if (result.editado == '1') {
             toastr.success("Tasa de interés guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
@@ -342,22 +319,16 @@ function editar_tasa_interes(input) {
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 
 function editar_tasa_retorno(input) {
-    // mostrar spinner
-    $("#spinner").show();
-    $("#spinner").addClass("mostrar-spinner");
-    $("body").css("overflow", "hidden");
+    show_spinner();
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
@@ -372,10 +343,7 @@ function editar_tasa_retorno(input) {
         data: params,
         dataType: "json",
     }).done(function (result) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         if (result.editado == '1') {
             toastr.success("Tasa de retorno guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
@@ -386,24 +354,18 @@ function editar_tasa_retorno(input) {
             $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
         }
     }).fail(function (jqXHR, textStatus, errorThrown) {
-        // eliminar spinner
-        $("#spinner").hide();
-        $("#spinner").removeAttr("class");
-        $("body").css("overflow", "auto");
+        hide_spinner();
         toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         $(input).css('border-color', '#D30000');
         $(input).css('box-shadow', '0px 0px 6px 0px #FF000040');
-    }).always(function (data) {});
+    }).always(function (data) { });
 }
 
 $("#btnViabilidadMensual").click(function () {
+    show_spinner();
     if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
         // se verifica que el FEN acumulado del primer mes sea mayor a cero
         if (parseFloat(($('#total-fen-acum-mes-1').text()).substring(2).replace(',', '.')) != 0) {
-            // mostrar spinner
-            $("#spinner").show();
-            $("#spinner").addClass("mostrar-spinner");
-            $("body").css("overflow", "hidden");
             // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
             var csrftoken = getCookie("csrftoken");
             // se obtienen todos los fen
@@ -440,10 +402,7 @@ $("#btnViabilidadMensual").click(function () {
                 data: params,
                 dataType: "json",
             }).done(function (result) {
-                // eliminar spinner
-                $("#spinner").hide();
-                $("#spinner").removeAttr("class");
-                $("body").css("overflow", "auto");
+                hide_spinner();
                 if (result.viabilidad == '1') {
                     $('#tir-mensual').text(result.tir + ' %')
                     $('#bc-mensual').text('$ ' + result.razon_bc)
@@ -460,16 +419,15 @@ $("#btnViabilidadMensual").click(function () {
                     toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                // eliminar spinner
-                $("#spinner").hide();
-                $("#spinner").removeAttr("class");
-                $("body").css("overflow", "auto");
+                hide_spinner();
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) {});
+            }).always(function (data) { });
         } else {
+            hide_spinner();
             toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
         }
     } else {
+        hide_spinner();
         toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
     }
 });
@@ -521,3 +479,17 @@ $(".btnAggActividad").click(function () {
     id_fila = id_fila - 1;
     $("#" + superior_id.attr("id")).after(fila);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -238,13 +238,13 @@ def calcularViabilidad(request):
         pri = round(a + (b - c) / d, 2)
         # se obtiene la parte entera que son los años
         parte_decimal_pri, parte_entera1 = math.modf(pri)
-        anios = parte_entera1
+        anios = abs(parte_entera1)
         # se obtiene la parte entera que son los meses
         parte_decimal_meses, parte_entera2 = math.modf(parte_decimal_pri * 12)
-        meses = parte_entera2
+        meses = abs(parte_entera2)
         # se obtiene la parte entera que son los días
         parte_decimal3, parte_entera3 = math.modf(parte_decimal_meses * 30)
-        dias = parte_entera3
+        dias = abs(parte_entera3)
         return JsonResponse(
             {
                 "viabilidad": "1",

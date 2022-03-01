@@ -11,7 +11,6 @@ urlpatterns = [
     path("eliminar-actividad/", views.eliminarActividad, name="eliminar-actividad"),
     path("guardar-valor/", views.guardarValor, name="guardar-valor"),
     path("calcular-viabilidad/", views.calcularViabilidad, name="calcular-viabilidad"),
-    path("spinner/", views.vwSpinner, name="spinner"),
     #endregion
 
     #region CRUD proyecto
