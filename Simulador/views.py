@@ -9,10 +9,6 @@ from .models import *
 
 #region Flujo de efectivo
 
-def vwSpinner(request):
-    return render(request, "components/spinner.html")
-
-
 def vwFlujo(request, project_id):
     if not "usuario" in request.session:
         return redirect("login")
