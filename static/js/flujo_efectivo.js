@@ -407,7 +407,6 @@ $("#btnViabilidadMensual").click(function () {
                 'fen_neto': fen_neto,
                 'fen_acum': fen_acum
             };
-            alert(fen_neto)
             $.ajax({
                 type: "POST",
                 url: "/calcular-viabilidad/",
