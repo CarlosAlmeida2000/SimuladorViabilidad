@@ -32,8 +32,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function soloNumeros(event, input) {
-    var regex = new RegExp("^[0-9,. ]+$");
+function soloNumeros(event) {
+    var regex = new RegExp("^[0-9,.]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
         event.preventDefault();
@@ -42,12 +42,14 @@ function soloNumeros(event, input) {
 }
 
 function soloEnteros(event, input) {
-    var regex = new RegExp("^[0-9 ]+$");
+    var regex = new RegExp("^[0-9]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    if (!regex.test(key)) {
+    //alert($(input).val()[0])
+    if (!regex.test(key) | ($(input).val().length + 1) > 2 | (($(input).val().length == 0 & event.charCode == 48) | ($(input).val().length == 1 & event.charCode != 48) | (parseInt($(input).val()[0]) >= 2 & event.charCode == 48))) {
         event.preventDefault();
         return false;
     }
+    
 }
 
 function convertDecimal(input) {
