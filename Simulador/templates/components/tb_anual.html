@@ -94,21 +94,21 @@
                 </tr>
                 <!-- #endregion -->
                 <!-- #region Calculos -->
-                <tr>
+                <tr id="fen-anuales">
                     <th class="static-columns" style="padding-top:20px;">
                         <div>FEN</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" style="padding-top:20px;" id="fen-periodo-1">
+                    <td class="text-center fen-anuales" style="padding-top:20px;" id="fen-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
-                <tr>
+                <tr id="fen-acum-anuales">
                     <th class="static-columns">
                         <div>FEN acumulado</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="fen-acum-periodo-1">
+                    <td class="text-center fen-acum-anuales" id="fen-acum-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -120,7 +120,7 @@
 <hr class="mt-4">
 <div>
     <div class="options">
-        <button class="btn btn-purpure">
+        <button class="btn btn-purpure" id="btnViabilidadAnual">
             <i class="fa-solid fa-calculator"></i>
             Calcular viabilidad
         </button>

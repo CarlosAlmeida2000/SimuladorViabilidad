@@ -217,8 +217,14 @@ def calcularViabilidad(request):
         for i in range(len(flujo_acum["fen_acum"])):
             flujo_acumulado.append(flujo_acum["fen_acum"][i]["valor"])
         tir = round((npf.irr(flujos_neto2)) * 100, 2)
+        if(str(tir) == 'nan'):
+            tir = 0
         van = round(npf.npv(tasa_interes, flujos_neto2), 2)
+        if(str(van) == 'nan'):
+            van = 0
         razon_bc = round((npf.npv(tasa_interes, flujos_neto)) / inversion, 2)
+        if(str(razon_bc) == 'nan'):
+            razon_bc = 0
         # se obtiene el valor de a para calcular el PRI
         for f in range(len(flujo_acumulado)):
             if flujo_acumulado[f] >= inversion:
@@ -232,6 +238,8 @@ def calcularViabilidad(request):
         c = abs(flujo_acumulado[a - 1])
         d = abs(flujos_neto[a])
         pri = round(a + (b - c) / d, 2)
+        if(str(pri) == 'nan'):
+            pri = 0
         # se obtiene la parte entera que son los años
         parte_decimal_pri, parte_entera1 = math.modf(pri)
         anios = abs(parte_entera1)
@@ -253,7 +261,7 @@ def calcularViabilidad(request):
             }
         )
     except Exception as e:
-        return JsonResponse({"viabilidad": "0"})
+        return JsonResponse({"viabilidad": '0'})
 
 #endregion
 

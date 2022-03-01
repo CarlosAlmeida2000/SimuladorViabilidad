@@ -407,6 +407,7 @@ $("#btnViabilidadMensual").click(function () {
                 'fen_neto': fen_neto,
                 'fen_acum': fen_acum
             };
+            alert(fen_neto)
             $.ajax({
                 type: "POST",
                 url: "/calcular-viabilidad/",
@@ -500,6 +501,13 @@ $(".btnAggActividad").click(function () {
 
 
 
+
+
+
+
+
+
+
 $("#nav-anual-tab").click(function () {
     ingreso_anual = parseFloat($('#ingreso-periodo-1 div').text().substring(2).replace(',', '.'))
     costo_a_anual = parseFloat($('#costo-a-periodo-1 div').text().substring(2).replace(',', '.'))
@@ -534,6 +542,9 @@ function calcular_periodos(number) {
         total_costo_i_anuales = costo_i_anual
         total_egresos = 0
         total_todos_egresos = 0
+
+        total_fen = parseFloat($('#fen-periodo-1 div').text().substring(2).replace(',', '.'))
+        total_fen_acum = parseFloat($('#fen-acum-periodo-1 div').text().substring(2).replace(',', '.'))
         for (var i = 1; i < parseInt($(number).val()); i++) {
             $('#encabezado-periodos').append(`<th class="text-center periodo" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
             ingreso_anual += ingreso_anual * tasa_retorno
@@ -551,6 +562,19 @@ function calcular_periodos(number) {
             $('#costos-i-anuales').append(`<th class="text-center periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></th>`);
             total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
             $('#total-egresos-anuales').append(`<th class="text-center periodo" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></th>`);
+            // fen anual
+            fen = 0
+            fen = ingreso_anual - total_egresos
+            total_fen += fen
+            $('#fen-anuales').append(`<th class="text-center periodo fen-anuales" id="fen-periodo-${(i + 1)}"><div>$ ${fen.toFixed(2).replace('.', ',')}</div></th>`);
+            // fen acumulado
+            fen_acum = 0
+            fen_acum_anterior = 0 
+            fen_actual = parseFloat($('#fen-periodo-'+ (i + 1)).text().substring(2).replace(',', '.'))
+            fen_acum_anterior = parseFloat($('#fen-acum-periodo-'+ (i)).text().substring(2).replace(',', '.'))
+            fen_acum = fen_actual + fen_acum_anterior
+            total_fen_acum += fen_acum
+            $('#fen-acum-anuales').append(`<th class="text-center periodo fen-acum-anuales" id="fen-acum-periodo-${(i + 1)}"><div>$ ${fen_acum.toFixed(2).replace('.', ',')}</div></th>`);
         }
         $('#encabezado-periodos').append(`<th class="text-center periodo" id="encabezado-total">Total</th>`);
         $('#ingresos-anuales').append(`<th class="text-center periodo" id="total-todos-ingresos-anuales"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></th>`);
@@ -561,7 +585,84 @@ function calcular_periodos(number) {
         $('#costos-i-anuales').append(`<th class="text-center periodo" id="total-todos-costos-i-anuales"><div>$ ${total_costo_i_anuales.toFixed(2).replace('.', ',')}</div></th>`);
         total_todos_egresos = total_costo_a_anuales + total_costo_p_anuales + total_costo_i_anuales
         $('#total-egresos-anuales').append(`<th class="text-center periodo" id="total-todos-egresos"><div>$ ${total_todos_egresos.toFixed(2).replace('.', ',')}</div></th>`);
+
+        $('#fen-anuales').append(`<th class="text-center periodo" id="total-fen"><div>$ ${total_fen.toFixed(2).replace('.', ',')}</div></th>`);
+        $('#fen-acum-anuales').append(`<th class="text-center periodo" id="total-fen-acum"><div>$ ${total_fen_acum.toFixed(2).replace('.', ',')}</div></th>`);
+
     } else {
         toastr.warning("Para calcular el flujo de efectivo anual es necesario ingresar la tasa de retorno", config_toast);
     }
 }
+
+
+$("#btnViabilidadAnual").click(function(){
+    show_spinner();
+    if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
+        // se verifica que el FEN acumulado del primer mes sea mayor a cero
+        //if (parseFloat(($('#total-fen-acum-mes-1').text()).substring(2).replace(',', '.')) != 0) {
+            // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+            var csrftoken = getCookie("csrftoken");
+            // se obtienen todos los fen
+            
+            var fen_neto = []; 
+            var json_array = {};
+            $('.fen-anuales div').each(function () {
+                fen_neto.push({
+                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+                });
+            });
+            json_array.fen_neto = fen_neto;
+            fen_neto = JSON.stringify(json_array);
+            // se obtienen todos los fen acumulados
+            var fen_acum = [];
+            var json_array = {};
+            $('.fen-acum-anuales div').each(function () {
+                fen_acum.push({
+                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
+                });
+            });
+            json_array.fen_acum = fen_acum;
+            fen_acum = JSON.stringify(json_array);
+            // se definen los parámetros de la petición ajax
+            var params = {
+                csrfmiddlewaretoken: csrftoken,
+                'inversion': parseFloat($('#inversion').val()),
+                'tasa_interes': parseFloat($('#tasa_interes').val()),
+                'fen_neto': fen_neto,
+                'fen_acum': fen_acum
+            };
+            $.ajax({
+                type: "POST",
+                url: "/calcular-viabilidad/",
+                data: params,
+                dataType: "json"
+            }).done(function (result) {
+                hide_spinner();
+                if (result.viabilidad == '1') {
+                    $('#tir-anual').text(result.tir + ' %')
+                    $('#bc-anual').text('$ ' + result.razon_bc)
+                    $('#van-anual').text('$ ' + result.van)
+                    $('#pri-anual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
+                    if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
+                        $('#text-respuesta-anual').text('Ups, parece que tu proyecto no es viable!')
+                        $('#text-respuesta-anual').css('color', '#D30000');
+                    } else {
+                        $('#text-respuesta-anual').text('¡Felicidades su proyecto es económicamente rentable!')
+                        $('#text-respuesta-anual').css('color', '#0c9449');
+                    }
+                } else {
+                    toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                hide_spinner();
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            }).always(function (data) {});
+        /*} else {
+            hide_spinner();
+            toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
+        }*/
+    } else {
+        hide_spinner();
+        toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
+    }
+});
