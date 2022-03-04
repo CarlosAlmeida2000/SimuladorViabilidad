@@ -419,19 +419,16 @@ $("#btnViabilidadMensual").click(function () {
                 $('#bc-mensual').text('$ ' + result.razon_bc)
                 $('#van-mensual').text('$ ' + result.van)
                 $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-
-
-                if (result.tir > tasa_interes) {
+                if (result.tir > (tasa_interes * 100)) {
                     $('#respuesta-tir-mensual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-tir-mensual').css('color', '#0c9449');
-                } else if (result.tir < tasa_interes) {
+                } else if (result.tir < (tasa_interes * 100)) {
                     $('#respuesta-tir-mensual').text('El proyecto no es económicamente aceptable')
                     $('#respuesta-tir-mensual').css('color', '#D30000');
                 } else {
                     $('#respuesta-tir-mensual').text('El proyecto no genera ganancias ni pérdidas')
                     $('#respuesta-tir-mensual').css('color', '#232323');
                 }
-
                 if (result.razon_bc > 1) {
                     $('#respuesta-bc-mensual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-bc-mensual').css('color', '#0c9449');
@@ -442,7 +439,6 @@ $("#btnViabilidadMensual").click(function () {
                     $('#respuesta-bc-mensual').text('El proyecto no genera ganancias ni pérdidas')
                     $('#respuesta-bc-mensual').css('color', '#232323');
                 }
-
                 if (result.van > 0) {
                     $('#respuesta-van-mensual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-van-mensual').css('color', '#0c9449');
@@ -665,18 +661,16 @@ $("#btnViabilidadAnual").click(function(){
                 $('#bc-anual').text('$ ' + result.razon_bc)
                 $('#van-anual').text('$ ' + result.van)
                 $('#pri-anual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-
-                if (result.tir > tasa_interes) {
+                if (result.tir > (tasa_interes * 100)) {
                     $('#respuesta-tir-anual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-tir-anual').css('color', '#0c9449');
-                } else if (result.tir < tasa_interes) {
+                } else if (result.tir < (tasa_interes * 100)) {
                     $('#respuesta-tir-anual').text('El proyecto no es económicamente aceptable')
                     $('#respuesta-tir-anual').css('color', '#D30000');
                 } else {
                     $('#respuesta-tir-anual').text('El proyecto no genera ganancias ni pérdidas')
                     $('#respuesta-tir-anual').css('color', '#232323');
                 }
-
                 if (result.razon_bc > 1) {
                     $('#respuesta-bc-anual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-bc-anual').css('color', '#0c9449');
@@ -687,7 +681,6 @@ $("#btnViabilidadAnual").click(function(){
                     $('#respuesta-bc-anual').text('El proyecto no genera ganancias ni pérdidas')
                     $('#respuesta-bc-anual').css('color', '#232323');
                 }
-
                 if (result.van > 0) {
                     $('#respuesta-van-anual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-van-anual').css('color', '#0c9449');
@@ -705,7 +698,6 @@ $("#btnViabilidadAnual").click(function(){
             hide_spinner();
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
         }).always(function (data) {});
-    
     } else {
         hide_spinner();
         toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
