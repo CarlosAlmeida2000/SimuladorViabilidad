@@ -210,12 +210,19 @@ def calcularViabilidad(request):
         # se obtiene el json del flujo neto
         flujo_neto = json.loads(r"" + json.loads(json.dumps(request.POST["fen_neto"])))
         for i in range(len(flujo_neto["fen_neto"])):
-            flujos_neto.append(flujo_neto["fen_neto"][i]["valor"])
-            flujos_neto2.append(flujo_neto["fen_neto"][i]["valor"])
+            if(flujo_neto["fen_neto"][i]["valor"] == 0):
+                flujos_neto.append(0.01)    
+                flujos_neto2.append(0.01)  
+            else:  
+                flujos_neto.append(flujo_neto["fen_neto"][i]["valor"])
+                flujos_neto2.append(flujo_neto["fen_neto"][i]["valor"])
         # se obtienen el json del flujo acumulado
         flujo_acum = json.loads(r"" + json.loads(json.dumps(request.POST["fen_acum"])))
         for i in range(len(flujo_acum["fen_acum"])):
-            flujo_acumulado.append(flujo_acum["fen_acum"][i]["valor"])
+            if(flujo_acum["fen_acum"][i]["valor"] == 0):
+                flujo_acumulado.append(0.01)   
+            else:
+                flujo_acumulado.append(flujo_acum["fen_acum"][i]["valor"])
         tir = round((npf.irr(flujos_neto2)) * 100, 2)
         if(str(tir) == 'nan'):
             tir = 0

@@ -69,7 +69,6 @@ function eliminar_actividad(id_actividad) {
         $('#fila-' + id_actividad).remove()
         hide_spinner();
         toastr.success("La actividad fue eliminada correctamente", config_toast);
-        actualizar_totales();
     } else {
         result_delete = confirm('¿Está seguro(a) de eliminar la actividad?');
         if (result_delete) {
@@ -87,9 +86,12 @@ function eliminar_actividad(id_actividad) {
             }).done(function (result) {
                 hide_spinner();
                 if (result.eliminada == '1') {
-                    $('#fila-' + id_actividad).remove()
+                    $('#fila-' + id_actividad + ' td input').each(function () {
+                        $(this).val('0,00')
+                    });
                     toastr.success("La actividad fue eliminada correctamente", config_toast);
                     actualizar_totales();
+                    $('#fila-' + id_actividad).remove()
                 } else {
                     toastr.error("Existió un error, por favor intente nuevamente", config_toast);
                 }
@@ -125,7 +127,7 @@ function guardar_valor(input) {
         project_id: $('#project_id').text(),
         id_valor: $(input).attr("data-id"),
         id_actividad: $("#" + $(input).parent().parent().attr("id") + " #actividad").attr("data-id"),
-        valor: parseFloat($(input).val().replace(',', '.')),
+        valor: ($(input).val()) != '' ? parseFloat($(input).val().replace(',', '.')) : 0,
         mes: $(input).attr("mes"),
         // Aquí es donde consulto el proyecto id, este id se obtiene de la tabla mensual
         project_id: $("#table-mensual").attr("data-project-id"),
@@ -173,96 +175,94 @@ function actualizar_totales() {
         var fen_acum_anterior = 0.00
 
         var input = $(this)
-        if (input.val().length > 0) {
-            // calcular el total del mes
-            $('.' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).each(function () {
-                if ($(this).val() != '') {
-                    total_mes += parseFloat($(this).val().replace(',', '.'))
-                }
-            });
-            $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
-            // calcular el total de la fila
-            $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).each(function () {
-                if ($(this).val() != '') {
-                    total_fila += parseFloat($(this).val().replace(',', '.'))
-                }
-            });
-            $('#total-' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).html("<div>$ " + total_fila.toFixed(2).replace('.', ',') + "</div>")
-            // calcular el total de todas las filas
-            $('.total-' + $(input).attr("tipo_cuenta") + '-fila').each(function () {
-                if ($(this).text() != '$ 00,00') {
-                    total_todas_filas += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                }
-            });
-            $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
-            // actualizar los totales de cada tipo de cuenta para el primer año del flujo anual
-            if ($(input).attr("tipo_cuenta") == 'ingresos') {
-                $('#ingreso-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
-            } else if ($(input).attr("tipo_cuenta") == 'costos-a') {
-                $('#costo-a-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
-            } else if ($(input).attr("tipo_cuenta") == 'costos-p') {
-                $('#costo-p-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
-            } else {
-                $('#costo-i-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        // calcular el total del mes
+        $('.' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).each(function () {
+            if ($(this).val() != '') {
+                total_mes += parseFloat($(this).val().replace(',', '.'))
             }
-            // sumar todos los egresos del mes actual
-            total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) +
-                parseFloat($('#total-costos-p-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) +
-                parseFloat($('#total-costos-i-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')))
-            $('#total-egresos-mes-' + $(input).attr("mes")).html('<div> $ ' + total_egresos_mensual.toFixed(2).replace('.', ',') + ' </div>')
-            // total de todos los egresos de todos los meses
-            $('.total-egresos div').each(function () {
-                if ($(this).text() != '$ 00,00') {
-                    total_egresos_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                }
-            });
-            $('#total-todos-egresos').html('<div> $ ' + total_egresos_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
-            // calcular el FEN del mes actual
-            fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) -
-                parseFloat($('#total-egresos-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.'))
-            $('#total-fen-mes-' + $(input).attr("mes")).html('<div> $ ' + fen_mensual.toFixed(2).replace('.', ',') + ' </div>')
-            if (fen_mensual < 0) {
-                $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#D30000');
-            } else {
-                $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#232323');
+        });
+        $('#total-' + $(input).attr("tipo_cuenta") + '-mes-' + $(input).attr("mes")).html("<div>$ " + total_mes.toFixed(2).replace('.', ',') + "</div>")
+        // calcular el total de la fila
+        $('.' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).each(function () {
+            if ($(this).val() != '') {
+                total_fila += parseFloat($(this).val().replace(',', '.'))
             }
-            // calcular el FEN acumulado de todos los meses
-            $('.fen-acumulado').each(function () {
-                if ($(this).attr('mes') == '1') {
-                    fen_acum_mensual = (parseFloat($('#total-ingresos-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')) -
-                        parseFloat($('#total-egresos-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')))
-                } else {
-                    fen_acum_mensual = (parseFloat($('#total-fen-acum-mes-' + (($(this).attr('mes')) - 1) + ' div').text().substring(2).replace(',', '.')) +
-                        parseFloat($('#total-fen-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')))
-                }
-                $(this).html('<div> $ ' + fen_acum_mensual.toFixed(2).replace('.', ',') + ' </div>')
-                if (fen_acum_mensual < 0) {
-                    $(this).css('color', '#D30000');
-                } else {
-                    $(this).css('color', '#232323');
-                }
-                // fen acumulado 
-                total_fen_acum_todos_meses += fen_acum_mensual
-            });
-            // actualizar el fen acumulado total de todos los meses
-            $('#total-todos-fen-acum').html('<div> $ ' + total_fen_acum_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
-            if (total_fen_acum_todos_meses < 0) {
-                $('#total-todos-fen-acum').css('color', '#D30000');
-            } else {
-                $('#total-todos-fen-acum').css('color', '#232323');
+        });
+        $('#total-' + $(input).attr("tipo_cuenta") + '-fila-' + $(input).attr("fila")).html("<div>$ " + total_fila.toFixed(2).replace('.', ',') + "</div>")
+        // calcular el total de todas las filas
+        $('.total-' + $(input).attr("tipo_cuenta") + '-fila').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_todas_filas += parseFloat(($(this).text()).substring(2).replace(',', '.'))
             }
-            // total de los fen de todos los meses
-            $('.fen div').each(function () {
-                if ($(this).text() != '$ 00,00') {
-                    total_fen_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
-                }
-            });
-            $('#total-todos-fen').html('<div> $ ' + total_fen_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
-            if (total_fen_todos_meses < 0) {
-                $('#total-todos-fen').css('color', '#D30000');
-            } else {
-                $('#total-todos-fen').css('color', '#232323');
+        });
+        $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        // actualizar los totales de cada tipo de cuenta para el primer año del flujo anual
+        if ($(input).attr("tipo_cuenta") == 'ingresos') {
+            $('#ingreso-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        } else if ($(input).attr("tipo_cuenta") == 'costos-a') {
+            $('#costo-a-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        } else if ($(input).attr("tipo_cuenta") == 'costos-p') {
+            $('#costo-p-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        } else {
+            $('#costo-i-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+        }
+        // sumar todos los egresos del mes actual
+        total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) +
+            parseFloat($('#total-costos-p-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) +
+            parseFloat($('#total-costos-i-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')))
+        $('#total-egresos-mes-' + $(input).attr("mes")).html('<div> $ ' + total_egresos_mensual.toFixed(2).replace('.', ',') + ' </div>')
+        // total de todos los egresos de todos los meses
+        $('.total-egresos div').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_egresos_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
             }
+        });
+        $('#total-todos-egresos').html('<div> $ ' + total_egresos_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
+        // calcular el FEN del mes actual
+        fen_mensual = parseFloat($('#total-ingresos-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) -
+            parseFloat($('#total-egresos-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.'))
+        $('#total-fen-mes-' + $(input).attr("mes")).html('<div> $ ' + fen_mensual.toFixed(2).replace('.', ',') + ' </div>')
+        if (fen_mensual < 0) {
+            $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#D30000');
+        } else {
+            $('#total-fen-mes-' + $(input).attr("mes")).css('color', '#232323');
+        }
+        // calcular el FEN acumulado de todos los meses
+        $('.fen-acumulado').each(function () {
+            if ($(this).attr('mes') == '1') {
+                fen_acum_mensual = (parseFloat($('#total-ingresos-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')) -
+                    parseFloat($('#total-egresos-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')))
+            } else {
+                fen_acum_mensual = (parseFloat($('#total-fen-acum-mes-' + (($(this).attr('mes')) - 1) + ' div').text().substring(2).replace(',', '.')) +
+                    parseFloat($('#total-fen-mes-' + (($(this).attr('mes'))) + ' div').text().substring(2).replace(',', '.')))
+            }
+            $(this).html('<div> $ ' + fen_acum_mensual.toFixed(2).replace('.', ',') + ' </div>')
+            if (fen_acum_mensual < 0) {
+                $(this).css('color', '#D30000');
+            } else {
+                $(this).css('color', '#232323');
+            }
+            // fen acumulado 
+            total_fen_acum_todos_meses += fen_acum_mensual
+        });
+        // actualizar el fen acumulado total de todos los meses
+        $('#total-todos-fen-acum').html('<div> $ ' + total_fen_acum_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
+        if (total_fen_acum_todos_meses < 0) {
+            $('#total-todos-fen-acum').css('color', '#D30000');
+        } else {
+            $('#total-todos-fen-acum').css('color', '#232323');
+        }
+        // total de los fen de todos los meses
+        $('.fen div').each(function () {
+            if ($(this).text() != '$ 00,00') {
+                total_fen_todos_meses += parseFloat(($(this).text()).substring(2).replace(',', '.'))
+            }
+        });
+        $('#total-todos-fen').html('<div> $ ' + total_fen_todos_meses.toFixed(2).replace('.', ',') + ' </div>')
+        if (total_fen_todos_meses < 0) {
+            $('#total-todos-fen').css('color', '#D30000');
+        } else {
+            $('#total-todos-fen').css('color', '#232323');
         }
     });
     return true;
@@ -275,7 +275,7 @@ function editar_inversion(input) {
     var params = {
         csrfmiddlewaretoken: csrftoken,
         project_id: $('#project_id').text(),
-        'inversion': parseFloat($(input).val().replace(',', '.')),
+        'inversion': $(input).val() != '' ? parseFloat($(input).val().replace(',', '.')) : 0,
         'desde_flujo_efectivo': true
     };
     $.ajax({
@@ -309,7 +309,7 @@ function editar_tasa_interes(input) {
     var params = {
         csrfmiddlewaretoken: csrftoken,
         project_id: $('#project_id').text(),
-        'tasa_interes': parseFloat($(input).val().replace(',', '.')),
+        'tasa_interes': $(input).val() != '' ? parseFloat($(input).val().replace(',', '.')) : 0,
         'desde_flujo_efectivo': true
     };
     $.ajax({
@@ -344,7 +344,7 @@ function editar_tasa_retorno(input) {
     var params = {
         csrfmiddlewaretoken: csrftoken,
         project_id: $('#project_id').text(),
-        'tasa_retorno': parseFloat($(input).val().replace(',', '.')),
+        'tasa_retorno': $(input).val() != '' ? parseFloat($(input).val().replace(',', '.')) : 0,
         'desde_flujo_efectivo': true
     };
     $.ajax({
@@ -375,68 +375,62 @@ function editar_tasa_retorno(input) {
 $("#btnViabilidadMensual").click(function () {
     show_spinner();
     if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
-        // se verifica que el FEN acumulado del primer mes sea mayor a cero
-        if (parseFloat(($('#total-fen-acum-mes-1').text()).substring(2).replace(',', '.')) != 0) {
-            // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
-            var csrftoken = getCookie("csrftoken");
-            // se obtienen todos los fen
-            var fen_neto = [];
-            var json_array = {};
-            $('.fen div').each(function () {
-                fen_neto.push({
-                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
-                });
+        // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+        var csrftoken = getCookie("csrftoken");
+        // se obtienen todos los fen
+        var fen_neto = [];
+        var json_array = {};
+        $('.fen div').each(function () {
+            fen_neto.push({
+                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
             });
-            json_array.fen_neto = fen_neto;
-            fen_neto = JSON.stringify(json_array);
-            // se obtienen todos los fen acumulados
-            var fen_acum = [];
-            var json_array = {};
-            $('.fen-acumulado div').each(function () {
-                fen_acum.push({
-                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
-                });
+        });
+        json_array.fen_neto = fen_neto;
+        fen_neto = JSON.stringify(json_array);
+        // se obtienen todos los fen acumulados
+        var fen_acum = [];
+        var json_array = {};
+        $('.fen-acumulado div').each(function () {
+            fen_acum.push({
+                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
             });
-            json_array.fen_acum = fen_acum;
-            fen_acum = JSON.stringify(json_array);
-            // se definen los parámetros de la petición ajax
-            var params = {
-                csrfmiddlewaretoken: csrftoken,
-                'inversion': parseFloat($('#inversion').val()),
-                'tasa_interes': parseFloat($('#tasa_interes').val()),
-                'fen_neto': fen_neto,
-                'fen_acum': fen_acum
-            };
-            $.ajax({
-                type: "POST",
-                url: "/calcular-viabilidad/",
-                data: params,
-                dataType: "json",
-            }).done(function (result) {
-                hide_spinner();
-                if (result.viabilidad == '1') {
-                    $('#tir-mensual').text(result.tir + ' %')
-                    $('#bc-mensual').text('$ ' + result.razon_bc)
-                    $('#van-mensual').text('$ ' + result.van)
-                    $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-                    if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
-                        $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
-                        $('#text-respuesta-mensual').css('color', '#D30000');
-                    } else {
-                        $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
-                        $('#text-respuesta-mensual').css('color', '#0c9449');
-                    }
-                } else {
-                    toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                hide_spinner();
-                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) {});
-        } else {
+        });
+        json_array.fen_acum = fen_acum;
+        fen_acum = JSON.stringify(json_array);
+        // se definen los parámetros de la petición ajax
+        var params = {
+            csrfmiddlewaretoken: csrftoken,
+            'inversion': parseFloat($('#inversion').val()),
+            'tasa_interes': parseFloat($('#tasa_interes').val()),
+            'fen_neto': fen_neto,
+            'fen_acum': fen_acum
+        };
+        $.ajax({
+            type: "POST",
+            url: "/calcular-viabilidad/",
+            data: params,
+            dataType: "json",
+        }).done(function (result) {
             hide_spinner();
-            toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
-        }
+            if (result.viabilidad == '1') {
+                $('#tir-mensual').text(result.tir + ' %')
+                $('#bc-mensual').text('$ ' + result.razon_bc)
+                $('#van-mensual').text('$ ' + result.van)
+                $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
+                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
+                    $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
+                    $('#text-respuesta-mensual').css('color', '#D30000');
+                } else {
+                    $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
+                    $('#text-respuesta-mensual').css('color', '#0c9449');
+                }
+            } else {
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            hide_spinner();
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+        }).always(function (data) {});
     } else {
         hide_spinner();
         toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
@@ -556,7 +550,7 @@ function calcular_periodos(number) {
             costo_p_anual += costo_p_anual * tasa_retorno
             total_costo_p_anuales += costo_p_anual
             $('#costos-p-anuales').append(`<th class="text-center periodo" id="costos-p-periodo-${(i + 1)}"><div>$ ${costo_p_anual.toFixed(2).replace('.', ',')}</div></th>`);
-            costo_i_anual += ingreso_anual * tasa_retorno
+            costo_i_anual += costo_i_anual * tasa_retorno
             total_costo_i_anuales += costo_i_anual
             $('#costos-i-anuales').append(`<th class="text-center periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></th>`);
             total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
@@ -597,69 +591,63 @@ function calcular_periodos(number) {
 $("#btnViabilidadAnual").click(function(){
     show_spinner();
     if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
-        // se verifica que el FEN acumulado del primer mes sea mayor a cero
-        //if (parseFloat(($('#total-fen-acum-mes-1').text()).substring(2).replace(',', '.')) != 0) {
-            // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
-            var csrftoken = getCookie("csrftoken");
-            // se obtienen todos los fen
-            
-            var fen_neto = []; 
-            var json_array = {};
-            $('.fen-anuales div').each(function () {
-                fen_neto.push({
-                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
-                });
+        // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+        var csrftoken = getCookie("csrftoken");
+        // se obtienen todos los fen
+        var fen_neto = []; 
+        var json_array = {};
+        $('.fen-anuales div').each(function () {
+            fen_neto.push({
+                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
             });
-            json_array.fen_neto = fen_neto;
-            fen_neto = JSON.stringify(json_array);
-            // se obtienen todos los fen acumulados
-            var fen_acum = [];
-            var json_array = {};
-            $('.fen-acum-anuales div').each(function () {
-                fen_acum.push({
-                    "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
-                });
+        });
+        json_array.fen_neto = fen_neto;
+        fen_neto = JSON.stringify(json_array);
+        // se obtienen todos los fen acumulados
+        var fen_acum = [];
+        var json_array = {};
+        $('.fen-acum-anuales div').each(function () {
+            fen_acum.push({
+                "valor": parseFloat(($(this).text()).substring(2).replace(',', '.')),
             });
-            json_array.fen_acum = fen_acum;
-            fen_acum = JSON.stringify(json_array);
-            // se definen los parámetros de la petición ajax
-            var params = {
-                csrfmiddlewaretoken: csrftoken,
-                'inversion': parseFloat($('#inversion').val()),
-                'tasa_interes': parseFloat($('#tasa_interes').val()),
-                'fen_neto': fen_neto,
-                'fen_acum': fen_acum
-            };
-            $.ajax({
-                type: "POST",
-                url: "/calcular-viabilidad/",
-                data: params,
-                dataType: "json"
-            }).done(function (result) {
-                hide_spinner();
-                if (result.viabilidad == '1') {
-                    $('#tir-anual').text(result.tir + ' %')
-                    $('#bc-anual').text('$ ' + result.razon_bc)
-                    $('#van-anual').text('$ ' + result.van)
-                    $('#pri-anual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-                    if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
-                        $('#text-respuesta-anual').text('Ups, parece que tu proyecto no es viable!')
-                        $('#text-respuesta-anual').css('color', '#D30000');
-                    } else {
-                        $('#text-respuesta-anual').text('¡Felicidades su proyecto es económicamente rentable!')
-                        $('#text-respuesta-anual').css('color', '#0c9449');
-                    }
-                } else {
-                    toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                hide_spinner();
-                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
-            }).always(function (data) {});
-        /*} else {
+        });
+        json_array.fen_acum = fen_acum;
+        fen_acum = JSON.stringify(json_array);
+        // se definen los parámetros de la petición ajax
+        var params = {
+            csrfmiddlewaretoken: csrftoken,
+            'inversion': parseFloat($('#inversion').val()),
+            'tasa_interes': parseFloat($('#tasa_interes').val()),
+            'fen_neto': fen_neto,
+            'fen_acum': fen_acum
+        };
+        $.ajax({
+            type: "POST",
+            url: "/calcular-viabilidad/",
+            data: params,
+            dataType: "json"
+        }).done(function (result) {
             hide_spinner();
-            toastr.warning("Para calcular la viabilidad es necesario que el primer mes tenga un flujo de efectivo", config_toast);
-        }*/
+            if (result.viabilidad == '1') {
+                $('#tir-anual').text(result.tir + ' %')
+                $('#bc-anual').text('$ ' + result.razon_bc)
+                $('#van-anual').text('$ ' + result.van)
+                $('#pri-anual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
+                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
+                    $('#text-respuesta-anual').text('Ups, parece que tu proyecto no es viable!')
+                    $('#text-respuesta-anual').css('color', '#D30000');
+                } else {
+                    $('#text-respuesta-anual').text('¡Felicidades su proyecto es económicamente rentable!')
+                    $('#text-respuesta-anual').css('color', '#0c9449');
+                }
+            } else {
+                toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            hide_spinner();
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+        }).always(function (data) {});
+    
     } else {
         hide_spinner();
         toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
