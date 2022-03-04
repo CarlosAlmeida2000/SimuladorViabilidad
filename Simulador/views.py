@@ -223,26 +223,31 @@ def calcularViabilidad(request):
                 flujo_acumulado.append(0.01)   
             else:
                 flujo_acumulado.append(flujo_acum["fen_acum"][i]["valor"])
-        tir = round((npf.irr(flujos_neto2)) * 100, 2)
+        tir = round((npf.irr(flujos_neto2) * 100), 2)
         if(str(tir) == 'nan'):
             tir = 0
         van = round(npf.npv(tasa_interes, flujos_neto2), 2)
         if(str(van) == 'nan'):
             van = 0
-        razon_bc = round((npf.npv(tasa_interes, flujos_neto)) / inversion, 2)
+        razon_bc = round((npf.npv(tasa_interes, flujos_neto) / inversion), 2)
         if(str(razon_bc) == 'nan'):
             razon_bc = 0
+        primer_anio = False
         # se obtiene el valor de a para calcular el PRI
         for f in range(len(flujo_acumulado)):
             if flujo_acumulado[f] >= inversion:
                 if f == 0:
-                    a = 1
+                    primer_anio = True
+                    a = f
                     break
                 else:
                     a = f
                     break
         b = inversion
-        c = abs(flujo_acumulado[a - 1])
+        if primer_anio:
+            c = abs(flujo_acumulado[a])
+        else:
+            c = abs(flujo_acumulado[a - 1])
         d = abs(flujos_neto[a])
         pri = round(a + (b - c) / d, 2)
         if(str(pri) == 'nan'):

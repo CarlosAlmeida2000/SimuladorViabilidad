@@ -43,8 +43,8 @@
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="ingresos"
-                            data-id="{{ingreso.id}}" fila="{{ingreso.id}}" onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{ingreso.nombre}}" /></th>
+                            data-id="{{ingreso.id}}" fila="{{ingreso.id}}"
+                            onchange="javascript:guardar_actividad(this);" size="37" value="{{ingreso.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador ingresos-mes-1 ingresos-fila-{{ingreso.id}}" mes="1"
                             tipo_cuenta="ingresos" data-id="{{ingreso.id_valor_mes1}}" fila="{{ingreso.id}}"
@@ -199,8 +199,8 @@
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-a"
-                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{costo.nombre}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
+                            size="37" value="{{costo.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador costos-a-mes-1 costos-a-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-a" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
@@ -347,8 +347,8 @@
                             </button>
                         </th>
                         <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-p"
-                                data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
-                                value="{{costo.nombre}}" />
+                                data-id="{{costo.id}}" fila="{{costo.id}}"
+                                onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombre}}" />
                         </th>
                         <td>
                             <input class="text-center sumador costos-p-mes-1 costos-p-fila-{{costo.id}}" mes="1"
@@ -495,8 +495,8 @@
                         </button>
                     </th>
                     <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-i"
-                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
-                            value="{{costo.nombre}}" /></th>
+                            data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);"
+                            size="37" value="{{costo.nombre}}" /></th>
                     <td>
                         <input class="text-center sumador costos-i-mes-1 costos-i-fila-{{costo.id}}" mes="1"
                             tipo_cuenta="costos-i" data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}"
@@ -779,22 +779,18 @@
     <div class="result mt-2">
         <div>
             Criterios de evaluación:
-            <span id="text-respuesta-mensual" style="font-weight: bolder;">
-            </span>
         </div>
-        <div class="d-flex mt-2">
-            <div class="me-5">
-                <strong>TIR:</strong> <span id="tir-mensual"></span>
-            </div>
-            <div class="me-5">
-                <strong>B/C:</strong> <span id="bc-mensual"></span>
-            </div>
-            <div class="me-5">
-                <strong>VAN:</strong> <span id="van-mensual"></span>
-            </div>
+        <div class="me-5">
+            <strong>TIR:</strong> <span id="tir-mensual"></span> <span id="respuesta-tir-mensual" style="font-weight: bolder;"></span>
+        </div>
+        <div class="me-5">
+            <strong>B/C:</strong> <span id="bc-mensual"></span> <span id="respuesta-bc-mensual" style="font-weight: bolder;"></span>
+        </div>
+        <div class="me-5">
+            <strong>VAN:</strong> <span id="van-mensual"></span> <span id="respuesta-van-mensual" style="font-weight: bolder;"></span>
         </div>
         <div class="mt-2">
-            <strong>PRI:</strong> <span id="pri-mensual"></span>
+            <strong>PRI:</strong> <span id="pri-mensual"></span> <span id="respuesta-pri-mensual" style="font-weight: bolder;"></span>
         </div>
     </div>
 </div>

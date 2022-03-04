@@ -398,10 +398,12 @@ $("#btnViabilidadMensual").click(function () {
         json_array.fen_acum = fen_acum;
         fen_acum = JSON.stringify(json_array);
         // se definen los parámetros de la petición ajax
+        inversion = parseFloat($('#inversion').val().replace(',', '.'))
+        tasa_interes = parseFloat($('#tasa_interes').val().replace(',', '.'))
         var params = {
             csrfmiddlewaretoken: csrftoken,
-            'inversion': parseFloat($('#inversion').val()),
-            'tasa_interes': parseFloat($('#tasa_interes').val()),
+            'inversion': inversion,
+            'tasa_interes': tasa_interes,
             'fen_neto': fen_neto,
             'fen_acum': fen_acum
         };
@@ -417,12 +419,39 @@ $("#btnViabilidadMensual").click(function () {
                 $('#bc-mensual').text('$ ' + result.razon_bc)
                 $('#van-mensual').text('$ ' + result.van)
                 $('#pri-mensual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
-                    $('#text-respuesta-mensual').text('Ups, parece que tu proyecto no es viable!')
-                    $('#text-respuesta-mensual').css('color', '#D30000');
+
+
+                if (result.tir > tasa_interes) {
+                    $('#respuesta-tir-mensual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-tir-mensual').css('color', '#0c9449');
+                } else if (result.tir < tasa_interes) {
+                    $('#respuesta-tir-mensual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-tir-mensual').css('color', '#D30000');
                 } else {
-                    $('#text-respuesta-mensual').text('¡Felicidades su proyecto es económicamente rentable!')
-                    $('#text-respuesta-mensual').css('color', '#0c9449');
+                    $('#respuesta-tir-mensual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-tir-mensual').css('color', '#232323');
+                }
+
+                if (result.razon_bc > 1) {
+                    $('#respuesta-bc-mensual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-bc-mensual').css('color', '#0c9449');
+                } else if(result.razon_bc < 1) {
+                    $('#respuesta-bc-mensual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-bc-mensual').css('color', '#D30000');
+                } else {
+                    $('#respuesta-bc-mensual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-bc-mensual').css('color', '#232323');
+                }
+
+                if (result.van > 0) {
+                    $('#respuesta-van-mensual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-van-mensual').css('color', '#0c9449');
+                } else if (result.van < 0) {
+                    $('#respuesta-van-mensual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-van-mensual').css('color', '#D30000');
+                } else {
+                    $('#respuesta-van-mensual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-van-mensual').css('color', '#232323');
                 }
             } else {
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
@@ -511,6 +540,7 @@ $("#nav-anual-tab").click(function () {
     $('#total-egresos-periodo-1').html('<div> $ ' + total_egresos.toFixed(2).replace('.', ',') + ' </div>')
     $('#fen-periodo-1').html('<div> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
     $('#fen-acum-periodo-1').html('<div> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
+    calcular_periodos($('#periodos'));
 });
 
 $("#periodos").change(function () {
@@ -614,10 +644,12 @@ $("#btnViabilidadAnual").click(function(){
         json_array.fen_acum = fen_acum;
         fen_acum = JSON.stringify(json_array);
         // se definen los parámetros de la petición ajax
+        inversion = parseFloat($('#inversion').val().replace(',', '.'))
+        tasa_interes = parseFloat($('#tasa_interes').val().replace(',', '.'))
         var params = {
             csrfmiddlewaretoken: csrftoken,
-            'inversion': parseFloat($('#inversion').val()),
-            'tasa_interes': parseFloat($('#tasa_interes').val()),
+            'inversion': inversion,
+            'tasa_interes': tasa_interes,
             'fen_neto': fen_neto,
             'fen_acum': fen_acum
         };
@@ -633,12 +665,38 @@ $("#btnViabilidadAnual").click(function(){
                 $('#bc-anual').text('$ ' + result.razon_bc)
                 $('#van-anual').text('$ ' + result.van)
                 $('#pri-anual').text(result.anios + ' años, ' + result.meses + ' meses y ' + result.dias + ' días')
-                if (result.tir <= 0 | result.razon_bc <= 0 | result.van <= 0) {
-                    $('#text-respuesta-anual').text('Ups, parece que tu proyecto no es viable!')
-                    $('#text-respuesta-anual').css('color', '#D30000');
+
+                if (result.tir > tasa_interes) {
+                    $('#respuesta-tir-anual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-tir-anual').css('color', '#0c9449');
+                } else if (result.tir < tasa_interes) {
+                    $('#respuesta-tir-anual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-tir-anual').css('color', '#D30000');
                 } else {
-                    $('#text-respuesta-anual').text('¡Felicidades su proyecto es económicamente rentable!')
-                    $('#text-respuesta-anual').css('color', '#0c9449');
+                    $('#respuesta-tir-anual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-tir-anual').css('color', '#232323');
+                }
+
+                if (result.razon_bc > 1) {
+                    $('#respuesta-bc-anual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-bc-anual').css('color', '#0c9449');
+                } else if(result.razon_bc < 1) {
+                    $('#respuesta-bc-anual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-bc-anual').css('color', '#D30000');
+                } else {
+                    $('#respuesta-bc-anual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-bc-anual').css('color', '#232323');
+                }
+
+                if (result.van > 0) {
+                    $('#respuesta-van-anual').text('El proyecto es económicamente aceptable')
+                    $('#respuesta-van-anual').css('color', '#0c9449');
+                } else if (result.van < 0) {
+                    $('#respuesta-van-anual').text('El proyecto no es económicamente aceptable')
+                    $('#respuesta-van-anual').css('color', '#D30000');
+                } else {
+                    $('#respuesta-van-anual').text('El proyecto no genera ganancias ni pérdidas')
+                    $('#respuesta-van-anual').css('color', '#232323');
                 }
             } else {
                 toastr.error("Existió un error, por favor intente nuevamente", config_toast);
