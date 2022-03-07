@@ -432,7 +432,7 @@ $("#btnViabilidadMensual").click(function () {
                 if (result.razon_bc > 1) {
                     $('#respuesta-bc-mensual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-bc-mensual').css('color', '#0c9449');
-                } else if(result.razon_bc < 1) {
+                } else if (result.razon_bc < 1) {
                     $('#respuesta-bc-mensual').text('El proyecto no es económicamente aceptable')
                     $('#respuesta-bc-mensual').css('color', '#D30000');
                 } else {
@@ -565,48 +565,48 @@ function calcular_periodos(number) {
         total_fen = parseFloat($('#fen-periodo-1 div').text().substring(2).replace(',', '.'))
         total_fen_acum = parseFloat($('#fen-acum-periodo-1 div').text().substring(2).replace(',', '.'))
         for (var i = 1; i < parseInt($(number).val()); i++) {
-            $('#encabezado-periodos').append(`<th class="text-center periodo" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
+            $('#encabezado-periodos').append(`<th class="periodo" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
             ingreso_anual += ingreso_anual * tasa_retorno
             total_ingresos_anuales += ingreso_anual
-            $('#ingresos-anuales').append(`<th class="text-center periodo" id="ingreso-periodo-${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></th>`);
-            $('#total-ingresos-anuales').append(`<th class="text-center periodo" id="total-ingresos-periodo--${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#ingresos-anuales').append(`<td class="periodo" id="ingreso-periodo-${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#total-ingresos-anuales').append(`<td class="periodo" id="total-ingresos-periodo--${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_a_anual += costo_a_anual * tasa_retorno
             total_costo_a_anuales += costo_a_anual
-            $('#costos-a-anuales').append(`<th class="text-center periodo" id="costos-a-periodo-${(i + 1)}"><div>$ ${costo_a_anual.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#costos-a-anuales').append(`<td class="periodo" id="costos-a-periodo-${(i + 1)}"><div>$ ${costo_a_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_p_anual += costo_p_anual * tasa_retorno
             total_costo_p_anuales += costo_p_anual
-            $('#costos-p-anuales').append(`<th class="text-center periodo" id="costos-p-periodo-${(i + 1)}"><div>$ ${costo_p_anual.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#costos-p-anuales').append(`<td class="periodo" id="costos-p-periodo-${(i + 1)}"><div>$ ${costo_p_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_i_anual += costo_i_anual * tasa_retorno
             total_costo_i_anuales += costo_i_anual
-            $('#costos-i-anuales').append(`<th class="text-center periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#costos-i-anuales').append(`<td class="periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></td>`);
             total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
-            $('#total-egresos-anuales').append(`<th class="text-center periodo" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#total-egresos-anuales').append(`<td class="periodo" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></td>`);
             // fen anual
             fen = 0
             fen = ingreso_anual - total_egresos
             total_fen += fen
-            $('#fen-anuales').append(`<th class="text-center periodo fen-anuales" id="fen-periodo-${(i + 1)}"><div>$ ${fen.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#fen-anuales').append(`<td class="periodo fen-anuales" id="fen-periodo-${(i + 1)}"><div>$ ${fen.toFixed(2).replace('.', ',')}</div></td>`);
             // fen acumulado
             fen_acum = 0
-            fen_acum_anterior = 0 
-            fen_actual = parseFloat($('#fen-periodo-'+ (i + 1)).text().substring(2).replace(',', '.'))
-            fen_acum_anterior = parseFloat($('#fen-acum-periodo-'+ (i)).text().substring(2).replace(',', '.'))
+            fen_acum_anterior = 0
+            fen_actual = parseFloat($('#fen-periodo-' + (i + 1)).text().substring(2).replace(',', '.'))
+            fen_acum_anterior = parseFloat($('#fen-acum-periodo-' + (i)).text().substring(2).replace(',', '.'))
             fen_acum = fen_actual + fen_acum_anterior
             total_fen_acum += fen_acum
-            $('#fen-acum-anuales').append(`<th class="text-center periodo fen-acum-anuales" id="fen-acum-periodo-${(i + 1)}"><div>$ ${fen_acum.toFixed(2).replace('.', ',')}</div></th>`);
+            $('#fen-acum-anuales').append(`<td class="periodo fen-acum-anuales" id="fen-acum-periodo-${(i + 1)}"><div>$ ${fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
         }
-        $('#encabezado-periodos').append(`<th class="text-center periodo" id="encabezado-total">Total</th>`);
-        $('#ingresos-anuales').append(`<th class="text-center periodo" id="total-todos-ingresos-anuales"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></th>`);
-        $('#total-ingresos-anuales').append(`<th class="text-center periodo" id="total-todos-ingresos"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></th>`);
+        $('#encabezado-periodos').append(`<th class="periodo" id="encabezado-total">Total</th>`);
+        $('#ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos-anuales"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#total-ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
 
-        $('#costos-a-anuales').append(`<th class="text-center periodo" id="total-todos-costos-a-anuales"><div>$ ${total_costo_a_anuales.toFixed(2).replace('.', ',')}</div></th>`);
-        $('#costos-p-anuales').append(`<th class="text-center periodo" id="total-todos-costos-p-anuales"><div>$ ${total_costo_p_anuales.toFixed(2).replace('.', ',')}</div></th>`);
-        $('#costos-i-anuales').append(`<th class="text-center periodo" id="total-todos-costos-i-anuales"><div>$ ${total_costo_i_anuales.toFixed(2).replace('.', ',')}</div></th>`);
+        $('#costos-a-anuales').append(`<td class="periodo" id="total-todos-costos-a-anuales"><div>$ ${total_costo_a_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#costos-p-anuales').append(`<td class="periodo" id="total-todos-costos-p-anuales"><div>$ ${total_costo_p_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#costos-i-anuales').append(`<td class="periodo" id="total-todos-costos-i-anuales"><div>$ ${total_costo_i_anuales.toFixed(2).replace('.', ',')}</div></td>`);
         total_todos_egresos = total_costo_a_anuales + total_costo_p_anuales + total_costo_i_anuales
-        $('#total-egresos-anuales').append(`<th class="text-center periodo" id="total-todos-egresos"><div>$ ${total_todos_egresos.toFixed(2).replace('.', ',')}</div></th>`);
+        $('#total-egresos-anuales').append(`<td class="periodo" id="total-todos-egresos"><div>$ ${total_todos_egresos.toFixed(2).replace('.', ',')}</div></td>`);
 
-        $('#fen-anuales').append(`<th class="text-center periodo" id="total-fen"><div>$ ${total_fen.toFixed(2).replace('.', ',')}</div></th>`);
-        $('#fen-acum-anuales').append(`<th class="text-center periodo" id="total-fen-acum"><div>$ ${total_fen_acum.toFixed(2).replace('.', ',')}</div></th>`);
+        $('#fen-anuales').append(`<td class="periodo" id="total-fen"><div>$ ${total_fen.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#fen-acum-anuales').append(`<td class="periodo" id="total-fen-acum"><div>$ ${total_fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
 
     } else {
         toastr.warning("Para calcular el flujo de efectivo anual es necesario ingresar la tasa de retorno", config_toast);
@@ -614,13 +614,13 @@ function calcular_periodos(number) {
 }
 
 
-$("#btnViabilidadAnual").click(function(){
+$("#btnViabilidadAnual").click(function () {
     show_spinner();
     if (parseFloat($('#inversion').val().replace(',', '.')) > 0 & parseFloat($('#tasa_interes').val().replace(',', '.')) > 0) {
         // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
         var csrftoken = getCookie("csrftoken");
         // se obtienen todos los fen
-        var fen_neto = []; 
+        var fen_neto = [];
         var json_array = {};
         $('.fen-anuales div').each(function () {
             fen_neto.push({
@@ -674,7 +674,7 @@ $("#btnViabilidadAnual").click(function(){
                 if (result.razon_bc > 1) {
                     $('#respuesta-bc-anual').text('El proyecto es económicamente aceptable')
                     $('#respuesta-bc-anual').css('color', '#0c9449');
-                } else if(result.razon_bc < 1) {
+                } else if (result.razon_bc < 1) {
                     $('#respuesta-bc-anual').text('El proyecto no es económicamente aceptable')
                     $('#respuesta-bc-anual').css('color', '#D30000');
                 } else {

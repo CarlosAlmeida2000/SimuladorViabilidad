@@ -2,13 +2,14 @@
     <div class="parameters d-flex mt-3">
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
-            <input type="text" id="tasa_retorno" onchange="return editar_tasa_retorno(this)"
-                onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)"
+            <input type="text" id="tasa_retorno" onchange="javascript:editar_tasa_retorno(this)"
+                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)"
                 value="{{proyecto.tasa_retorno}}">
         </div>
         <div class="ms-3">
             <label for="periodos">Periodos (años)</label>
-            <input type="number" id="periodos" min="1" max="10" value="1" onkeypress="return soloEnteros(event, this)">
+            <input type="number" id="periodos" min="1" max="10" value="1"
+                onkeypress="javascript:soloEnteros(event, this)">
         </div>
     </div>
     <div class="content-table-anual table-responsive">
@@ -19,7 +20,7 @@
                         <div>Inicio</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <th class="text-center" id="encabezado-periodo-1">Año 1</th>
+                    <th id="encabezado-periodo-1">Año 1</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,14 +29,14 @@
                     <th class="static-columns">
                         <div>Ingresos del proyecto</div>
                     </th>
-                    <td colspan="1"></td>
+                    <td colspan="2"></td>
                 </tr>
                 <tr id="ingresos-anuales">
                     <th class="static-columns">
                         <div>Ingresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="ingreso-periodo-1">
+                    <td id="ingreso-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -44,7 +45,7 @@
                         <div>Total de ingresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="total-ingresos-periodo-1">
+                    <td id="total-ingresos-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -54,14 +55,14 @@
                     <th class="static-columns">
                         <div>Egresos del proyecto</div>
                     </th>
-                    <td colspan="1"></td>
+                    <td colspan="2"></td>
                 </tr>
                 <tr id="costos-a-anuales">
                     <th class="static-columns">
                         <div>Costo de administración</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="costo-a-periodo-1">
+                    <td id="costo-a-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -70,7 +71,7 @@
                         <div>Costo de producción</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="costo-p-periodo-1">
+                    <td id="costo-p-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -79,7 +80,7 @@
                         <div>Costo de inversión</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="costo-i-periodo-1">
+                    <td id="costo-i-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -88,7 +89,7 @@
                         <div>Total de egresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center" id="total-egresos-periodo-1">
+                    <td id="total-egresos-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -99,7 +100,7 @@
                         <div>FEN</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center fen-anuales" style="padding-top:20px;" id="fen-periodo-1">
+                    <td class="fen-anuales" style="padding-top:20px;" id="fen-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -108,7 +109,7 @@
                         <div>FEN acumulado</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td class="text-center fen-acum-anuales" id="fen-acum-periodo-1">
+                    <td class="fen-acum-anuales" id="fen-acum-periodo-1">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -138,16 +139,20 @@
             Criterios de evaluación:
         </div>
         <div>
-            <strong>TIR:</strong> <span id="tir-anual"></span> <span id="respuesta-tir-anual" style="font-weight: bolder;"></span>
+            <strong>TIR:</strong> <span id="tir-anual"></span> <span id="respuesta-tir-anual"
+                style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>B/C:</strong> <span id="bc-anual"></span> <span id="respuesta-bc-anual" style="font-weight: bolder;"></span>
+            <strong>B/C:</strong> <span id="bc-anual"></span> <span id="respuesta-bc-anual"
+                style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>VAN:</strong> <span id="van-anual"></span> <span id="respuesta-van-anual" style="font-weight: bolder;"></span>
+            <strong>VAN:</strong> <span id="van-anual"></span> <span id="respuesta-van-anual"
+                style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>PRI:</strong> <span id="pri-anual"></span> <span id="respuesta-pri-anual" style="font-weight: bolder;"></span>
+            <strong>PRI:</strong> <span id="pri-anual"></span> <span id="respuesta-pri-anual"
+                style="font-weight: bolder;"></span>
         </div>
     </div>
 </div>

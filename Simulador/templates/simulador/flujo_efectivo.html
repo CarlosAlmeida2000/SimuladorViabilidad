@@ -21,15 +21,15 @@
             <div class="filters d-flex align-items-end">
                 <div class="me-3">
                     <label class="d-block" for="inversión">Inversión</label>
-                    <input class="d-block" id="inversion" name="inversion" type="text"
-                        onchange="return editar_inversion(this)" onkeypress="return soloNumeros(event)"
-                        onkeyup="return convertDecimal(this)" value="{{proyecto.inversion}}">
+                    <input class="d-block" id="inversion" name="inversion" type="text" onchange="javascript:editar_inversion(this)"
+                        onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)"
+                        value="{{proyecto.inversion}}">
                 </div>
                 <div class="me-3">
                     <label class="d-block" for="tasa-interes">Tasa de interés</label>
                     <input class="d-block" id="tasa_interes" name="tasa_interes" type="text"
-                        onchange="return editar_tasa_interes(this)" onkeypress="return soloNumeros(event)"
-                        onkeyup="return convertDecimal(this)" value="{{proyecto.tasa_interes}}">
+                        onchange="javascript:editar_tasa_interes(this)" onkeypress="javascript:soloNumeros(event)"
+                        onkeyup="javascript:convertDecimal(this)" value="{{proyecto.tasa_interes}}">
                 </div>
                 <a href="{% url 'index' %}" class="btn btn-blackm me-3">Mis proyectos</a>
             </div>
@@ -51,16 +51,14 @@
         <div class="mt-4">
             <nav>
                 <div class="nav nav-tabs" role="tablist">
-                    <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab"
-                        data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual"
-                        aria-selected="true">Mensual</button>
-                    <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual"
-                        type="button" role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
+                    <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual"
+                        type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
+                    <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual" type="button"
+                        role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
                 </div>
             </nav>
             <div class="tab-content mb-5">
-                <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel"
-                    aria-labelledby="nav-mensual-tab">
+                <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab">
                     {% include 'components/tb_mensual.html' %}
                 </div>
                 <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab">
@@ -78,4 +76,165 @@
 
 {% block js %}
 <script src="{% static 'js/flujo_efectivo.js' %}"></script>
+<script src="{% static 'js/apexcharts.min.js' %}"></script>
+<!-- Graphic of Ing-Egr -->
+<script>
+    let ingresos_data = []
+    let egresos_data = []
+    $(".t-mensual-ingresos").each(function (index, element) {
+        ingresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    $(".t-mensual-egresos").each(function (index, element) {
+        egresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    var max_data = Math.max(...ingresos_data) > Math.max(...egresos_data) ? Math.max(...ingresos_data) : Math.max(...egresos_data);
+    var options = {
+        series: [{
+            name: "Ingresos - 2018",
+            data: ingresos_data,
+        }, {
+            name: "Egresos - 2018",
+            data: egresos_data
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            dropShadow: {
+                enabled: true,
+                color: '#000',
+                top: 18,
+                left: 7,
+                blur: 10,
+                opacity: 0.2
+            },
+            toolbar: {
+                show: true
+            }
+        },
+        colors: ["#56c2d6", "#f0643b"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Ingresos y Egresos',
+            align: 'left'
+        },
+        grid: {
+            borderColor: '#e7e7e7',
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        markers: {
+            size: 1
+        },
+        xaxis: {
+            categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            title: {
+                text: 'Meses'
+            }
+        },
+        yaxis: {
+            title: {
+                text: "Capitalización"
+            },
+            min: 0,
+            max: max_data,
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+        }
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-ing-egr"), options)).render();
+</script>
+<!-- Graphic of FEN -->
+<script>
+    let fen_data = []
+    $(".fen").each(function (index, element) {
+        fen_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    console.log(fen_data);
+    var max_data = Math.max(...fen_data);
+    var options = {
+        series: [{
+            name: "FEN",
+            data: fen_data
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+            stacked: false,
+            height: 350,
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        colors: ["#22d174"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Flujo de Efectivo NETO (FEN)',
+            align: 'left'
+        },
+        markers: {
+            size: 0
+        },
+        xaxis: {
+            categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            title: {
+                text: 'Meses'
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return `$ ${val}`;
+                },
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+        },
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-fen"), options)).render();
+</script>
 {% endblock js %}
