@@ -265,6 +265,7 @@ function actualizar_totales() {
             $('#total-todos-fen').css('color', '#232323');
         }
     });
+    cargar_graficos_mensuales();
     return true;
 }
 
@@ -703,3 +704,169 @@ $("#btnViabilidadAnual").click(function () {
         toastr.warning("Para calcular la viabilidad es necesario ingresar la inversión y la tasa de interés", config_toast);
     }
 });
+
+
+// Función para cargar los graficos
+function cargar_graficos_mensuales() {
+    $("#graphic-ing-egr-mensual").empty();
+    $("#graphic-fen-mensual").empty();
+    // #region Gráficos de ingresos y egresos
+    let ingresos_data = []
+    let egresos_data = []
+    $(".t-mensual-ingresos").each(function (index, element) {
+        ingresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    $(".t-mensual-egresos").each(function (index, element) {
+        egresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    var max_data = Math.max(...ingresos_data) > Math.max(...egresos_data) ? Math.max(...ingresos_data) : Math.max(...egresos_data);
+    var options = {
+        series: [{
+            name: "Ingresos - 2018",
+            data: ingresos_data,
+        }, {
+            name: "Egresos - 2018",
+            data: egresos_data
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            dropShadow: {
+                enabled: true,
+                color: '#000',
+                top: 18,
+                left: 7,
+                blur: 10,
+                opacity: 0.2
+            },
+            toolbar: {
+                show: true
+            }
+        },
+        colors: ["#56c2d6", "#f0643b"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Ingresos y Egresos',
+            align: 'left'
+        },
+        grid: {
+            borderColor: '#e7e7e7',
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        markers: {
+            size: 1
+        },
+        xaxis: {
+            categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            title: {
+                text: 'Meses'
+            }
+        },
+        yaxis: {
+            title: {
+                text: "Capitalización"
+            },
+            min: 0,
+            max: max_data,
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+        }
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-ing-egr-mensual"), options)).render();
+    // #endregion
+
+    // #region Gráficos de FEN
+    let fen_data = []
+    $(".fen").each(function (index, element) {
+        fen_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    console.log(fen_data);
+    var max_data = Math.max(...fen_data);
+    var options = {
+        series: [{
+            name: "FEN",
+            data: fen_data
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+            stacked: false,
+            height: 350,
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        colors: ["#22d174"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Flujo de Efectivo NETO (FEN)',
+            align: 'left'
+        },
+        markers: {
+            size: 0
+        },
+        xaxis: {
+            categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            title: {
+                text: 'Meses'
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return `$ ${val}`;
+                },
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+        },
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-fen-mensual"), options)).render();
+    // #endregion
+}
