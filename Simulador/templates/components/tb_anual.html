@@ -7,7 +7,7 @@
         </div>
         <div class="ms-3">
             <label for="periodos">Periodos (años)</label>
-            <input type="number" id="periodos" min="1" max="10" value="1" onkeypress="javascript:soloEnteros(event, this)">
+            <input type="number" id="periodos" min="5" max="10" value="5" onkeypress="javascript:soloEnterosRangos(event, this)">
         </div>
     </div>
     <div class="content-table-anual table-responsive">
@@ -15,7 +15,7 @@
             <thead>
                 <tr id="encabezado-periodos">
                     <th class="static-columns">
-                        <div>Inicio</div>
+                        <div>Actividades</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <th id="encabezado-periodo-1" class="year">Año 1</th>

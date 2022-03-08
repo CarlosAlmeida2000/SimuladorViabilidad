@@ -1,7 +1,5 @@
-import imp
 from unicodedata import name
 from django.urls import path
-
 from Simulador import views
 
 urlpatterns = [
@@ -11,6 +9,7 @@ urlpatterns = [
     path("eliminar-actividad/", views.eliminarActividad, name="eliminar-actividad"),
     path("guardar-valor/", views.guardarValor, name="guardar-valor"),
     path("calcular-viabilidad/", views.calcularViabilidad, name="calcular-viabilidad"),
+    path("descargar-excel-mensual/", views.descargar_excel_mensual, name="descargar-excel-mensual"),
     #endregion
 
     #region CRUD proyecto
@@ -28,4 +27,4 @@ urlpatterns = [
     path("logout", views.logout, name="logout"),
     path("registre", views.registre, name="regitrame"),
     #endregion
-]
+] 

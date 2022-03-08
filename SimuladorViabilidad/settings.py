@@ -112,6 +112,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') # Producción
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join('media/')
+
 MESSAGE_TAGS = {
     50: 'password',
 }

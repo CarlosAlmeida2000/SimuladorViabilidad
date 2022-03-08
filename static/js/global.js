@@ -44,7 +44,16 @@ function soloNumeros(event) {
 function soloEnteros(event, input) {
     var regex = new RegExp("^[0-9]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    //alert($(input).val()[0])
+    if (!regex.test(key) | ($(input).val().length + 1) > 2 | (($(input).val().length == 0 & event.charCode == 48) | ($(input).val().length == 1 & event.charCode != 48) | (parseInt($(input).val()[0]) >= 2 & event.charCode == 48))) {
+        event.preventDefault();
+        return false;
+    }
+    
+}
+
+function soloEnterosRangos(event, input) {
+    var regex = new RegExp("^[5678910]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key) | ($(input).val().length + 1) > 2 | (($(input).val().length == 0 & event.charCode == 48) | ($(input).val().length == 1 & event.charCode != 48) | (parseInt($(input).val()[0]) >= 2 & event.charCode == 48))) {
         event.preventDefault();
         return false;

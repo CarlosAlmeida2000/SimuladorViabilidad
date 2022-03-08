@@ -91,6 +91,7 @@ function eliminar_actividad(id_actividad) {
                     });
                     toastr.success("La actividad fue eliminada correctamente", config_toast);
                     actualizar_totales();
+                    limpiar_resultados();
                     $('#fila-' + id_actividad).remove()
                 } else {
                     toastr.error("Existió un error, por favor intente nuevamente", config_toast);
@@ -143,6 +144,7 @@ function guardar_valor(input) {
             if (result.id_valor > 0) {
                 $(input).attr("data-id", result.id_valor);
                 actualizar_totales();
+                limpiar_resultados();
                 toastr.success("Valor guardado correctamente", config_toast);
                 $(input).css('border-color', '#00710B');
                 $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
@@ -290,6 +292,7 @@ function editar_inversion(input) {
             toastr.success("Inversión guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+            limpiar_resultados();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -324,6 +327,7 @@ function editar_tasa_interes(input) {
             toastr.success("Tasa de interés guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
+            limpiar_resultados();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -360,6 +364,7 @@ function editar_tasa_retorno(input) {
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
             calcular_periodos($('#periodos'));
+            limpiar_resultados();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -463,49 +468,67 @@ $("#btnViabilidadMensual").click(function () {
     }
 });
 
+function limpiar_resultados(){
+    $('#tir-mensual').text('')
+    $('#bc-mensual').text('')
+    $('#van-mensual').text('')
+    $('#pri-mensual').text('')
+    $('#respuesta-tir-mensual').text('')
+    $('#respuesta-bc-mensual').text('')
+    $('#respuesta-van-mensual').text('')
+
+    $('#tir-anual').text('')
+    $('#bc-anual').text('')
+    $('#van-anual').text('')
+    $('#pri-anual').text('')
+    $('#respuesta-tir-anual').text('')
+    $('#respuesta-bc-anual').text('')
+    $('#respuesta-van-anual').text('')
+}
+
 $(".btnAggActividad").click(function () {
     var superior_id = $(this).parent().parent().parent();
     var seccion = superior_id.attr("id");
-    var fila = '<tr id="fila-' + id_fila + '"> \n\
+    var fila = '<tr class="' + seccion + '-excel" id="fila-' + id_fila + '"> \n\
 		        <th><button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad(' + id_fila + ')" type="button"><i class="fa-solid fa-trash-can"></i></button></th>\n\
-                <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
+                <th class="static-columns"><input class="text-center dato-mensual-excel" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-1 ' + seccion + '-fila-' + id_fila + '" mes="1" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-1 ' + seccion + '-fila-' + id_fila + '" mes="1" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-2 ' + seccion + '-fila-' + id_fila + '" mes="2" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-2 ' + seccion + '-fila-' + id_fila + '" mes="2" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-3 ' + seccion + '-fila-' + id_fila + '" mes="3" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-3 ' + seccion + '-fila-' + id_fila + '" mes="3" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-4 ' + seccion + '-fila-' + id_fila + '" mes="4" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-4 ' + seccion + '-fila-' + id_fila + '" mes="4" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-5 ' + seccion + '-fila-' + id_fila + '" mes="5" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-5 ' + seccion + '-fila-' + id_fila + '" mes="5" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-6 ' + seccion + '-fila-' + id_fila + '" mes="6" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-6 ' + seccion + '-fila-' + id_fila + '" mes="6" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-7 ' + seccion + '-fila-' + id_fila + '" mes="7" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-7 ' + seccion + '-fila-' + id_fila + '" mes="7" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-8 ' + seccion + '-fila-' + id_fila + '" mes="8" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-8 ' + seccion + '-fila-' + id_fila + '" mes="8" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-9 ' + seccion + '-fila-' + id_fila + '" mes="9" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-9 ' + seccion + '-fila-' + id_fila + '" mes="9" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-10 ' + seccion + '-fila-' + id_fila + '" mes="10" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-10 ' + seccion + '-fila-' + id_fila + '" mes="10" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-11 ' + seccion + '-fila-' + id_fila + '" mes="11" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-11 ' + seccion + '-fila-' + id_fila + '" mes="11" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
                 <td> \n\
-                  <input disabled class="text-center sumador ' + seccion + '-mes-12 ' + seccion + '-fila-' + id_fila + '" mes="12" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
+                  <input disabled class="text-center sumador dato-mensual-excel ' + seccion + '-mes-12 ' + seccion + '-fila-' + id_fila + '" mes="12" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_valor(this);" onkeypress="return soloNumeros(event)" onkeyup="return convertDecimal(this)" size="6"/> \n\
                 </td> \n\
-                <td class="text-center total-' + seccion + '-fila" id="total-' + seccion + '-fila-' + id_fila + '">$ 00,00</td> \n\
+                <td class="text-center dato-mensual-excel total-' + seccion + '-fila" id="total-' + seccion + '-fila-' + id_fila + '">$ 00,00</td> \n\
             </tr>';
     id_fila = id_fila - 1;
     $("#" + superior_id.attr("id")).after(fila);
@@ -543,6 +566,7 @@ $("#nav-anual-tab").click(function () {
 $("#periodos").change(function () {
     $(".padre").children(':nth-child(2)').attr("colspan", (parseInt($(this).val()) + 1));
     calcular_periodos(this);
+    limpiar_resultados();
     ocultar_grafico_anual();
 });
 
@@ -1114,4 +1138,52 @@ $("#btnGraficosAnuales").click(function () {
     cargar_graficos_anuales();
     var x = $(window).scrollTop();
     $(window).scrollTop(x + 1000);
+});
+
+
+
+
+
+$('#btnDescargarExcelMensual').click(function () {
+    show_spinner();
+    var flujo_efectivo = [];
+    var json_array = {};
+    $('.fila-descargar-excel').each(function () {
+        var fila = []
+        $('.dato-mensual-excel', this).each(function () {
+            if ($(this).is('input')) {
+                fila.push({ "dato": $(this).val() })
+            } else {
+                fila.push({ "dato": $(this).text() })
+            }
+        });
+        flujo_efectivo.push(fila);
+    });
+    json_array.flujo_efectivo = flujo_efectivo;
+    flujo_efectivo = JSON.stringify(json_array);
+    //console.log(flujo_efectivo)
+    // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+    var csrftoken = getCookie("csrftoken");
+    var params = {
+        "csrfmiddlewaretoken": csrftoken,
+        "flujo_efectivo": flujo_efectivo
+    };
+    $.ajax({
+        type: "POST",
+        url: "/descargar-excel-mensual/",
+        data: params,
+        dataType: "json"
+    }).done(function (result) {
+        hide_spinner();
+        if(result.excel == '1'){
+            var a = document.createElement('a');
+            a.href = "http://127.0.0.1:8000/media/excel/" + result.nombre_archivo;
+            a.click();
+        } else {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        hide_spinner();
+        toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+    }).always(function (data) { });
 });

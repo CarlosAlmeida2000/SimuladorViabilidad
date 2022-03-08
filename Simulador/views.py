@@ -1,9 +1,10 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.db.models import F, Q
 import numpy_financial as npf
 import math, json
+import xlwt
 from Simulador.UsuarioSession import UsuarioSession
 from .models import *
 
@@ -274,6 +275,98 @@ def calcularViabilidad(request):
         )
     except Exception as e:
         return JsonResponse({"viabilidad": '0'})
+
+
+def descargar_excel_mensual(request):
+    try:
+        datos = request.POST['flujo_efectivo']
+        nombre_archivo = 'FlujoEfectivoMensual.xls'
+        row_num = 0
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(nombre_archivo)
+        # Sheet header, first row
+        ws.col(0).width = int(26*260)
+        ws.col(1).width = int(20*260)
+        ws.col(2).width = int(20*260)
+        ws.col(3).width = int(20*260)
+        ws.col(4).width = int(20*260)
+        ws.col(5).width = int(20*260)
+        ws.col(6).width = int(20*260)
+        ws.col(7).width = int(20*260)
+        ws.col(8).width = int(20*260)
+        ws.col(9).width = int(20*260)
+        ws.col(10).width = int(20*260)
+        ws.col(11).width = int(20*260)
+        ws.col(12).width = int(20*260)
+        ws.col(13).width = int(20*260)
+
+        font_style = xlwt.Style.easyxf("""
+                                    font: name Arial,height 200,bold on;
+                                    borders: left thin, right thin, top thin, bottom thin;
+                                    pattern: pattern solid, fore_colour aqua;
+                                    align:  wrap on,vertical center, horizontal center;
+                                    """
+                                    )
+
+        columns = ['ACTIVIDAD',
+                'ENERO',
+                'FEBRERO',
+                'MARZO',
+                'ABRIL',
+                'MAYO',
+                'JUNIO',
+                'JULIO',
+                'AGOSTO',
+                'SEPTIEMBRE',
+                'OCTUBRE',
+                'NOVIEMBRE',
+                'DICIEMBRE',
+                'TOTAL'
+                ]
+
+        font_style_columns = xlwt.Style.easyxf("""
+                                font: name Arial,height 200,bold on;
+                                borders: left thin, right thin, top thin, bottom thin;
+                                pattern: pattern solid, fore_colour aqua;
+                                align:  wrap on,vertical center, horizontal center;
+                                """
+                                   )
+
+        font_style_rows = xlwt.Style.easyxf("""
+                                    font: name Arial;
+                                    align: wrap on, horiz center,vertical center;
+                                    borders: left thin, right thin, top thin, bottom thin;
+                                    """
+                                    )
+        flujo_efectivo = json.loads(r"" + json.loads(json.dumps(datos)))
+
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style_columns)
+
+        for row in range(len(flujo_efectivo['flujo_efectivo'])):
+            row_num += 1
+            if(len(flujo_efectivo['flujo_efectivo'][row]) == 1):
+                ws.write(row_num, 0, flujo_efectivo['flujo_efectivo'][row][0]['dato'], font_style_rows)
+            else:
+                ws.write(row_num, 0, flujo_efectivo['flujo_efectivo'][row][0]['dato'], font_style_rows)
+                ws.write(row_num, 1, flujo_efectivo['flujo_efectivo'][row][1]['dato'], font_style_rows)
+                ws.write(row_num, 2, flujo_efectivo['flujo_efectivo'][row][2]['dato'], font_style_rows)
+                ws.write(row_num, 3, flujo_efectivo['flujo_efectivo'][row][3]['dato'], font_style_rows)
+                ws.write(row_num, 4, flujo_efectivo['flujo_efectivo'][row][4]['dato'], font_style_rows)
+                ws.write(row_num, 5, flujo_efectivo['flujo_efectivo'][row][5]['dato'], font_style_rows)
+                ws.write(row_num, 6, flujo_efectivo['flujo_efectivo'][row][6]['dato'], font_style_rows)
+                ws.write(row_num, 7, flujo_efectivo['flujo_efectivo'][row][7]['dato'], font_style_rows)
+                ws.write(row_num, 8, flujo_efectivo['flujo_efectivo'][row][8]['dato'], font_style_rows)
+                ws.write(row_num, 9, flujo_efectivo['flujo_efectivo'][row][9]['dato'], font_style_rows)
+                ws.write(row_num, 10, flujo_efectivo['flujo_efectivo'][row][10]['dato'], font_style_rows)
+                ws.write(row_num, 11, flujo_efectivo['flujo_efectivo'][row][11]['dato'], font_style_rows)
+                ws.write(row_num, 12, flujo_efectivo['flujo_efectivo'][row][12]['dato'], font_style_rows)
+                ws.write(row_num, 13, flujo_efectivo['flujo_efectivo'][row][13]['dato'], font_style_rows)
+
+        wb.save('media/excel/' + nombre_archivo)
+        return JsonResponse({'excel': '1', 'nombre_archivo': nombre_archivo})
+    except Exception as e:
+        return JsonResponse({'excel': '0'})
 
 #endregion
 
