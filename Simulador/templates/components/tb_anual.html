@@ -3,13 +3,11 @@
         <div>
             <label for="tasa-retorno">Tasa de interes de retorno</label>
             <input type="text" id="tasa_retorno" onchange="javascript:editar_tasa_retorno(this)"
-                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)"
-                value="{{proyecto.tasa_retorno}}">
+                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" value="{{proyecto.tasa_retorno}}">
         </div>
         <div class="ms-3">
             <label for="periodos">Periodos (años)</label>
-            <input type="number" id="periodos" min="1" max="10" value="1"
-                onkeypress="javascript:soloEnteros(event, this)">
+            <input type="number" id="periodos" min="1" max="10" value="1" onkeypress="javascript:soloEnteros(event, this)">
         </div>
     </div>
     <div class="content-table-anual table-responsive">
@@ -20,7 +18,7 @@
                         <div>Inicio</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <th id="encabezado-periodo-1">Año 1</th>
+                    <th id="encabezado-periodo-1" class="year">Año 1</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +43,7 @@
                         <div>Total de ingresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td id="total-ingresos-periodo-1">
+                    <td id="total-ingresos-periodo-1" class="t-anual-ingresos">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -89,7 +87,7 @@
                         <div>Total de egresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
-                    <td id="total-egresos-periodo-1">
+                    <td id="total-egresos-periodo-1" class="t-anual-egresos">
                         <div>$ 00,00</div>
                     </td>
                 </tr>
@@ -125,7 +123,7 @@
             <i class="fa-solid fa-calculator"></i>
             Calcular viabilidad
         </button>
-        <button class="btn btn-cyan">
+        <button class="btn btn-cyan" id="btnGraficosAnuales">
             <i class="fa-solid fa-chart-line"></i>
             Ver gráficos
         </button>
@@ -139,20 +137,18 @@
             Criterios de evaluación:
         </div>
         <div>
-            <strong>TIR:</strong> <span id="tir-anual"></span> <span id="respuesta-tir-anual"
-                style="font-weight: bolder;"></span>
+            <strong>TIR:</strong> <span id="tir-anual"></span> <span id="respuesta-tir-anual" style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>B/C:</strong> <span id="bc-anual"></span> <span id="respuesta-bc-anual"
-                style="font-weight: bolder;"></span>
+            <strong>B/C:</strong> <span id="bc-anual"></span> <span id="respuesta-bc-anual" style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>VAN:</strong> <span id="van-anual"></span> <span id="respuesta-van-anual"
-                style="font-weight: bolder;"></span>
+            <strong>VAN:</strong> <span id="van-anual"></span> <span id="respuesta-van-anual" style="font-weight: bolder;"></span>
         </div>
         <div>
-            <strong>PRI:</strong> <span id="pri-anual"></span> <span id="respuesta-pri-anual"
-                style="font-weight: bolder;"></span>
+            <strong>PRI:</strong> <span id="pri-anual"></span> <span id="respuesta-pri-anual" style="font-weight: bolder;"></span>
         </div>
     </div>
+</div>
+<div id="graphics-anual">
 </div>

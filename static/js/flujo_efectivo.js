@@ -265,7 +265,7 @@ function actualizar_totales() {
             $('#total-todos-fen').css('color', '#232323');
         }
     });
-    cargar_graficos_mensuales();
+    ocultar_grafico_mensual();
     return true;
 }
 
@@ -543,6 +543,7 @@ $("#nav-anual-tab").click(function () {
 $("#periodos").change(function () {
     $(".padre").children(':nth-child(2)').attr("colspan", (parseInt($(this).val()) + 1));
     calcular_periodos(this);
+    ocultar_grafico_anual();
 });
 
 // función para calcular el flujo en varios periodos, también se va a llamar al momento de modificar la tasa de retorno para que vuelva a calcular
@@ -566,11 +567,11 @@ function calcular_periodos(number) {
         total_fen = parseFloat($('#fen-periodo-1 div').text().substring(2).replace(',', '.'))
         total_fen_acum = parseFloat($('#fen-acum-periodo-1 div').text().substring(2).replace(',', '.'))
         for (var i = 1; i < parseInt($(number).val()); i++) {
-            $('#encabezado-periodos').append(`<th class="periodo" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
+            $('#encabezado-periodos').append(`<th class="periodo year" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
             ingreso_anual += ingreso_anual * tasa_retorno
             total_ingresos_anuales += ingreso_anual
             $('#ingresos-anuales').append(`<td class="periodo" id="ingreso-periodo-${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
-            $('#total-ingresos-anuales').append(`<td class="periodo" id="total-ingresos-periodo--${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#total-ingresos-anuales').append(`<td class="periodo t-anual-ingresos" id="total-ingresos-periodo--${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_a_anual += costo_a_anual * tasa_retorno
             total_costo_a_anuales += costo_a_anual
             $('#costos-a-anuales').append(`<td class="periodo" id="costos-a-periodo-${(i + 1)}"><div>$ ${costo_a_anual.toFixed(2).replace('.', ',')}</div></td>`);
@@ -581,7 +582,7 @@ function calcular_periodos(number) {
             total_costo_i_anuales += costo_i_anual
             $('#costos-i-anuales').append(`<td class="periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></td>`);
             total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
-            $('#total-egresos-anuales').append(`<td class="periodo" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#total-egresos-anuales').append(`<td class="periodo t-anual-egresos" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></td>`);
             // fen anual
             fen = 0
             fen = ingreso_anual - total_egresos
@@ -705,11 +706,12 @@ $("#btnViabilidadAnual").click(function () {
     }
 });
 
-
+// Función para oculatar el grafico
+function ocultar_grafico_mensual() {
+    $("#graphics-mensual").empty();
+}
 // Función para cargar los graficos
 function cargar_graficos_mensuales() {
-    $("#graphic-ing-egr-mensual").empty();
-    $("#graphic-fen-mensual").empty();
     // #region Gráficos de ingresos y egresos
     let ingresos_data = []
     let egresos_data = []
@@ -722,10 +724,10 @@ function cargar_graficos_mensuales() {
     var max_data = Math.max(...ingresos_data) > Math.max(...egresos_data) ? Math.max(...ingresos_data) : Math.max(...egresos_data);
     var options = {
         series: [{
-            name: "Ingresos - 2018",
+            name: "Ingresos",
             data: ingresos_data,
         }, {
-            name: "Egresos - 2018",
+            name: "Egresos",
             data: egresos_data
         }],
         chart: {
@@ -747,7 +749,7 @@ function cargar_graficos_mensuales() {
         dataLabels: {
             enabled: true,
             formatter: function (val) {
-                return `$ ${val}`;
+                return `$ ${val.toFixed(2)}`;
             },
         },
         stroke: {
@@ -771,21 +773,26 @@ function cargar_graficos_mensuales() {
             categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
             title: {
                 text: 'Meses'
-            }
+            },
         },
         yaxis: {
             title: {
-                text: "Capitalización"
+                text: "Capitalización",
+                offsetX: 3,
             },
             min: 0,
             max: max_data,
+            labels: {
+                formatter: function (val) {
+                    return `$ ${val}`;
+                },
+            }
         },
         legend: {
             position: 'top',
             horizontalAlign: 'right',
             floating: true,
-            offsetY: -25,
-            offsetX: -5
+            offsetY: -15,
         }
     };
     (chart = new ApexCharts(document.querySelector("#graphic-ing-egr-mensual"), options)).render();
@@ -796,7 +803,6 @@ function cargar_graficos_mensuales() {
     $(".fen").each(function (index, element) {
         fen_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
     });
-    console.log(fen_data);
     var max_data = Math.max(...fen_data);
     var options = {
         series: [{
@@ -870,3 +876,242 @@ function cargar_graficos_mensuales() {
     (chart = new ApexCharts(document.querySelector("#graphic-fen-mensual"), options)).render();
     // #endregion
 }
+
+$("#btnVerGraficosMensuales").click(function () {
+    $("#graphics-mensual").empty();
+    var div = `
+    <div>
+        <h4>Graficos</h4>
+        <div>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="collapse pt-3 show" dir="ltr">
+                            <div id="graphic-ing-egr-mensual" class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="collapse pt-3 show" dir="ltr">
+                            <div id="graphic-fen-mensual" class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+
+    $("#graphics-mensual").html(div);
+    cargar_graficos_mensuales();
+    var x = $(window).scrollTop();
+    $(window).scrollTop(x + 1000);
+});
+
+function cargar_graficos_anuales() {
+    // #region Gráficos de ingresos y egresos
+    let ingresos_data = []
+    let egresos_data = []
+    let categories = []
+    $(".t-anual-ingresos").each(function (index, element) {
+        ingresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    $(".t-anual-egresos").each(function (index, element) {
+        egresos_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    $(".year").each(function (index, element) {
+        categories.push($(this).text());
+    });
+    var max_data = Math.max(...ingresos_data) > Math.max(...egresos_data) ? Math.max(...ingresos_data) : Math.max(...egresos_data);
+    var options = {
+        series: [{
+            name: "Ingresos",
+            data: ingresos_data,
+        }, {
+            name: "Egresos",
+            data: egresos_data
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            dropShadow: {
+                enabled: true,
+                color: '#000',
+                top: 18,
+                left: 7,
+                blur: 10,
+                opacity: 0.2
+            },
+            toolbar: {
+                show: true
+            }
+        },
+        colors: ["#56c2d6", "#f0643b"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Ingresos y Egresos',
+            align: 'left'
+        },
+        grid: {
+            borderColor: '#e7e7e7',
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        markers: {
+            size: 1
+        },
+        xaxis: {
+            categories: categories,
+            title: {
+                text: 'Años'
+            }
+        },
+        yaxis: {
+            title: {
+                text: "Capitalización",
+                offsetX: 3,
+            },
+            min: 0,
+            max: max_data,
+            labels: {
+                formatter: function (val) {
+                    return `$ ${val.toFixed(2)}`;
+                },
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -15,
+        }
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-ing-egr-anual"), options)).render();
+    // #endregion
+
+    // #region Gráficos de FEN
+    let fen_data = []
+    $(".fen-anuales").each(function (index, element) {
+        fen_data.push(parseFloat($(this).text().replace(",", ".").replace(/\$ /g, "")));
+    });
+    var max_data = Math.max(...fen_data);
+    var options = {
+        series: [{
+            name: "FEN",
+            data: fen_data
+        }],
+        chart: {
+            height: 350,
+            type: 'bar',
+            stacked: false,
+            height: 350,
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 10,
+                dataLabels: {
+                    position: 'top', // top, center, bottom
+                },
+            }
+        },
+        colors: ["#22d174"],
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+                return `$ ${val}`;
+            },
+            offsetY: -20,
+            style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+            }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Flujo de Efectivo NETO (FEN)',
+            align: 'left'
+        },
+        markers: {
+            size: 0
+        },
+        xaxis: {
+            categories: categories,
+            title: {
+                text: 'Años'
+            }
+        },
+        yaxis: {
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return `$ ${val}`;
+                },
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5
+        },
+    };
+    (chart = new ApexCharts(document.querySelector("#graphic-fen-anual"), options)).render();
+    // #endregion
+}
+
+function ocultar_grafico_anual() {
+    $("#graphics-anual").empty();
+}
+
+$("#btnGraficosAnuales").click(function () {
+    $("#graphics-anual").empty();
+    var div_anual = `
+    <div>
+        <h4>Graficos</h4>
+        <div>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="collapse pt-3 show" dir="ltr">
+                            <div id="graphic-ing-egr-anual" class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="collapse pt-3 show" dir="ltr">
+                            <div id="graphic-fen-anual" class="apex-charts"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+    $("#graphics-anual").html(div_anual);
+    cargar_graficos_anuales();
+    var x = $(window).scrollTop();
+    $(window).scrollTop(x + 1000);
+});
