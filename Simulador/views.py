@@ -280,6 +280,14 @@ def calcularViabilidad(request):
 def descargar_excel_mensual(request):
     try:
         datos = request.POST['flujo_efectivo']
+        inversion = float(request.POST['inversion'])
+        tasa_interes = float(request.POST['tasa_interes'])
+
+        tir = str(request.POST['tir']).replace('.', ',')
+        van = str(request.POST['van']).replace('.', ',')
+        b_c = str(request.POST['b_c']).replace('.', ',')
+        pri = request.POST['pri']
+
         nombre_archivo = 'FlujoEfectivoMensual.xls'
         row_num = 0
         wb = xlwt.Workbook(encoding='utf-8')
@@ -339,6 +347,12 @@ def descargar_excel_mensual(request):
                                     """
                                     )
         flujo_efectivo = json.loads(r"" + json.loads(json.dumps(datos)))
+        
+        ws.write(row_num, 0, "Inversión", font_style_rows)
+        ws.write(row_num, 1, inversion, font_style_rows)
+        ws.write(row_num, 2, "Tasa de interés", font_style_rows)
+        ws.write(row_num, 3, tasa_interes, font_style_rows)
+        row_num += 1
 
         for col_num in range(len(columns)):
             ws.write(row_num, col_num, columns[col_num], font_style_columns)
@@ -363,9 +377,23 @@ def descargar_excel_mensual(request):
                 ws.write(row_num, 12, flujo_efectivo['flujo_efectivo'][row][12]['dato'], font_style_rows)
                 ws.write(row_num, 13, flujo_efectivo['flujo_efectivo'][row][13]['dato'], font_style_rows)
 
+        row_num += 1
+        ws.write(row_num, 0, "TIR", font_style_rows)
+        ws.write(row_num, 1, tir, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "B/C", font_style_rows)
+        ws.write(row_num, 1, b_c, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "VAN", font_style_rows)
+        ws.write(row_num, 1, van, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "PRI", font_style_rows)
+        ws.write(row_num, 1, pri, font_style_rows)
+
         wb.save('media/excel/' + nombre_archivo)
         return JsonResponse({'excel': '1', 'nombre_archivo': nombre_archivo})
     except Exception as e:
+        print(str(e))
         return JsonResponse({'excel': '0'})
 
 
@@ -373,12 +401,20 @@ def descargar_excel_mensual(request):
 def descargar_excel_anual(request):
     try:
         datos = request.POST['flujo_efectivo']
-        cantidad_columnas = int(request.POST['cantidad_columnas'])
+        inversion = float(request.POST['inversion'])
+        tasa_interes = float(request.POST['tasa_interes'])
+
+        tir = str(request.POST['tir']).replace('.', ',')
+        van = str(request.POST['van']).replace('.', ',')
+        b_c = str(request.POST['b_c']).replace('.', ',')
+        pri = request.POST['pri']
+
+        cantidad_columnas = int(request.POST['numero_periodos'])
         nombre_archivo = 'FlujoEfectivoAnual.xls'
         row_num = 0
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet(nombre_archivo)
-        
+
         ws.col(0).width = int(26*260)
         for c in range((cantidad_columnas + 1)):
             ws.col((c + 1)).width = int(20*260)
@@ -392,6 +428,7 @@ def descargar_excel_anual(request):
                                     )
 
         columns = ['ACTIVIDAD']
+        
         for c in range(cantidad_columnas):
             columns.append('AÑO ' + str((c + 1)))
         columns.append('TOTAL')
@@ -410,6 +447,12 @@ def descargar_excel_anual(request):
                                     """
                                     )
         flujo_efectivo = json.loads(r"" + json.loads(json.dumps(datos)))
+        
+        ws.write(row_num, 0, "Inversión", font_style_rows)
+        ws.write(row_num, 1, inversion, font_style_rows)
+        ws.write(row_num, 2, "Tasa de interés", font_style_rows)
+        ws.write(row_num, 3, tasa_interes, font_style_rows)
+        row_num += 1
 
         for col_num in range(len(columns)):
             ws.write(row_num, col_num, columns[col_num], font_style_columns)
@@ -421,6 +464,19 @@ def descargar_excel_anual(request):
             else:
                 for c in range(len(flujo_efectivo['flujo_efectivo'][row])):
                     ws.write(row_num, c, flujo_efectivo['flujo_efectivo'][row][c]['dato'], font_style_rows)
+
+        row_num += 1
+        ws.write(row_num, 0, "TIR", font_style_rows)
+        ws.write(row_num, 1, tir, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "B/C", font_style_rows)
+        ws.write(row_num, 1, b_c, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "VAN", font_style_rows)
+        ws.write(row_num, 1, van, font_style_rows)
+        row_num += 1
+        ws.write(row_num, 0, "PRI", font_style_rows)
+        ws.write(row_num, 1, pri, font_style_rows)
 
         wb.save('media/excel/' + nombre_archivo)
         return JsonResponse({'excel': '1', 'nombre_archivo': nombre_archivo})

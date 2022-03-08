@@ -91,7 +91,8 @@ function eliminar_actividad(id_actividad) {
                     });
                     toastr.success("La actividad fue eliminada correctamente", config_toast);
                     actualizar_totales();
-                    limpiar_resultados();
+                    limpiar_resultados_mensual();
+                    limpiar_resultados_anual();
                     $('#fila-' + id_actividad).remove()
                 } else {
                     toastr.error("Existió un error, por favor intente nuevamente", config_toast);
@@ -144,7 +145,10 @@ function guardar_valor(input) {
             if (result.id_valor > 0) {
                 $(input).attr("data-id", result.id_valor);
                 actualizar_totales();
-                limpiar_resultados();
+                limpiar_resultados_mensual();
+                limpiar_resultados_anual();
+                ocultar_grafico_anual();
+                ocultar_grafico_mensual();
                 toastr.success("Valor guardado correctamente", config_toast);
                 $(input).css('border-color', '#00710B');
                 $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
@@ -292,7 +296,10 @@ function editar_inversion(input) {
             toastr.success("Inversión guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
-            limpiar_resultados();
+            limpiar_resultados_mensual();
+            limpiar_resultados_anual();
+            ocultar_grafico_anual();
+            ocultar_grafico_mensual();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -327,7 +334,10 @@ function editar_tasa_interes(input) {
             toastr.success("Tasa de interés guardada correctamente", config_toast);
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
-            limpiar_resultados();
+            limpiar_resultados_mensual();
+            limpiar_resultados_anual();
+            ocultar_grafico_anual();
+            ocultar_grafico_mensual();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -364,7 +374,9 @@ function editar_tasa_retorno(input) {
             $(input).css('border-color', '#00710B');
             $(input).css('box-shadow', '0px 0px 14px 0px #57C70040');
             calcular_periodos($('#periodos'));
-            limpiar_resultados();
+            limpiar_resultados_anual();
+            ocultar_grafico_anual();
+            ocultar_grafico_mensual();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
             $(input).css('border-color', '#D30000');
@@ -477,7 +489,7 @@ $("#btnViabilidadMensual").click(function () {
     }
 });
 
-function limpiar_resultados() {
+function limpiar_resultados_mensual() {
     $('#tir-mensual').text('')
     $('#bc-mensual').text('')
     $('#van-mensual').text('')
@@ -485,7 +497,9 @@ function limpiar_resultados() {
     $('#respuesta-tir-mensual').text('')
     $('#respuesta-bc-mensual').text('')
     $('#respuesta-van-mensual').text('')
+}
 
+function limpiar_resultados_anual() {
     $('#tir-anual').text('')
     $('#bc-anual').text('')
     $('#van-anual').text('')
@@ -574,7 +588,7 @@ $("#nav-anual-tab").click(function () {
 
 $("#periodos").change(function () {
     calcular_periodos(this);
-    limpiar_resultados();
+    limpiar_resultados_anual();
     ocultar_grafico_anual();
 });
 
@@ -923,7 +937,7 @@ $("#btnVerGraficosMensuales").click(function () {
     $("#graphics-mensual").empty();
     var div = `
     <div>
-        <h4>Graficos - Mensuales</h4>
+        <h4>Gráficos - Mensuales</h4>
         <div>
             <div>
                 <div class="card">
@@ -1130,7 +1144,7 @@ $("#btnGraficosAnuales").click(function () {
     $("#graphics-anual").empty();
     var div_anual = `
     <div>
-        <h4>Graficos - Anuales</h4>
+        <h4>Gráficos - Anuales</h4>
         <div>
             <div>
                 <div class="card">
@@ -1179,15 +1193,29 @@ $('#btnDescargarExcelMensual').click(function () {
                 })
             }
         });
-        flujo_efectivo.push(fila);
+        if(fila.length > 0){
+            flujo_efectivo.push(fila);
+        }
     });
     json_array.flujo_efectivo = flujo_efectivo;
     flujo_efectivo = JSON.stringify(json_array);
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
+    var inversion = $('#inversion').val() != '' ? parseFloat($('#inversion').val().replace(',', '.')) : 0
+    var tasa_interes = $('#tasa_interes').val() != '' ? parseFloat($('#tasa_interes').val().replace(',', '.')) : 0
+    var tir = $('#tir-mensual').text() != '' ? $('#tir-mensual').text() : 0
+    var van = $('#van-mensual').text() != '' ? $('#van-mensual').text() : 0
+    var b_c = $('#bc-mensual').text() != '' ? $('#bc-mensual').text() : 0
+    var pri = $('#pri-mensual').text() != '' ? $('#pri-mensual').text() : 0
     var params = {
         "csrfmiddlewaretoken": csrftoken,
-        "flujo_efectivo": flujo_efectivo
+        "flujo_efectivo": flujo_efectivo,
+        "inversion": inversion,
+        "tasa_interes": tasa_interes,
+        "tir": tir,
+        "van": van,
+        "b_c": b_c,
+        "pri": pri
     };
     $.ajax({
         type: "POST",
@@ -1198,7 +1226,7 @@ $('#btnDescargarExcelMensual').click(function () {
         hide_spinner();
         if (result.excel == '1') {
             var a = document.createElement('a');
-            a.href = "http://127.0.0.1:8000/media/excel/" + result.nombre_archivo;
+            a.href = window.location.protocol + "//" + window.location.host + "/media/excel/" + result.nombre_archivo;
             a.click();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
@@ -1237,14 +1265,27 @@ $('#btnDescargarExcelAnual').click(function () {
     });
     json_array.flujo_efectivo = flujo_efectivo;
     flujo_efectivo = JSON.stringify(json_array);
-
-    console.log(flujo_efectivo)
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
+    var inversion = $('#inversion').val() != '' ? parseFloat($('#inversion').val().replace(',', '.')) : 0
+    var tasa_interes = $('#tasa_interes').val() != '' ? parseFloat($('#tasa_interes').val().replace(',', '.')) : 0
+    var tasa_retorno = $('#tasa_retorno').val() != '' ? parseFloat($('#tasa_retorno').val().replace(',', '.')) : 0
+    var numero_periodos = parseInt($('#periodos').val())
+    var tir = $('#tir-anual').text() != '' ? $('#tir-anual').text() : 0
+    var van = $('#van-anual').text() != '' ? $('#van-anual').text() : 0
+    var b_c = $('#bc-anual').text() != '' ? $('#bc-anual').text() : 0
+    var pri = $('#pri-anual').text() != '' ? $('#pri-anual').text() : 0
     var params = {
         "csrfmiddlewaretoken": csrftoken,
         "flujo_efectivo": flujo_efectivo,
-        "cantidad_columnas": $('#periodos').val()
+        "inversion": inversion,
+        "tasa_interes": tasa_interes,
+        "tasa_retorno": tasa_retorno,
+        "numero_periodos": numero_periodos,
+        "tir": tir,
+        "van": van,
+        "b_c": b_c,
+        "pri": pri
     };
     $.ajax({
         type: "POST",
@@ -1255,7 +1296,7 @@ $('#btnDescargarExcelAnual').click(function () {
         hide_spinner();
         if (result.excel == '1') {
             var a = document.createElement('a');
-            a.href = "http://127.0.0.1:8000/media/excel/" + result.nombre_archivo;
+            a.href = window.location.protocol + "//" + window.location.host + "/media/excel/" + result.nombre_archivo;
             a.click();
         } else {
             toastr.error("Existió un error, por favor intente nuevamente", config_toast);
