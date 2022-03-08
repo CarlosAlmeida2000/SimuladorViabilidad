@@ -1,0 +1,827 @@
+<div>
+    <div class="content-table-mensual table-responsive">
+        <table class="table table-borderless" id="table-mensual" data-project-id="{{ proyecto.id }}">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="static-columns">Inicio</th>
+                    <th class="text-center">Enero</th>
+                    <th class="text-center">Febrero</th>
+                    <th class="text-center">Marzo</th>
+                    <th class="text-center">Abril</th>
+                    <th class="text-center">Mayo</th>
+                    <th class="text-center">Junio</th>
+                    <th class="text-center">Julio</th>
+                    <th class="text-center">Agosto</th>
+                    <th class="text-center">Septiembre</th>
+                    <th class="text-center">Octubre</th>
+                    <th class="text-center">Noviembre</th>
+                    <th class="text-center">Diciembre</th>
+                    <th class="text-center">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- #region Valores de ingresos -->
+                <tr id="ingresos">
+                    <th></th>
+                    <th class="static-columns">
+                        <div class="d-flex align-intems-center ">
+                            <p class="my-auto value-contables">Ingresos</p>
+                            <button class="btn btn-sm btn-green ms-3 btnAggActividad" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+                <!-- Aquí debes poner los tr que vas añadiendo con jquey -->
+                {% for ingreso in ingresos %}
+                <tr id="fila-{{ingreso.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad('{{ingreso.id}}')"
+                            type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
+                    <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id}}" fila="{{ingreso.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                            value="{{ingreso.nombre}}" /></th>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-1 ingresos-fila-{{ingreso.id}}" mes="1" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes1}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes1}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-2 ingresos-fila-{{ingreso.id}}" mes="2" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes2}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes2}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-3 ingresos-fila-{{ingreso.id}}" mes="3" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes3}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes3}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-4 ingresos-fila-{{ingreso.id}}" mes="4" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes4}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes4}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-5 ingresos-fila-{{ingreso.id}}" mes="5" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes5}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes5}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-6 ingresos-fila-{{ingreso.id}}" mes="6" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes6}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes6}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-7 ingresos-fila-{{ingreso.id}}" mes="7" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes7}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes7}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-8 ingresos-fila-{{ingreso.id}}" mes="8" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes8}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes8}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-9 ingresos-fila-{{ingreso.id}}" mes="9" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes9}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes9}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-10 ingresos-fila-{{ingreso.id}}" mes="10" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes10}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes10}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-11 ingresos-fila-{{ingreso.id}}" mes="11" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes11}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes11}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador ingresos-mes-12 ingresos-fila-{{ingreso.id}}" mes="12" tipo_cuenta="ingresos"
+                            data-id="{{ingreso.id_valor_mes12}}" fila="{{ingreso.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{ingreso.valor_mes12}}" />
+                    </td>
+                    <td class="text-center total-ingresos-fila" id="total-ingresos-fila-{{ingreso.id}}">$
+                        00,00</td>
+                </tr>
+                {% endfor %}
+
+                <tr class="bg-green">
+                    <th></th>
+                    <th class="static-columns">Total de ingresos</th>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-ingresos" id="total-ingresos-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-ingresos">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+
+                <!-- #region Valores de Egresos -->
+                <tr>
+                    <th></th>
+                    <th class="static-columns">
+                        <div class="d-flex align-intems-center">
+                            <p class="my-auto value-contables">Egresos</p>
+                        </div>
+                    </th>
+                </tr>
+
+                <!-- #region Valores de costos administrativos -->
+                <tr id="costos-a">
+                    <th></th>
+                    <th class="static-columns">
+                        <div class="d-flex align-intems-center">
+                            <p class="my-auto campos-contables">Costos de administración</p>
+                            <button class="btn btn-sm btn-green ms-3 btnAggActividad" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+
+                {% for costo in costos_a %}
+                <tr id="fila-{{costo.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad('{{costo.id}}')"
+                            type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
+                    <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-a" data-id="{{costo.id}}"
+                            fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombre}}" />
+                    </th>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-1 costos-a-fila-{{costo.id}}" mes="1" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes1}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-2 costos-a-fila-{{costo.id}}" mes="2" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes2}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes2}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-3 costos-a-fila-{{costo.id}}" mes="3" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes3}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes3}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-4 costos-a-fila-{{costo.id}}" mes="4" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes4}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes4}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-5 costos-a-fila-{{costo.id}}" mes="5" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes5}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes5}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-6 costos-a-fila-{{costo.id}}" mes="6" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes6}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes6}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-7 costos-a-fila-{{costo.id}}" mes="7" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes7}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes7}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-8 costos-a-fila-{{costo.id}}" mes="8" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes8}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes8}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-9 costos-a-fila-{{costo.id}}" mes="9" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes9}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes9}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-10 costos-a-fila-{{costo.id}}" mes="10" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes10}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes10}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-11 costos-a-fila-{{costo.id}}" mes="11" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes11}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes11}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-a-mes-12 costos-a-fila-{{costo.id}}" mes="12" tipo_cuenta="costos-a"
+                            data-id="{{costo.id_valor_mes12}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes12}}" />
+                    </td>
+                    <td class="text-center total-costos-a-fila" id="total-costos-a-fila-{{costo.id}}">$ 00,00
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <tr class="table-active">
+                    <th></th>
+                    <th class="static-columns">Total de costos de administración</th>
+                    <td class="text-center" id="total-costos-a-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-a-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center total-egresos" id="total-costos-a">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+
+                <!-- #region Valores de costos de producción -->
+                <div id="values-costos-p">
+                    <th></th>
+                    <tr id="costos-p">
+                        <th></th>
+                        <th class="static-columns">
+                            <div class="d-flex align-intems-center">
+                                <p class="my-auto campos-contables">Costos de producción</p>
+                                <button class="btn btn-sm btn-green ms-3 btnAggActividad" type="button">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+
+                    {% for costo in costos_p %}
+                    <tr id="fila-{{costo.id}}">
+                        <th>
+                            <button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad('{{costo.id}}')"
+                                type="button">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </th>
+                        <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-p"
+                                data-id="{{costo.id}}" fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37"
+                                value="{{costo.nombre}}" />
+                        </th>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-1 costos-p-fila-{{costo.id}}" mes="1" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes1}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-2 costos-p-fila-{{costo.id}}" mes="2" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes2}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes2}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-3 costos-p-fila-{{costo.id}}" mes="3" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes3}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes3}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-4 costos-p-fila-{{costo.id}}" mes="4" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes4}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes4}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-5 costos-p-fila-{{costo.id}}" mes="5" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes5}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes5}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-6 costos-p-fila-{{costo.id}}" mes="6" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes6}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes6}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-7 costos-p-fila-{{costo.id}}" mes="7" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes7}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes7}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-8 costos-p-fila-{{costo.id}}" mes="8" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes8}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes8}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-9 costos-p-fila-{{costo.id}}" mes="9" tipo_cuenta="costos-p"
+                                data-id="{{costo.id_valor_mes9}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                                onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                                value="{{costo.valor_mes9}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-10 costos-p-fila-{{costo.id}}" mes="10"
+                                tipo_cuenta="costos-p" data-id="{{costo.id_valor_mes10}}" fila="{{costo.id}}"
+                                onchange="javascript:guardar_valor(this);" onkeypress="javascript:soloNumeros(event)"
+                                onkeyup="javascript:convertDecimal(this)" size="6" value="{{costo.valor_mes10}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-11 costos-p-fila-{{costo.id}}" mes="11"
+                                tipo_cuenta="costos-p" data-id="{{costo.id_valor_mes11}}" fila="{{costo.id}}"
+                                onchange="javascript:guardar_valor(this);" onkeypress="javascript:soloNumeros(event)"
+                                onkeyup="javascript:convertDecimal(this)" size="6" value="{{costo.valor_mes11}}" />
+                        </td>
+                        <td>
+                            <input class="text-center sumador costos-p-mes-12 costos-p-fila-{{costo.id}}" mes="12"
+                                tipo_cuenta="costos-p" data-id="{{costo.id_valor_mes12}}" fila="{{costo.id}}"
+                                onchange="javascript:guardar_valor(this);" onkeypress="javascript:soloNumeros(event)"
+                                onkeyup="javascript:convertDecimal(this)" size="6" value="{{costo.valor_mes12}}" />
+                        </td>
+                        <td class="text-center total-costos-p-fila" id="total-costos-p-fila-{{costo.id}}">$
+                            00,00</td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr class="table-active">
+                        <th></th>
+                        <th class="static-columns">Total de costos de producción</th>
+                        <td class="text-center" id="total-costos-p-mes-1">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-2">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-3">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-4">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-5">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-6">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-7">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-8">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-9">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-10">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-11">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center" id="total-costos-p-mes-12">
+                            <div>$ 00,00</div>
+                        </td>
+                        <td class="text-center total-egresos" id="total-costos-p">
+                            <div>$ 00,00</div>
+                        </td>
+                    </tr>
+                </div>
+                <!-- #endregion -->
+
+                <!-- #region Valores de costos de inversión -->
+                <tr id="costos-i">
+                    <th></th>
+                    <th class="static-columns">
+                        <div class="d-flex align-intems-center">
+                            <p class="my-auto campos-contables">Costos de inversión</p>
+                            <button class="btn btn-sm btn-green ms-3 btnAggActividad" type="button">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+
+                {% for costo in costos_i %}
+                <tr id="fila-{{costo.id}}">
+                    <th>
+                        <button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad('{{costo.id}}')"
+                            type="button">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </th>
+                    <th class="static-columns"><input class="text-center" id="actividad" tipo_cuenta="costos-i" data-id="{{costo.id}}"
+                            fila="{{costo.id}}" onchange="javascript:guardar_actividad(this);" size="37" value="{{costo.nombre}}" />
+                    </th>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-1 costos-i-fila-{{costo.id}}" mes="1" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes1}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes1}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-2 costos-i-fila-{{costo.id}}" mes="2" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes2}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes2}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-3 costos-i-fila-{{costo.id}}" mes="3" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes3}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes3}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-4 costos-i-fila-{{costo.id}}" mes="4" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes4}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes4}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-5 costos-i-fila-{{costo.id}}" mes="5" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes5}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes5}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-6 costos-i-fila-{{costo.id}}" mes="6" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes6}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes6}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-7 costos-i-fila-{{costo.id}}" mes="7" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes7}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes7}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-8 costos-i-fila-{{costo.id}}" mes="8" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes8}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes8}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-9 costos-i-fila-{{costo.id}}" mes="9" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes9}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes9}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-10 costos-i-fila-{{costo.id}}" mes="10" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes10}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes10}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-11 costos-i-fila-{{costo.id}}" mes="11" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes11}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes11}}" />
+                    </td>
+                    <td>
+                        <input class="text-center sumador costos-i-mes-12 costos-i-fila-{{costo.id}}" mes="12" tipo_cuenta="costos-i"
+                            data-id="{{costo.id_valor_mes12}}" fila="{{costo.id}}" onchange="javascript:guardar_valor(this);"
+                            onkeypress="javascript:soloNumeros(event)" onkeyup="javascript:convertDecimal(this)" size="6"
+                            value="{{costo.valor_mes12}}" />
+                    </td>
+                    <td class="text-center total-costos-i-fila" id="total-costos-i-fila-{{costo.id}}">$
+                        00,00</td>
+                </tr>
+                {% endfor %}
+
+                <tr class="table-active">
+                    <th></th>
+                    <th class="static-columns">Total de costos de inversión</th>
+                    <td class="text-center" id="total-costos-i-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-costos-i-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center total-egresos" id="total-costos-i">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+
+                <!-- #region Totales de egresos -->
+                <tr class="bg-green">
+                    <th></th>
+                    <th class="static-columns">Total de egresos</th>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center t-mensual-egresos" id="total-egresos-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-todos-egresos">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+
+                <!-- #region FEN (Ingresos - Egresos) -->
+                <tr class="table-active">
+                    <th></th>
+                    <th class="static-columns">FEN</th>
+                    <td class="text-center fen" id="total-fen-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen" id="total-fen-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-todos-fen">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+
+                <!-- #region FEN acumulado -->
+                <tr class="table-active">
+                    <th></th>
+                    <th class="static-columns">FEN Acumulado</th>
+                    <td class="text-center fen-acumulado" mes="1" id="total-fen-acum-mes-1">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="2" id="total-fen-acum-mes-2">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="3" id="total-fen-acum-mes-3">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="4" id="total-fen-acum-mes-4">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="5" id="total-fen-acum-mes-5">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="6" id="total-fen-acum-mes-6">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="7" id="total-fen-acum-mes-7">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="8" id="total-fen-acum-mes-8">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="9" id="total-fen-acum-mes-9">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="10" id="total-fen-acum-mes-10">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="11" id="total-fen-acum-mes-11">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center fen-acumulado" mes="12" id="total-fen-acum-mes-12">
+                        <div>$ 00,00</div>
+                    </td>
+                    <td class="text-center" id="total-todos-fen-acum">
+                        <div>$ 00,00</div>
+                    </td>
+                </tr>
+                <!-- #endregion -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr class="mt-4">
+<div>
+    <div class="options">
+        <button class="btn btn-purpure" id="btnViabilidadMensual">
+            <i class="fa-solid fa-calculator"></i>
+            Calcular viabilidad
+        </button>
+        <button class="btn btn-cyan" id="btnVerGraficosMensuales">
+            <i class="fa-solid fa-chart-line"></i>
+            Ver gráficos
+        </button>
+        <button class="btn btn-excel">
+            <i class="fa-solid fa-file-excel"></i>
+            Descargar excel
+        </button>
+    </div>
+    <div class="result mt-2">
+        <div>
+            Criterios de evaluación:
+        </div>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>TIR (Tasa Interna de Retorno): </strong>Es la rentabilidad que ofrece una inversión. Es decir, es el porcentaje de beneficio o pérdida que tendrá una inversión para las cantidades que no se han retirado del proyecto.">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="tir-content" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="TIR">
+                <strong>TIR: </strong>
+                <span id="tir-mensual"></span> <span id="respuesta-tir-mensual" style="font-weight: bolder;"></span>
+            </div>
+        </div>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>B/C (Beneficio-Costo): </strong>Es aquella que permite comparar los beneficios (ventas) versus todos los costos (gastos) asociados a un proyecto">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="bc-content" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="B/C">
+                <strong>B/C: </strong>
+                <span id="bc-mensual"></span> <span id="respuesta-bc-mensual" style="font-weight: bolder;"></span>
+            </div>
+        </div>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>VAN (Valor Actual Neto): </strong> Es un criterio de inversión que consiste en actualizar los cobros y pagos de un proyecto o inversión para conocer cuanto se va a ganar o perder con esa inversión. También se lo conoce como valor neto actual (VNA) o valor presente neto (VPN).">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="van-content" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="VAN">
+                <strong>VAN: </strong>
+                <span id="van-mensual"></span> <span id="respuesta-van-mensual" style="font-weight: bolder;"></span>
+            </div>
+        </div>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>PIR (Período de Recuperación de Inversión): </strong>Es aquella que permite saber cuantos años tardara hasta recuperar la inversión">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1">
+                <strong>PRI: </strong>
+                <span id="pri-mensual"></span> <span id="respuesta-pri-mensual" style="font-weight: bolder;"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="graphics-mensual">
+</div>

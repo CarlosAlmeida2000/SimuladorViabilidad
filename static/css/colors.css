@@ -181,3 +181,12 @@ th>div {
 .system-color .color-error {
   background-color: var(--cl-red);
 }
+
+.fa-circle-info:hover {
+  cursor: pointer;
+  color: var(--cl-excel-hover);
+}
+
+.tooltip-inner {
+  max-width: 300px !important;
+}

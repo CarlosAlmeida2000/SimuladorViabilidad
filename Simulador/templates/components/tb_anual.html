@@ -132,23 +132,52 @@
             Descargar excel
         </button>
     </div>
+    <div class="result mt-2"></div>
     <div class="result mt-2">
         <div>
             Criterios de evaluación:
         </div>
-        <div>
-            <strong>TIR:</strong> <span id="tir-anual"></span> <span id="respuesta-tir-anual" style="font-weight: bolder;"></span>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>TIR (Tasa Interna de Retorno): </strong>Es la rentabilidad que ofrece una inversión. Es decir, es el porcentaje de beneficio o pérdida que tendrá una inversión para las cantidades que no se han retirado del proyecto.">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="tir-content-anual" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="TIR">
+                <strong>TIR: </strong>
+                <span id="tir-anual"></span> <span id="respuesta-tir-anual" style="font-weight: bolder;"></span>
+            </div>
         </div>
-        <div>
-            <strong>B/C:</strong> <span id="bc-anual"></span> <span id="respuesta-bc-anual" style="font-weight: bolder;"></span>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>B/C (Beneficio-Costo): </strong>Es aquella que permite comparar los beneficios (ventas) versus todos los costos (gastos) asociados a un proyecto">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="bc-content-anual" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="B/C">
+                <strong>B/C: </strong>
+                <span id="bc-anual"></span> <span id="respuesta-bc-anual" style="font-weight: bolder;"></span>
+            </div>
         </div>
-        <div>
-            <strong>VAN:</strong> <span id="van-anual"></span> <span id="respuesta-van-anual" style="font-weight: bolder;"></span>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>VAN (Valor Actual Neto): </strong> Es un criterio de inversión que consiste en actualizar los cobros y pagos de un proyecto o inversión para conocer cuanto se va a ganar o perder con esa inversión. También se lo conoce como valor neto actual (VNA) o valor presente neto (VPN).">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1" id="van-content-anual" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="VAN">
+                <strong>VAN: </strong>
+                <span id="van-anual"></span> <span id="respuesta-van-anual" style="font-weight: bolder;"></span>
+            </div>
         </div>
-        <div>
-            <strong>PRI:</strong> <span id="pri-anual"></span> <span id="respuesta-pri-anual" style="font-weight: bolder;"></span>
+        <div class="me-5 d-flex">
+            <div data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                title="<strong>PIR (Período de Recuperación de Inversión): </strong>Es aquella que permite saber cuantos años tardara hasta recuperar la inversión">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="ms-1">
+                <strong>PRI: </strong>
+                <span id="pri-anual"></span> <span id="respuesta-pri-anual" style="font-weight: bolder;"></span>
+            </div>
         </div>
     </div>
 </div>
-<div id="graphics-anual">
+<div id="graphics-anual" class="mt-3">
 </div>
