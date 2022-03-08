@@ -10,6 +10,7 @@ urlpatterns = [
     path("guardar-valor/", views.guardarValor, name="guardar-valor"),
     path("calcular-viabilidad/", views.calcularViabilidad, name="calcular-viabilidad"),
     path("descargar-excel-mensual/", views.descargar_excel_mensual, name="descargar-excel-mensual"),
+    path("descargar-excel-anual/", views.descargar_excel_anual, name="descargar-excel-anual"),
     #endregion
 
     #region CRUD proyecto

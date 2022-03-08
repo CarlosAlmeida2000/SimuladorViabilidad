@@ -23,92 +23,92 @@
             </thead>
             <tbody>
                 <!-- #region Valores de Ingresos -->
-                <tr class="table-active padre">
+                <tr class="table-active padre fila-descargar-excel">
                     <th class="static-columns">
-                        <div>Ingresos del proyecto</div>
+                        <div class="dato-anual-excel">Ingresos del proyecto</div>
                     </th>
                     <td colspan="2"></td>
                 </tr>
-                <tr id="ingresos-anuales">
+                <tr class="fila-descargar-excel" id="ingresos-anuales">
                     <th class="static-columns">
-                        <div>Ingresos</div>
+                        <div class="dato-anual-excel">Ingresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="ingreso-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
-                <tr class="bg-green" id="total-ingresos-anuales">
+                <tr class="bg-green fila-descargar-excel" id="total-ingresos-anuales">
                     <th class="static-columns">
-                        <div>Total de ingresos</div>
+                        <div class="dato-anual-excel">Total de ingresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="total-ingresos-periodo-1" class="t-anual-ingresos">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
                 <!-- #endregion -->
                 <!-- #region Valores de Egresos -->
-                <tr class="table-active padre">
+                <tr class="table-active padre fila-descargar-excel">
                     <th class="static-columns">
-                        <div>Egresos del proyecto</div>
+                        <div class="dato-anual-excel">Egresos del proyecto</div>
                     </th>
                     <td colspan="2"></td>
                 </tr>
-                <tr id="costos-a-anuales">
+                <tr class="fila-descargar-excel" id="costos-a-anuales">
                     <th class="static-columns">
-                        <div>Costo de administración</div>
+                        <div class="dato-anual-excel">Costo de administración</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="costo-a-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
-                <tr id="costos-p-anuales">
+                <tr class="fila-descargar-excel" id="costos-p-anuales">
                     <th class="static-columns">
-                        <div>Costo de producción</div>
+                        <div class="dato-anual-excel">Costo de producción</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="costo-p-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
-                <tr id="costos-i-anuales">
+                <tr class="fila-descargar-excel" id="costos-i-anuales">
                     <th class="static-columns">
-                        <div>Costo de inversión</div>
+                        <div class="dato-anual-excel">Costo de inversión</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="costo-i-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
-                <tr class="bg-green" id="total-egresos-anuales">
+                <tr class="bg-green fila-descargar-excel" id="total-egresos-anuales">
                     <th class="static-columns">
-                        <div>Total de egresos</div>
+                        <div class="dato-anual-excel">Total de egresos</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td id="total-egresos-periodo-1" class="t-anual-egresos">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
                 <!-- #endregion -->
                 <!-- #region Calculos -->
-                <tr id="fen-anuales">
+                <tr class="fila-descargar-excel" id="fen-anuales">
                     <th class="static-columns" style="padding-top:20px;">
-                        <div>FEN</div>
+                        <div class="dato-anual-excel">FEN</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="fen-anuales" style="padding-top:20px;" id="fen-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
-                <tr id="fen-acum-anuales">
+                <tr class="fila-descargar-excel" id="fen-acum-anuales">
                     <th class="static-columns">
-                        <div>FEN acumulado</div>
+                        <div class="dato-anual-excel">FEN acumulado</div>
                     </th>
                     <!-- Aquí se debe colocar los valores por cada año  #############-->
                     <td class="fen-acum-anuales" id="fen-acum-periodo-1">
-                        <div>$ 00,00</div>
+                        <div class="dato-anual-excel">$ 00,00</div>
                     </td>
                 </tr>
                 <!-- #endregion -->
@@ -127,7 +127,7 @@
             <i class="fa-solid fa-chart-line"></i>
             Ver gráficos
         </button>
-        <button class="btn btn-excel">
+        <button class="btn btn-excel" id="btnDescargarExcelAnual">
             <i class="fa-solid fa-file-excel"></i>
             Descargar excel
         </button>

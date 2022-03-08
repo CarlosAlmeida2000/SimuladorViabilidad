@@ -200,13 +200,13 @@ function actualizar_totales() {
         $('#total-' + $(input).attr("tipo_cuenta")).html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
         // actualizar los totales de cada tipo de cuenta para el primer año del flujo anual
         if ($(input).attr("tipo_cuenta") == 'ingresos') {
-            $('#ingreso-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+            $('#ingreso-periodo-1').html('<div class="dato-anual-excel"> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
         } else if ($(input).attr("tipo_cuenta") == 'costos-a') {
-            $('#costo-a-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+            $('#costo-a-periodo-1').html('<div class="dato-anual-excel"> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
         } else if ($(input).attr("tipo_cuenta") == 'costos-p') {
-            $('#costo-p-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+            $('#costo-p-periodo-1').html('<div class="dato-anual-excel"> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
         } else {
-            $('#costo-i-periodo-1').html('<div> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
+            $('#costo-i-periodo-1').html('<div class="dato-anual-excel"> $ ' + total_todas_filas.toFixed(2).replace('.', ',') + ' </div>')
         }
         // sumar todos los egresos del mes actual
         total_egresos_mensual = (parseFloat($('#total-costos-a-mes-' + $(input).attr("mes") + ' div').text().substring(2).replace(',', '.')) +
@@ -489,7 +489,7 @@ function limpiar_resultados(){
 $(".btnAggActividad").click(function () {
     var superior_id = $(this).parent().parent().parent();
     var seccion = superior_id.attr("id");
-    var fila = '<tr class="' + seccion + '-excel" id="fila-' + id_fila + '"> \n\
+    var fila = '<tr class="fila-descargar-excel" id="fila-' + id_fila + '"> \n\
 		        <th><button class="btn btn-sm btn-danger delete-activity" onclick="eliminar_actividad(' + id_fila + ')" type="button"><i class="fa-solid fa-trash-can"></i></button></th>\n\
                 <th class="static-columns"><input class="text-center dato-mensual-excel" id="actividad" tipo_cuenta="' + seccion + '" data-id="-1" fila="' + id_fila + '" onchange="javascript:guardar_actividad(this);" size="37"/></th> \n\
                 <td> \n\
@@ -556,10 +556,10 @@ $("#nav-anual-tab").click(function () {
     costo_p_anual = parseFloat($('#costo-p-periodo-1 div').text().substring(2).replace(',', '.'))
     costo_i_anual = parseFloat($('#costo-i-periodo-1 div').text().substring(2).replace(',', '.'))
     total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
-    $('#total-ingresos-periodo-1').html('<div> $ ' + ingreso_anual.toFixed(2).replace('.', ',') + ' </div>')
-    $('#total-egresos-periodo-1').html('<div> $ ' + total_egresos.toFixed(2).replace('.', ',') + ' </div>')
-    $('#fen-periodo-1').html('<div> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
-    $('#fen-acum-periodo-1').html('<div> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
+    $('#total-ingresos-periodo-1').html('<div class="dato-anual-excel"> $ ' + ingreso_anual.toFixed(2).replace('.', ',') + ' </div>')
+    $('#total-egresos-periodo-1').html('<div class="dato-anual-excel"> $ ' + total_egresos.toFixed(2).replace('.', ',') + ' </div>')
+    $('#fen-periodo-1').html('<div class="dato-anual-excel"> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
+    $('#fen-acum-periodo-1').html('<div class="dato-anual-excel"> $ ' + (ingreso_anual - total_egresos).toFixed(2).replace('.', ',') + ' </div>')
     calcular_periodos($('#periodos'));
 });
 
@@ -591,27 +591,27 @@ function calcular_periodos(number) {
         total_fen = parseFloat($('#fen-periodo-1 div').text().substring(2).replace(',', '.'))
         total_fen_acum = parseFloat($('#fen-acum-periodo-1 div').text().substring(2).replace(',', '.'))
         for (var i = 1; i < parseInt($(number).val()); i++) {
-            $('#encabezado-periodos').append(`<th class="periodo year" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
+            $('#encabezado-periodos').append(`<th class="periodo year dato-anual-excel" id="encabezado-periodo-${(i + 1)}">Año ${(i + 1)}</th>`);
             ingreso_anual += ingreso_anual * tasa_retorno
             total_ingresos_anuales += ingreso_anual
-            $('#ingresos-anuales').append(`<td class="periodo" id="ingreso-periodo-${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
-            $('#total-ingresos-anuales').append(`<td class="periodo t-anual-ingresos" id="total-ingresos-periodo--${(i + 1)}"><div>$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#ingresos-anuales').append(`<td class="periodo" id="ingreso-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#total-ingresos-anuales').append(`<td class="periodo t-anual-ingresos" id="total-ingresos-periodo--${(i + 1)}"><div class="dato-anual-excel">$ ${ingreso_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_a_anual += costo_a_anual * tasa_retorno
             total_costo_a_anuales += costo_a_anual
-            $('#costos-a-anuales').append(`<td class="periodo" id="costos-a-periodo-${(i + 1)}"><div>$ ${costo_a_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#costos-a-anuales').append(`<td class="periodo" id="costos-a-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${costo_a_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_p_anual += costo_p_anual * tasa_retorno
             total_costo_p_anuales += costo_p_anual
-            $('#costos-p-anuales').append(`<td class="periodo" id="costos-p-periodo-${(i + 1)}"><div>$ ${costo_p_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#costos-p-anuales').append(`<td class="periodo" id="costos-p-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${costo_p_anual.toFixed(2).replace('.', ',')}</div></td>`);
             costo_i_anual += costo_i_anual * tasa_retorno
             total_costo_i_anuales += costo_i_anual
-            $('#costos-i-anuales').append(`<td class="periodo" id="costos-i-periodo-${(i + 1)}"><div>$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#costos-i-anuales').append(`<td class="periodo" id="costos-i-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${costo_i_anual.toFixed(2).replace('.', ',')}</div></td>`);
             total_egresos = costo_a_anual + costo_p_anual + costo_i_anual
-            $('#total-egresos-anuales').append(`<td class="periodo t-anual-egresos" id="total-egresos-periodo-${(i + 1)}"><div>$ ${total_egresos.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#total-egresos-anuales').append(`<td class="periodo t-anual-egresos" id="total-egresos-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${total_egresos.toFixed(2).replace('.', ',')}</div></td>`);
             // fen anual
             fen = 0
             fen = ingreso_anual - total_egresos
             total_fen += fen
-            $('#fen-anuales').append(`<td class="periodo fen-anuales" id="fen-periodo-${(i + 1)}"><div>$ ${fen.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#fen-anuales').append(`<td class="periodo fen-anuales" id="fen-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${fen.toFixed(2).replace('.', ',')}</div></td>`);
             // fen acumulado
             fen_acum = 0
             fen_acum_anterior = 0
@@ -619,20 +619,20 @@ function calcular_periodos(number) {
             fen_acum_anterior = parseFloat($('#fen-acum-periodo-' + (i)).text().substring(2).replace(',', '.'))
             fen_acum = fen_actual + fen_acum_anterior
             total_fen_acum += fen_acum
-            $('#fen-acum-anuales').append(`<td class="periodo fen-acum-anuales" id="fen-acum-periodo-${(i + 1)}"><div>$ ${fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
+            $('#fen-acum-anuales').append(`<td class="periodo fen-acum-anuales" id="fen-acum-periodo-${(i + 1)}"><div class="dato-anual-excel">$ ${fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
         }
-        $('#encabezado-periodos').append(`<th class="periodo" id="encabezado-total">Total</th>`);
-        $('#ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos-anuales"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
-        $('#total-ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos"><div>$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#encabezado-periodos').append(`<th class="periodo dato-anual-excel" id="encabezado-total">Total</th>`);
+        $('#ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos-anuales"><div class="dato-anual-excel">$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#total-ingresos-anuales').append(`<td class="periodo" id="total-todos-ingresos"><div class="dato-anual-excel">$ ${total_ingresos_anuales.toFixed(2).replace('.', ',')}</div></td>`);
 
-        $('#costos-a-anuales').append(`<td class="periodo" id="total-todos-costos-a-anuales"><div>$ ${total_costo_a_anuales.toFixed(2).replace('.', ',')}</div></td>`);
-        $('#costos-p-anuales').append(`<td class="periodo" id="total-todos-costos-p-anuales"><div>$ ${total_costo_p_anuales.toFixed(2).replace('.', ',')}</div></td>`);
-        $('#costos-i-anuales').append(`<td class="periodo" id="total-todos-costos-i-anuales"><div>$ ${total_costo_i_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#costos-a-anuales').append(`<td class="periodo" id="total-todos-costos-a-anuales"><div class="dato-anual-excel">$ ${total_costo_a_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#costos-p-anuales').append(`<td class="periodo" id="total-todos-costos-p-anuales"><div class="dato-anual-excel">$ ${total_costo_p_anuales.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#costos-i-anuales').append(`<td class="periodo" id="total-todos-costos-i-anuales"><div class="dato-anual-excel">$ ${total_costo_i_anuales.toFixed(2).replace('.', ',')}</div></td>`);
         total_todos_egresos = total_costo_a_anuales + total_costo_p_anuales + total_costo_i_anuales
-        $('#total-egresos-anuales').append(`<td class="periodo" id="total-todos-egresos"><div>$ ${total_todos_egresos.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#total-egresos-anuales').append(`<td class="periodo" id="total-todos-egresos"><div class="dato-anual-excel">$ ${total_todos_egresos.toFixed(2).replace('.', ',')}</div></td>`);
 
-        $('#fen-anuales').append(`<td class="periodo" id="total-fen"><div>$ ${total_fen.toFixed(2).replace('.', ',')}</div></td>`);
-        $('#fen-acum-anuales').append(`<td class="periodo" id="total-fen-acum"><div>$ ${total_fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#fen-anuales').append(`<td class="periodo" id="total-fen"><div class="dato-anual-excel">$ ${total_fen.toFixed(2).replace('.', ',')}</div></td>`);
+        $('#fen-acum-anuales').append(`<td class="periodo" id="total-fen-acum"><div class="dato-anual-excel">$ ${total_fen_acum.toFixed(2).replace('.', ',')}</div></td>`);
 
     } else {
         toastr.warning("Para calcular el flujo de efectivo anual es necesario ingresar la tasa de retorno", config_toast);
@@ -1161,7 +1161,6 @@ $('#btnDescargarExcelMensual').click(function () {
     });
     json_array.flujo_efectivo = flujo_efectivo;
     flujo_efectivo = JSON.stringify(json_array);
-    //console.log(flujo_efectivo)
     // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
     var csrftoken = getCookie("csrftoken");
     var params = {
@@ -1171,6 +1170,61 @@ $('#btnDescargarExcelMensual').click(function () {
     $.ajax({
         type: "POST",
         url: "/descargar-excel-mensual/",
+        data: params,
+        dataType: "json"
+    }).done(function (result) {
+        hide_spinner();
+        if(result.excel == '1'){
+            var a = document.createElement('a');
+            a.href = "http://127.0.0.1:8000/media/excel/" + result.nombre_archivo;
+            a.click();
+        } else {
+            toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        hide_spinner();
+        toastr.error("Existió un error, por favor intente nuevamente", config_toast);
+    }).always(function (data) { });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+$('#btnDescargarExcelAnual').click(function () {
+    show_spinner();
+    var flujo_efectivo = [];
+    var json_array = {};
+    $('.fila-descargar-excel').each(function () {
+        var fila = []
+        $('.dato-anual-excel', this).each(function () {
+            fila.push({ "dato": $(this).text() })
+        });
+        if(fila.length > 0){
+            flujo_efectivo.push(fila);
+        }
+    });
+    json_array.flujo_efectivo = flujo_efectivo;
+    flujo_efectivo = JSON.stringify(json_array);
+
+    console.log(flujo_efectivo)
+    // obtención de la llave de seguridad "crsftoken" para realizar una petición ajax
+    var csrftoken = getCookie("csrftoken");
+    var params = {
+        "csrfmiddlewaretoken": csrftoken,
+        "flujo_efectivo": flujo_efectivo,
+        "cantidad_columnas": $('#periodos').val()
+    };
+    $.ajax({
+        type: "POST",
+        url: "/descargar-excel-anual/",
         data: params,
         dataType: "json"
     }).done(function (result) {

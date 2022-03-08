@@ -284,7 +284,7 @@ def descargar_excel_mensual(request):
         row_num = 0
         wb = xlwt.Workbook(encoding='utf-8')
         ws = wb.add_sheet(nombre_archivo)
-        # Sheet header, first row
+        
         ws.col(0).width = int(26*260)
         ws.col(1).width = int(20*260)
         ws.col(2).width = int(20*260)
@@ -362,6 +362,65 @@ def descargar_excel_mensual(request):
                 ws.write(row_num, 11, flujo_efectivo['flujo_efectivo'][row][11]['dato'], font_style_rows)
                 ws.write(row_num, 12, flujo_efectivo['flujo_efectivo'][row][12]['dato'], font_style_rows)
                 ws.write(row_num, 13, flujo_efectivo['flujo_efectivo'][row][13]['dato'], font_style_rows)
+
+        wb.save('media/excel/' + nombre_archivo)
+        return JsonResponse({'excel': '1', 'nombre_archivo': nombre_archivo})
+    except Exception as e:
+        return JsonResponse({'excel': '0'})
+
+
+
+def descargar_excel_anual(request):
+    try:
+        datos = request.POST['flujo_efectivo']
+        cantidad_columnas = int(request.POST['cantidad_columnas'])
+        nombre_archivo = 'FlujoEfectivoAnual.xls'
+        row_num = 0
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(nombre_archivo)
+        
+        ws.col(0).width = int(26*260)
+        for c in range((cantidad_columnas + 1)):
+            ws.col((c + 1)).width = int(20*260)
+
+        font_style = xlwt.Style.easyxf("""
+                                    font: name Arial,height 200,bold on;
+                                    borders: left thin, right thin, top thin, bottom thin;
+                                    pattern: pattern solid, fore_colour aqua;
+                                    align:  wrap on,vertical center, horizontal center;
+                                    """
+                                    )
+
+        columns = ['ACTIVIDAD']
+        for c in range(cantidad_columnas):
+            columns.append('AÑO ' + str((c + 1)))
+        columns.append('TOTAL')
+        font_style_columns = xlwt.Style.easyxf("""
+                                font: name Arial,height 200,bold on;
+                                borders: left thin, right thin, top thin, bottom thin;
+                                pattern: pattern solid, fore_colour aqua;
+                                align:  wrap on,vertical center, horizontal center;
+                                """
+                                   )
+
+        font_style_rows = xlwt.Style.easyxf("""
+                                    font: name Arial;
+                                    align: wrap on, horiz center,vertical center;
+                                    borders: left thin, right thin, top thin, bottom thin;
+                                    """
+                                    )
+        flujo_efectivo = json.loads(r"" + json.loads(json.dumps(datos)))
+
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style_columns)
+
+        for row in range(len(flujo_efectivo['flujo_efectivo'])):
+            row_num += 1
+            if(len(flujo_efectivo['flujo_efectivo'][row]) == 1):
+                ws.write(row_num, 0, flujo_efectivo['flujo_efectivo'][row][0]['dato'], font_style_rows)
+            else:
+                for c in range(len(flujo_efectivo['flujo_efectivo'][row])):
+                    ws.write(row_num, c, flujo_efectivo['flujo_efectivo'][row][c]['dato'], font_style_rows)
 
         wb.save('media/excel/' + nombre_archivo)
         return JsonResponse({'excel': '1', 'nombre_archivo': nombre_archivo})
